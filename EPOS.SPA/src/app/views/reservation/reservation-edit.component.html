@@ -1,0 +1,209 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12 mb-3">
+        <h3 class="pull-left">
+            Table Reservations
+        </h3>
+        <div class="ml-2 mt-2 pull-left">
+            <i class="fa fa-arrow-circle-left"></i>
+            <a [routerLink]="['/be/reservations']">back to reservation List</a>
+        </div>
+        <div class="pull-right">
+            <button type="button" class="btn btn-primary"  form="mainForm" (click)="saveReservation()" [disabled]="!mainForm.valid">
+              <i class="fa fa-floppy-o" ></i>&nbsp;Save</button>
+            <button type="button" class="btn btn-primary" (click)="saveReservation('stay')" [disabled]="!mainForm.valid">
+              <i class="fa fa-floppy-o"></i>&nbsp;Save and Continue Edit</button>
+            <button type="button" class="btn btn-danger"  (click)="deleteReservation()" [hidden]="reservation.id == 0">
+              <i class="fa fa-trash-o"></i>&nbsp;Delete</button>
+        </div>
+    </div>
+  </div>
+  <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <i class="fa fa-align-justify"></i>  {{ pageTitle }}
+          </div>
+          <div class="card-body">
+              <div class="col-lg-8">
+                <form class="form-horizontal" novalidate (ngSubmit)="saveReservation()" [formGroup]="mainForm" id="mainForm">
+                  <fieldset>
+                      <div class="form-group row">
+                          <div class="col-md-3">
+                            <div class="label-wrapper"><label class="control-label" for=""> Restaurant</label>
+                                <div class="ico-help">
+                                <i class="fa fa-question-circle"></i>
+                                <span class="tooltiptext">The name of the restaurant.</span>
+                              </div>
+                            </div>
+                          </div>   
+                          <div class="col-md-9"><label class="mt-1" for="">{{ reservation.restaurantName }}</label></div>
+                      </div>                       
+                      <div class="form-group row">
+                          <div class="col-md-3">
+                              <div class="label-wrapper"><label class="control-label" for="resApproved">
+                                <span class="text-danger"><strong>*</strong></span>&nbsp;Confirm</label>
+                                <div class="ico-help">
+                                <i class="fa fa-question-circle"></i>
+                                <span class="tooltiptext">The reservation request state.</span>
+                              </div>
+                            </div>
+                          </div>                           
+                          <div class="col-md-3">
+                              <select id="resApproved" formControlName="resApproved" 
+                                class="form-control" [ngClass]="{'is-invalid': displayMessage['resApproved'] }">
+                                  <option *ngFor="let item of approvalList" [ngValue]="item.value">{{ item.display }}</option>
+                              </select>  
+                              <span class="fa fa-eraser invalid-feedback" aria-hidden="true"></span>
+                              <div class="text-danger" *ngIf="displayMessage['resApproved']">
+                                <small>{{displayMessage['resApproved']}}</small>
+                            </div>
+                          </div>
+                      </div>                    
+                    <div class="form-group row">
+                      <div class="col-md-3">
+                          <div class="label-wrapper"><label class="control-label" for="resTime">
+                              <span class="text-danger"><strong>*</strong></span>&nbsp;Reserved For</label>
+                              <div class="ico-help">
+                              <i class="fa fa-question-circle"></i>
+                              <span class="tooltiptext">The reservation date and time.</span>
+                            </div>
+                          </div> 
+                      </div> 
+                      <div class="col-md-3">
+                          <select id="resTime" formControlName="resTime" class="form-control" >
+                            <option *ngFor="let item of openTimes" [ngValue]="item.id">{{ item.name }}</option>
+                        </select>                          
+                      </div>                              
+                      <div class="col-md-2">
+                          <label class="mt-1" for="">{{ reservation.resDate | date: 'dd-MMM-yyyy'}}</label>                       
+                      </div>                                    
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <div class="label-wrapper"><label class="control-label" for="noOfPerson">
+                              <span class="text-danger"><strong>*</strong></span>&nbsp;No. of People</label>
+                              <div class="ico-help">
+                              <i class="fa fa-question-circle"></i>
+                              <span class="tooltiptext">The number of people.</span>
+                            </div>
+                          </div>
+                        </div>                           
+                        <div class="col-md-3">
+                          <input type="number" id="noOfPerson"  formControlName="noOfPerson" class="form-control" 
+                            [ngClass]="{'is-invalid': displayMessage['noOfPerson'] }">
+                            <span class="fa fa-eraser invalid-feedback" aria-hidden="true"></span>
+                            <div class="text-danger" *ngIf="displayMessage['noOfPerson']">
+                              <small>{{displayMessage['noOfPerson']}}</small>
+                          </div>
+                        </div>
+                    </div> 
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                          <div class="label-wrapper"><label class="control-label" for="">Additional Request</label>
+                              <div class="ico-help">
+                              <i class="fa fa-question-circle"></i>
+                              <span class="tooltiptext">The guest additional/special request.</span>
+                            </div>
+                          </div>
+                        </div>   
+                        <div class="col-md-9"><label class="mt-1" for="">{{ reservation.request }}</label></div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                          <div class="label-wrapper"><label class="control-label" for="feedback">Response Message</label>
+                              <div class="ico-help">
+                              <i class="fa fa-question-circle"></i>
+                              <span class="tooltiptext">The response message to the guest if needed.</span>
+                            </div>
+                          </div>
+                        </div>   
+                        <div class="col-md-9"><textarea id="feedback" name="feedback" rows="3" formControlName="feedback" class="form-control" ></textarea> </div>                       
+                    </div> 
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                          <div class="label-wrapper"><label class="control-label" for=""> Guest Name</label>
+                              <div class="ico-help">
+                              <i class="fa fa-question-circle"></i>
+                              <span class="tooltiptext">The name of the guest.</span>
+                            </div>
+                          </div>
+                        </div>   
+                        <div class="col-md-9"><label class="mt-1" for="">{{ reservation.guestName }}</label></div>
+                      </div>   
+                    <div class="form-group row">
+                      <div class="col-md-3">
+                        <div class="label-wrapper"><label class="control-label" for="">Email</label>
+                            <div class="ico-help">
+                            <i class="fa fa-question-circle"></i>
+                            <span class="tooltiptext">The guest email address.</span>
+                          </div>
+                        </div>
+                      </div>   
+                      <div class="col-md-9"><label class="mt-1" for="">{{ reservation.email }}</label></div>
+                    </div>   
+                    <div class="form-group row">
+                      <div class="col-md-3">
+                        <div class="label-wrapper"><label class="control-label" for="">Phone</label>
+                            <div class="ico-help">
+                            <i class="fa fa-question-circle"></i>
+                            <span class="tooltiptext">The guest contact number.</span>
+                          </div>
+                        </div>
+                      </div>   
+                      <div class="col-md-9"><label class="mt-1" for="">{{ reservation.phone }}</label></div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-3">
+                        <div class="label-wrapper"><label class="control-label" for="">Room</label>
+                            <div class="ico-help">
+                            <i class="fa fa-question-circle"></i>
+                            <span class="tooltiptext">The guest room number.</span>
+                          </div>
+                        </div>
+                      </div>   
+                      <div class="col-md-9"><label class="mt-1" for="">{{ reservation.roomNumber }}</label></div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <div class="label-wrapper"><label class="control-label" for="">
+                                 Created</label>
+                              <div class="ico-help">
+                              <i class="fa fa-question-circle"></i>
+                              <span class="tooltiptext">The created date and time.</span>
+                            </div>
+                          </div>
+                        </div>   
+                        <div class="col-md-9"><label class="mt-1" for="">{{ reservation.createdOn | date: 'dd-MMM-yyyy hh:mm'}}</label></div>
+                    </div>                        
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <div class="label-wrapper"><label class="control-label" for="">
+                                 Last Activity</label>
+                              <div class="ico-help">
+                              <i class="fa fa-question-circle"></i>
+                              <span class="tooltiptext">The last activity date and time.</span>
+                            </div>
+                          </div>
+                        </div>   
+                        <div class="col-md-9"><label class="mt-1" for="">{{ reservation.updatedOn | date: 'dd-MMM-yyyy hh:mm'}}</label></div>
+                    </div>  
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <div class="label-wrapper"><label class="control-label" for="">
+                                 Updated By</label>
+                              <div class="ico-help">
+                              <i class="fa fa-question-circle"></i>
+                              <span class="tooltiptext">The person who performed the last activity.</span>
+                            </div>
+                          </div>
+                        </div>   
+                        <div class="col-md-9"><label class="mt-1" for="">{{ reservation.updatedBy }}</label></div>
+                    </div>                                                                    
+                  </fieldset>
+                </form>
+              </div>
+        </div>
+      </div>      
+</div>
+

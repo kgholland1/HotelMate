@@ -1,0 +1,176 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-md-12 mb-3">
+        <h3 class="pull-left">
+            Tourist Guide
+        </h3>
+        <div class="ml-2 mt-2 pull-left">
+          <i class="fa fa-arrow-circle-left"></i>
+          <a [routerLink]="['/be/tourists']">back to Tourist Guide List</a>
+      </div>        
+        <div class="pull-right">
+            <button type="button" class="btn btn-primary" [routerLink]="['/be/tourists', tourist.id, 'edit']"><i class="fa fa-edit"></i>&nbsp;Edit</button>
+        </div>          
+    </div>
+  </div>
+  <div class="row">
+        <div class="col-md-12 mb-4">
+          <tabset>
+            <tab heading="General Details">
+              <div class="col-md-12">                     
+                  <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-align-justify"></i>General 
+                    </div>          
+                    <div class="card-body p-4">
+                      <form class="form-horizontal" novalidate >
+                        <div class="form-group row">
+                          <div class="col-md-3">
+                              <div class="label-wrapper"><label class="control-label" for="">
+                                   Type</label>
+                                <div class="ico-help">
+                                <i class="fa fa-question-circle"></i>
+                                <span class="tooltiptext">The type of tourist guide.</span>
+                              </div>
+                            </div>
+                          </div>   
+                          <div class="col-md-9"><label class="mt-1" for="">{{ tourist.touristType }}</label></div>
+                        </div>  
+                        <div class="form-group row">
+                          <div class="col-md-3">
+                              <div class="label-wrapper"><label class="control-label" for="">
+                                  Name</label>
+                                <div class="ico-help">
+                                <i class="fa fa-question-circle"></i>
+                                <span class="tooltiptext">Name.</span>
+                              </div>
+                            </div>
+                          </div>   
+                          <div class="col-md-9"><label class="mt-1" for="">{{ tourist.tourName }}</label></div>
+                        </div>
+                        <div class="form-group row">
+                          <div class="col-md-3">
+                              <div class="label-wrapper"><label class="control-label" for="">
+                                  Address</label>
+                                <div class="ico-help">
+                                <i class="fa fa-question-circle"></i>
+                                <span class="tooltiptext">The address of tourist guide.</span>
+                              </div>
+                            </div>
+                          </div>   
+                          <div class="col-md-9"><label class="mt-1" for="">{{ tourist.address }}</label></div>
+                        </div> 
+                        <div class="form-group row">
+                          <div class="col-md-3">
+                              <div class="label-wrapper"><label class="control-label" for="">
+                                  Phone</label>
+                                <div class="ico-help">
+                                <i class="fa fa-question-circle"></i>
+                                <span class="tooltiptext">The contact number.</span>
+                              </div>
+                            </div>
+                          </div>   
+                          <div class="col-md-9"><label class="mt-1" for="">{{ tourist.phone }}</label></div>
+                        </div>
+                        <div class="form-group row">
+                          <div class="col-md-3">
+                              <div class="label-wrapper"><label class="control-label" for="">
+                                  Email</label>
+                                <div class="ico-help">
+                                <i class="fa fa-question-circle"></i>
+                                <span class="tooltiptext">The contact email address.</span>
+                              </div>
+                            </div>
+                          </div>   
+                          <div class="col-md-9"><label class="mt-1" for="">{{ tourist.email }}</label></div>
+                        </div>                                                  
+                        <div class="form-group row">
+                          <div class="col-md-3">
+                              <div class="label-wrapper"><label class="control-label" for="">
+                                  Description</label>
+                                <div class="ico-help">
+                                <i class="fa fa-question-circle"></i>
+                                <span class="tooltiptext">The description of tourist guide.</span>
+                              </div>
+                            </div>
+                          </div>   
+                          <div class="col-md-9" [innerHTML]="tourist.tourDesc | keepHtml"></div>
+                        </div>                         
+                        <div class="form-group row">
+                          <div class="col-md-3">
+                              <div class="label-wrapper"><label class="control-label" for=""></label>
+                            </div>
+                          </div>   
+                          <div class="col-md-9">
+                            <h5>Open Hours</h5>
+                            <label class="mt-1" for="">{{ tourist.otMessage }}</label>
+                            <table class="table table-bordered table-sm">
+                              <tbody>
+                                <tr ><td>MONDAY - {{ tourist.otMonday }}</td></tr>
+                                <tr ><td>TUESDAY - {{ tourist.otTuesday }}</td></tr>                                
+                                <tr ><td>WEDNESDAY - {{ tourist.otWednesday }}</td></tr>    
+                                <tr ><td>THURSDAY - {{ tourist.otThursday }}</td></tr>
+                                <tr ><td>FRIDAY - {{ tourist.otFriday }}</td></tr>
+                                <tr ><td>SATURDAY - {{ tourist.otSaturday }}</td></tr>
+                                <tr ><td>SUNDAY - {{ tourist.otSunday }}</td></tr>                                                                                                                                                          
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>  
+                        <div class="form-group row">
+                          <div class="col-md-3">
+                              <div class="label-wrapper"><label class="control-label" for="">
+                                  Direction</label>
+                                <div class="ico-help">
+                                <i class="fa fa-question-circle"></i>
+                                <span class="tooltiptext">The google map direction to the place.</span>
+                              </div>
+                            </div>
+                          </div>   
+                          <div class="col-md-9"><label class="mt-1" for="">{{ tourist.direction }}</label></div>
+                        </div>
+                        <div class="form-group row">
+                          <div class="col-md-3">
+                              <div class="label-wrapper"><label class="control-label" for="">
+                                  Visit us on Facebook</label>
+                                <div class="ico-help">
+                                <i class="fa fa-question-circle"></i>
+                                <span class="tooltiptext">The link to facebook.</span>
+                              </div>
+                            </div>
+                          </div>   
+                          <div class="col-md-9"><label class="mt-1" for="">{{ tourist.facebook }}</label></div>
+                        </div>
+                        <div class="form-group row">
+                          <div class="col-md-3">
+                              <div class="label-wrapper"><label class="control-label" for="">
+                                  Website</label>
+                                <div class="ico-help">
+                                <i class="fa fa-question-circle"></i>
+                                <span class="tooltiptext">The web address of the place.</span>
+                              </div>
+                            </div>
+                          </div>   
+                          <div class="col-md-9"><label class="mt-1" for="">{{ tourist.website }}</label></div>
+                        </div>                                                  
+                      </form>
+                    </div>
+                  </div>
+              </div>                                               
+            </tab>
+            <tab heading="Photos">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-align-justify"></i>{{ tourist.tourName }} 
+                    </div>
+                    <div class="card-body p-4">
+                        <p *ngIf="photos.length == 0">No photos to display.</p>
+                        <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>    
+                    </div>
+                </div>
+            </tab>
+          </tabset>
+        </div>
+</div>
+</div>
+

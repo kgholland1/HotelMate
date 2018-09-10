@@ -1,0 +1,232 @@
+<div class="app flex-row align-items-center">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card mx-4">
+        <div class="card-header">
+            <i class="fa fa-align-justify"></i>  {{ pageTitle }}
+          </div>          
+          <div class="card-body p-4">
+            <p>Please note: input fields marked with a * are required fields.</p>
+            <form class="form-horizontal" novalidate (ngSubmit)="Register()" [formGroup]="mainForm" >
+              <fieldset>
+                  <div class="form-group row">
+                      <div class="col-md-3">
+                          <div class="label-wrapper"><label class="control-label" for="hotelname">
+                            <span class="text-danger"><strong>*</strong></span>&nbsp;Hotel Name</label>
+                            <div class="ico-help">
+                            <i class="fa fa-question-circle"></i>
+                            <span class="tooltiptext">The name of the hotel.</span>
+                          </div>
+                        </div>
+                      </div>   
+                      <div class="col-md-9">
+                        <input type="text" id="hotelname"  formControlName="hotelname" class="form-control" placeholder="Hotel name (required)" 
+                          [ngClass]="{'is-invalid': displayMessage['hotelname'] }" >
+                        <span class="fa fa-eraser invalid-feedback" aria-hidden="true"></span>
+                        <div class="text-danger" *ngIf="displayMessage['hotelname']">
+                           <small>{{displayMessage['hotelname']}}</small>
+                       </div>
+                      </div>
+                  </div>                 
+                  <div class="form-group row">
+                      <div class="col-md-3">
+                          <div class="label-wrapper"><label class="control-label" for="address1">Address Line 1</label>
+                            <div class="ico-help">
+                            <i class="fa fa-question-circle"></i>
+                            <span class="tooltiptext">The address line 1 of the hotel.</span>
+                          </div>
+                        </div>
+                      </div>   
+                      <div class="col-md-9">
+                        <input type="text" id="address1"  formControlName="address1" class="form-control" >
+                      </div>
+                  </div>                 
+                  <div class="form-group row">
+                      <div class="col-md-3">
+                          <div class="label-wrapper"><label class="control-label" for="address2">Address Line 2</label>
+                            <div class="ico-help">
+                            <i class="fa fa-question-circle"></i>
+                            <span class="tooltiptext">The address line 2 of the hotel.</span>
+                          </div>
+                        </div>
+                      </div>   
+                      <div class="col-md-9">
+                        <input type="text" id="address2"  formControlName="address2" class="form-control" >
+                      </div>
+                  </div>  
+                  <div class="form-group row">
+                      <div class="col-md-3">
+                          <div class="label-wrapper"><label class="control-label" for="town">Town</label>
+                            <div class="ico-help">
+                            <i class="fa fa-question-circle"></i>
+                            <span class="tooltiptext">The town of the hotel.</span>
+                          </div>
+                        </div>
+                      </div>   
+                      <div class="col-md-9">
+                        <input type="text" id="town"  formControlName="town" class="form-control" >
+                      </div>
+                  </div>  
+                  <div class="form-group row">
+                      <div class="col-md-3">
+                          <div class="label-wrapper"><label class="control-label" for="county">County</label>
+                            <div class="ico-help">
+                            <i class="fa fa-question-circle"></i>
+                            <span class="tooltiptext">The county in which the hotel is situated.</span>
+                          </div>
+                        </div>
+                      </div>   
+                      <div class="col-md-9">
+                        <input type="text" id="county"  formControlName="county" class="form-control" >
+                      </div>
+                  </div>  
+                  <div class="form-group row">
+                      <div class="col-md-3">
+                          <div class="label-wrapper"><label class="control-label" for="country">Country</label>
+                            <div class="ico-help">
+                            <i class="fa fa-question-circle"></i>
+                            <span class="tooltiptext">The country of the hotel.</span>
+                          </div>
+                        </div>
+                      </div>   
+                      <div class="col-md-9">
+                        <input type="text" id="country"  formControlName="country" class="form-control" >
+                      </div>
+                  </div>  
+                  <div class="form-group row">
+                      <div class="col-md-3">
+                          <div class="label-wrapper"><label class="control-label" for="postcode">Postcode</label>
+                            <div class="ico-help">
+                            <i class="fa fa-question-circle"></i>
+                            <span class="tooltiptext">The postcode(where neccessary) of the hotel.</span>
+                          </div>
+                        </div>
+                      </div>   
+                      <div class="col-md-3">
+                        <input type="text" id="postCode"  formControlName="postCode" class="form-control" >
+                      </div>
+                  </div>  
+                  <div class="form-group row">
+                      <div class="col-md-3">
+                          <div class="label-wrapper"><label class="control-label" for="phone">Phone</label>
+                            <div class="ico-help">
+                            <i class="fa fa-question-circle"></i>
+                            <span class="tooltiptext">The phone number of the hotel.</span>
+                          </div>
+                        </div>
+                      </div>   
+                      <div class="col-md-9">
+                        <input type="text" id="phone"  formControlName="phone" class="form-control" >
+                      </div>
+                  </div> 
+                  <div class="form-group row">
+                      <div class="col-md-3">
+                          <div class="label-wrapper"><label class="control-label" for="hotelname">Email</label>
+                            <div class="ico-help">
+                            <i class="fa fa-question-circle"></i>
+                            <span class="tooltiptext">Hotel's email address.</span>
+                          </div>
+                        </div>
+                      </div>   
+                      <div class="col-md-9">
+                        <input type="text" id="email"  formControlName="email" class="form-control" 
+                          [ngClass]="{'is-invalid': displayMessage['email']  }">
+                        <span class="fa fa-eraser invalid-feedback" aria-hidden="true"></span>
+                        <div class="text-danger" *ngIf="displayMessage['email']">
+                           <small>{{displayMessage['email']}}</small>
+                       </div>
+                      </div>
+                    </div>
+                  <div class="form-group row">
+                      <div class="col-md-3">
+                          <div class="label-wrapper"><label class="control-label" for="website">Hotel URL</label>
+                            <div class="ico-help">
+                            <i class="fa fa-question-circle"></i>
+                            <span class="tooltiptext">The website address of the hotel.</span>
+                          </div>
+                        </div>
+                      </div>   
+                      <div class="col-md-9">
+                        <input type="text" id="website"  formControlName="website" class="form-control" >
+                      </div>
+                  </div> 
+                  <div class="form-group row">
+                      <h6>Please enter the details for the system administrator.</h6>
+                  </div>                   
+                  <div class="form-group row">
+                      <div class="col-md-3">
+                          <div class="label-wrapper"><label class="control-label" for="username">
+                            <span class="text-danger"><strong>*</strong></span>&nbsp;Name</label>
+                            <div class="ico-help">
+                            <i class="fa fa-question-circle"></i>
+                            <span class="tooltiptext">The name of the system administrator.</span>
+                          </div>
+                        </div>
+                      </div>   
+                      <div class="col-md-9">
+                        <input type="text" id="username"  formControlName="username" class="form-control" placeholder=" Administrator's Name (required)" 
+                          [ngClass]="{'is-invalid': displayMessage['username'] }" >
+                        <span class="fa fa-eraser invalid-feedback" aria-hidden="true"></span>
+                        <div class="text-danger" *ngIf="displayMessage['username']">
+                           <small>{{displayMessage['username']}}</small>
+                       </div>
+                      </div>
+                  </div> 
+                  <div class="form-group row">
+                      <div class="col-md-3">
+                          <div class="label-wrapper"><label class="control-label" for="useremail">
+                            <span class="text-danger"><strong>*</strong></span>&nbsp;Email</label>
+                            <div class="ico-help">
+                            <i class="fa fa-question-circle"></i>
+                            <span class="tooltiptext">The email of the system administrator.</span>
+                          </div>
+                        </div>
+                      </div>   
+                    <div class="col-md-9">
+                      <input type="text" id="useremail"  formControlName="useremail" class="form-control" placeholder="Email (required)"
+                        [ngClass]="{'is-invalid': displayMessage['useremail']  }">
+                      <span class="fa fa-eraser invalid-feedback" aria-hidden="true"></span>
+                      <div class="text-danger" *ngIf="displayMessage['useremail']">
+                         <small>{{displayMessage['useremail']}}</small>
+                     </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                      <div class="col-md-3">
+                          <div class="label-wrapper"><label class="control-label" for="userpassword">
+                            <span class="text-danger"><strong>*</strong></span>&nbsp;Password</label>
+                            <div class="ico-help">
+                            <i class="fa fa-question-circle"></i>
+                            <span class="tooltiptext">The password of the system administrator.</span>
+                          </div>
+                        </div>
+                      </div>   
+                    <div class="col-md-9">
+                      <input type="password" id="userpassword"  formControlName="userpassword" class="form-control" placeholder="Password (required)" 
+                        [ngClass]="{'is-invalid': displayMessage['userpassword'] }">
+                      <span class="fa fa-eraser invalid-feedback" aria-hidden="true"></span>
+                      <div class="text-danger" *ngIf="displayMessage['userpassword']">
+                         <small>{{displayMessage['userpassword']}}</small>
+                     </div>
+                    </div>
+                  </div>               
+                  <div class="form-group row">
+                      <button type="submit" class="btn btn-block btn-success" [disabled]="!mainForm.valid">Submit</button> 
+                  </div>                  
+              </fieldset>
+            </form>
+
+          </div>
+          <div class="card-footer px-4">
+            <div class="row">
+              <div >
+                <p>By registering your hotel you agree to our <a href="#" >Terms and Conditions</a>. 
+              </div>
+             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

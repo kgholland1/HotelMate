@@ -1,0 +1,193 @@
+<div class="animated fadeIn">
+    <div class="row">
+      <div class="col-lg-12 mb-3">
+          <h3 class="pull-left">
+              Table Reservations
+          </h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="col-lg-12">
+                  <form [formGroup]="searchForm" class="form-horizontal">
+                    <div class="col-md-6 clearleft"> 
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                <div class="label-wrapper"><label class="control-label" for="fullname">Guest Name</label>
+                                  <div class="ico-help">
+                                  <i class="fa fa-question-circle"></i>
+                                  <span class="tooltiptext">The guest name.</span>
+                                </div>
+                              </div>
+                            </div>                                                     
+                            <div class="col-md-8">
+                                <input class="form-control" id="fullname"  type="text"  formControlName="fullname" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                <div class="label-wrapper"><label class="control-label" for="email">Email</label>
+                                  <div class="ico-help">
+                                  <i class="fa fa-question-circle"></i>
+                                  <span class="tooltiptext">The guest email.</span>
+                                </div>
+                              </div>
+                            </div>                                                     
+                            <div class="col-md-8">
+                                <input class="form-control" id="email"  type="text"  formControlName="email" />
+                            </div>
+                        </div>  
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                <div class="label-wrapper"><label class="control-label" for="phone">Phone</label>
+                                  <div class="ico-help">
+                                  <i class="fa fa-question-circle"></i>
+                                  <span class="tooltiptext">The guest contact number.</span>
+                                </div>
+                              </div>
+                            </div>                                                     
+                            <div class="col-md-8">
+                                <input class="form-control" id="phone"  type="text"  formControlName="phone" />
+                            </div>
+                        </div>                                                                                                                
+                    </div>
+                    <div class="col-md-6 clearright">
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                <div class="label-wrapper"><label class="control-label" for="fullname">Room Number</label>
+                                  <div class="ico-help">
+                                  <i class="fa fa-question-circle"></i>
+                                  <span class="tooltiptext">The guest room number.</span>
+                                </div>
+                              </div>
+                            </div>                                                     
+                            <div class="col-md-8">
+                                <input class="form-control" id="roomNumber"  type="text"  formControlName="roomNumber" />
+                            </div>
+                        </div>                     
+                      <div class="form-group row">
+                          <div class="col-md-4">
+                              <div class="label-wrapper"><label class="control-label" for="reservationdate">Reservation Date</label>
+                                <div class="ico-help">
+                                <i class="fa fa-question-circle"></i>
+                                <span class="tooltiptext">The reservation date.</span>
+                              </div>
+                            </div>
+                          </div>                                                     
+                          <div class="col-md-8">
+                              <input type="text" class="form-control"  bsDatepicker formControlName="reservationdate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"/>            
+                          </div>
+                      </div> 
+                      <div class="form-group row">
+                          <div class="col-md-4">
+                              <div class="label-wrapper"><label class="control-label" for="menuImageType">Show All</label>
+                                <div class="ico-help">
+                                <i class="fa fa-question-circle"></i>
+                                <span class="tooltiptext">This shows all reservations.</span>
+                              </div>
+                            </div>
+                          </div>                           
+                          <div class="mt-1 ml-3" checkbox>
+                              <label><input id="showExtras" type="checkbox" formControlName = "showAll" > </label>
+                          </div>
+                      </div>                             
+                    </div>                  
+                    <div class="form-group clear row">
+                      <div class="col text-center">                             
+                        <button  class="btn btn-primary btn-search" (click)="SearchReservation()"><i class="fa fa-search"></i>&nbsp;Search</button> 
+                      </div>
+                    </div>                                              
+                    </form>                
+                  </div>
+            </div>        
+        </div>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-lg-12">
+          <div class="card">
+            <div class="card-header">
+              <i class="fa fa-align-justify"></i> Reservation List
+                <div class="pull-right">
+                    <label style="margin-right: 10px">Order By: </label>
+                      <div class="btn-group mt-1" btnRadioGroup [(ngModel)]="reservationParams.orderBy" >
+                        <label class="btn btn-success btn-sm" btnRadio="Created"
+                              uncheckable tabindex="0" role="button" (click)="loadReservations()">Created</label>
+                        <label class="btn btn-success btn-sm" btnRadio="ReservedFor"
+                              uncheckable tabindex="0" role="button" (click)="loadReservations()">Reserved For</label>
+                        <label class="btn btn-success btn-sm" btnRadio="Restaurant"
+                              uncheckable tabindex="0" role="button" (click)="loadReservations()">Restaurant</label>                              
+                      </div>                    
+              </div>            
+            </div>
+            <div class="card-body">
+              <table class="table table-bordered table-striped table-sm">
+                <thead>
+                  <tr>
+                    <th>Created On </th>
+                    <th>Restaurant</th>
+                    <th>Guest Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Room</th>                    
+                    <th>Reserved For</th> 
+                    <th>People</th> 
+                    <th>Confirmed</th>                                                       
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr  *ngFor="let item of reservations">
+                    <td>{{ item.createdOn | date: 'dd-MMM-yyyy'}}</td> 
+                    <td>{{ item.restaurantName }}</td>                                       
+                    <td>{{ item.guestName }}</td>
+                    <td>{{ item.email }}</td>
+                    <td>{{ item.phone  }}</td>
+                    <td>{{ item.roomNumber  }} </td>
+                    <td>{{ item.resDate }} {{ item.resTime}}</td>  
+                    <td>{{ item.noOfPerson  }} </td>  
+                    <td>{{ item.resApproved  }} </td>                                                                          
+                    <td style = "text-align:center; width:100px">
+                        <a class="btn btn-info btn-sm" [routerLink]="['/be/reservations', item.id, 'edit']">
+                          <i class="fa fa-edit "></i>Edit
+                        </a>
+                  </td>                    
+                  </tr>
+                </tbody>
+              </table>
+              <div class="row">
+                <div class="col-lg-7">
+                    <pagination [boundaryLinks]="true" [totalItems]="pagination.totalItems" [itemsPerPage]="pagination.itemsPerPage" (pageChanged)="pageChanged($event)"
+                    [(ngModel)]="pagination.currentPage"  previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+                    lastText="&raquo;"></pagination>
+                </div>
+                <div class="col-lg-3">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text">Limit</span>
+                        </div>                
+                      <div class="text-center">
+                          <select  class="form-control"   name="showPageSize" [(ngModel)]="pagination.itemsPerPage" (click)='loadReservations()'>
+                            <option *ngFor="let entry of entryList" [value]="entry.value">
+                              {{entry.display}}
+                            </option>
+                          </select>                  
+                      </div>
+                    </div>
+              </div>
+              <div class="col-lg-2"><label class="pull-right mt-2">{{ pagesDisplay }}</label></div>
+            </div> 
+          </div>
+      </div> 
+      </div>
+    </div> 
+  
+<!--       <div class="row">
+        <div class="col-xs-12 col-md-12">
+          <pre class="code-preview">{{searchForm.value | json}}</pre>
+          <pre></pre>
+        </div>
+      </div> -->

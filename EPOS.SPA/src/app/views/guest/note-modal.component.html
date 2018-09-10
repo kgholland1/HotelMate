@@ -1,0 +1,15 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">Add note for {{guestname}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #noteForm='ngForm' novalidate id='noteForm'>
+        <textarea id="note" name="note" rows="6"  class="form-control" required [(ngModel)]="message" #notesVar= "ngModel" ></textarea>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">Cancel</button>
+    <button type="button" class="btn btn-success" form="noteForm" (click)="AddNote(noteForm)">Submit</button>
+  </div>

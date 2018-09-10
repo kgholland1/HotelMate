@@ -1,0 +1,330 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-md-12 mb-3">
+        <h3 class="pull-left">
+            Tourist Guide
+        </h3>
+        <div class="ml-2 mt-2 pull-left">
+            <i class="fa fa-arrow-circle-left"></i>
+            <a [routerLink]="['/be/tourists']">back to Tourist Guides</a>
+        </div> 
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary"  form="mainForm" (click)="saveTourist()" [disabled]="!mainForm.valid">
+            <i class="fa fa-floppy-o" ></i>&nbsp;Save</button>
+          <button type="button" class="btn btn-primary" (click)="saveTourist('stay')" [disabled]="!mainForm.valid">
+            <i class="fa fa-floppy-o"></i>&nbsp;Save and Continue Edit</button>
+          <button type="button" class="btn btn-danger"  (click)="deleteTourist()" [hidden]="tourist.id == 0">
+            <i class="fa fa-trash-o"></i>&nbsp;Delete</button>
+      </div>                
+    </div>
+  </div>
+  <div class="row">
+        <div class="col-md-12 mb-4">
+            <!-- Nav tabs -->
+            <tabset>
+              <tab heading="General Information">
+                  <div class="col-md-12">
+                  <form class="form-horizontal" novalidate (ngSubmit)="saveTourist()" [formGroup]="mainForm" >
+                    <fieldset>
+                      <div class="col-md-12">                     
+                        <div class="card">
+                          <div class="card-header">
+                              <i class="fa fa-align-justify"></i>  {{ pageTitle }}
+                          </div>          
+                          <div class="card-body p-4">
+                              <div class="form-group row">
+                                  <div class="col-md-3">
+                                      <div class="label-wrapper"><label class="control-label" for="touristType">
+                                        <span class="text-danger"><strong>*</strong></span>&nbsp;Type</label>
+                                        <div class="ico-help">
+                                        <i class="fa fa-question-circle"></i>
+                                        <span class="tooltiptext">The type of tourist guide.</span>
+                                      </div>
+                                    </div>
+                                  </div>                           
+                                  <div class="col-md-9">
+                                      <select id="touristType" formControlName="touristType" 
+                                        class="form-control" [ngClass]="{'is-invalid': displayMessage['touristType'] }">
+                                          <option *ngFor="let item of toristTypeList" [ngValue]="item.value">{{ item.display }}</option>
+                                      </select>  
+                                      <span class="fa fa-eraser invalid-feedback" aria-hidden="true"></span>
+                                      <div class="text-danger" *ngIf="displayMessage['touristType']">
+                                        <small>{{displayMessage['touristType']}}</small>
+                                    </div>
+                                  </div>
+                              </div>
+                              <div class="form-group row">
+                                  <div class="col-md-3">
+                                      <div class="label-wrapper"><label class="control-label" for="tourName">
+                                        <span class="text-danger"><strong>*</strong></span>&nbsp;Name</label>
+                                        <div class="ico-help">
+                                        <i class="fa fa-question-circle"></i>
+                                        <span class="tooltiptext">The name of the tourist guide.</span>
+                                      </div>
+                                    </div>
+                                  </div>                           
+                                  <div class="col-md-9">
+                                    <input type="text" id="tourName"  formControlName="tourName" class="form-control" 
+                                      [ngClass]="{'is-invalid': displayMessage['tourName'] }">
+                                      <span class="fa fa-eraser invalid-feedback" aria-hidden="true"></span>
+                                      <div class="text-danger" *ngIf="displayMessage['tourName']">
+                                        <small>{{displayMessage['tourName']}}</small>
+                                    </div>
+                                  </div>
+                              </div>                                                                 
+                              <div class="form-group row">
+                                  <div class="col-md-3">
+                                      <div class="label-wrapper"><label class="control-label" for="address">
+                                          Address</label>
+                                        <div class="ico-help">
+                                        <i class="fa fa-question-circle"></i>
+                                        <span class="tooltiptext">The address of the tourist guide.</span>
+                                      </div>
+                                    </div>
+                                  </div>   
+                                  <div class="col-md-9">
+                                    <input type="text" id="address"  formControlName="address" class="form-control"  >
+                                </div>
+                              </div> 
+                              <div class="form-group row">
+                                  <div class="col-md-3">
+                                      <div class="label-wrapper"><label class="control-label" for="address">
+                                          Phone</label>
+                                        <div class="ico-help">
+                                        <i class="fa fa-question-circle"></i>
+                                        <span class="tooltiptext">The phone number of the tourist guide.</span>
+                                      </div>
+                                    </div>
+                                  </div>   
+                                  <div class="col-md-9">
+                                    <input type="text" id="phone"  formControlName="phone" class="form-control"  >
+                                </div>
+                              </div>  
+                              <div class="form-group row">
+                                  <div class="col-md-3">
+                                      <div class="label-wrapper"><label class="control-label" for="email">
+                                          Email</label>
+                                        <div class="ico-help">
+                                        <i class="fa fa-question-circle"></i>
+                                        <span class="tooltiptext">The email of the tourist guide.</span>
+                                      </div>
+                                    </div>
+                                  </div>   
+                                  <div class="col-md-9">
+                                    <input type="text" id="email"  formControlName="email" class="form-control"  >
+                                </div>
+                              </div>    
+                              <div class="form-group row">
+                                  <div class="col-md-3">
+                                      <div class="label-wrapper"><label class="control-label" for="tourDesc">
+                                          Desccription</label>
+                                        <div class="ico-help">
+                                        <i class="fa fa-question-circle"></i>
+                                        <span class="tooltiptext">A detailed description of the tourist guide.</span>
+                                      </div>
+                                    </div>
+                                  </div>   
+                                  <div class="col-md-9">
+                                      <quill-editor formControlName="tourDesc" [style]="{height: '250px'}"></quill-editor>
+
+                                      <!-- <quill-editor formControlName="tourDesc" [style]="{height: '350px'}">
+                                          
+                                          <div quill-editor-toolbar>
+                                            <span class="ql-formats">
+                                              <button class="ql-bold" [title]="'Bold'"></button>
+                                              <button class="ql-italic" [title]="'italic'"></button>                                              
+                                            </span>
+                                          </div>
+                                        </quill-editor> -->
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                  <div class="col-md-9 offset-md-3">
+                                      <h4>Open hours</h4>
+                                  </div>
+                              </div>
+                              <div class="form-group row">
+                                  <div class="col-md-3">
+                                      <div class="label-wrapper"><label class="control-label" for="otMessage">
+                                          Header Message</label>
+                                        <div class="ico-help">
+                                        <i class="fa fa-question-circle"></i>
+                                        <span class="tooltiptext">The opening hours general information.</span>
+                                      </div>
+                                    </div>
+                                  </div>   
+                                  <div class="col-md-9">
+                                    <input type="text" id="otMessage"  formControlName="otMessage" class="form-control"  >
+                                </div>
+                              </div> 
+                              <div class="form-group row">
+                                  <div class="col-md-3">
+                                      <div class="label-wrapper"><label class="control-label" for="otMonday">
+                                          Monday</label>
+                                        <div class="ico-help">
+                                        <i class="fa fa-question-circle"></i>
+                                        <span class="tooltiptext">The opening hours for monday.</span>
+                                      </div>
+                                    </div>
+                                  </div>   
+                                  <div class="col-md-9">
+                                    <input type="text" id="otMonday"  formControlName="otMonday" class="form-control"  >
+                                </div>
+                              </div> 
+                              <div class="form-group row">
+                                  <div class="col-md-3">
+                                      <div class="label-wrapper"><label class="control-label" for="otTuesday">
+                                          Tuesday</label>
+                                        <div class="ico-help">
+                                        <i class="fa fa-question-circle"></i>
+                                        <span class="tooltiptext">The opening hours for tuesday.</span>
+                                      </div>
+                                    </div>
+                                  </div>   
+                                  <div class="col-md-9">
+                                    <input type="text" id="otTuesday"  formControlName="otTuesday" class="form-control"  >
+                                </div>
+                              </div> 
+                              <div class="form-group row">
+                                  <div class="col-md-3">
+                                      <div class="label-wrapper"><label class="control-label" for="otWednesday">
+                                          Wednesday</label>
+                                        <div class="ico-help">
+                                        <i class="fa fa-question-circle"></i>
+                                        <span class="tooltiptext">The opening hours for wednesday.</span>
+                                      </div>
+                                    </div>
+                                  </div>   
+                                  <div class="col-md-9">
+                                    <input type="text" id="otWednesday"  formControlName="otWednesday" class="form-control"  >
+                                </div>
+                              </div> 
+                              <div class="form-group row">
+                                  <div class="col-md-3">
+                                      <div class="label-wrapper"><label class="control-label" for="otThursday">
+                                          Thursday</label>
+                                        <div class="ico-help">
+                                        <i class="fa fa-question-circle"></i>
+                                        <span class="tooltiptext">The opening hours for thursday.</span>
+                                      </div>
+                                    </div>
+                                  </div>   
+                                  <div class="col-md-9">
+                                    <input type="text" id="otThursday"  formControlName="otThursday" class="form-control"  >
+                                </div>
+                              </div> 
+                              <div class="form-group row">
+                                  <div class="col-md-3">
+                                      <div class="label-wrapper"><label class="control-label" for="otFriday">
+                                          Friday</label>
+                                        <div class="ico-help">
+                                        <i class="fa fa-question-circle"></i>
+                                        <span class="tooltiptext">The opening hours for friday.</span>
+                                      </div>
+                                    </div>
+                                  </div>   
+                                  <div class="col-md-9">
+                                    <input type="text" id="otFriday"  formControlName="otFriday" class="form-control"  >
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                  <div class="col-md-3">
+                                      <div class="label-wrapper"><label class="control-label" for="otSaturday">
+                                          Saturday</label>
+                                        <div class="ico-help">
+                                        <i class="fa fa-question-circle"></i>
+                                        <span class="tooltiptext">The opening hours for saturday.</span>
+                                      </div>
+                                    </div>
+                                  </div>   
+                                  <div class="col-md-9">
+                                    <input type="text" id="otSaturday"  formControlName="otSaturday" class="form-control"  >
+                                </div>
+                              </div> 
+                              <div class="form-group row">
+                                  <div class="col-md-3">
+                                      <div class="label-wrapper"><label class="control-label" for="otSunday">
+                                          Sunday</label>
+                                        <div class="ico-help">
+                                        <i class="fa fa-question-circle"></i>
+                                        <span class="tooltiptext">The opening hours for sunday.</span>
+                                      </div>
+                                    </div>
+                                  </div>   
+                                  <div class="col-md-9">
+                                    <input type="text" id="otSunday"  formControlName="otSunday" class="form-control"  >
+                                </div>
+                              </div> 
+                              <div class="form-group row">
+                                  <div class="col-md-3">
+                                      <div class="label-wrapper"><label class="control-label" for="direction">
+                                        <span class="text-danger"><strong>*</strong></span>&nbsp;Direction</label>
+                                        <div class="ico-help">
+                                        <i class="fa fa-question-circle"></i>
+                                        <span class="tooltiptext">The google map coordinates to the place.</span>
+                                      </div>
+                                    </div>
+                                  </div>                           
+                                  <div class="col-md-9">
+                                    <input type="text" id="direction"  formControlName="direction" class="form-control" 
+                                      [ngClass]="{'is-invalid': displayMessage['direction'] }">
+                                      <span class="fa fa-eraser invalid-feedback" aria-hidden="true"></span>
+                                      <div class="text-danger" *ngIf="displayMessage['direction']">
+                                        <small>{{displayMessage['direction']}}</small>
+                                    </div>
+                                  </div>
+                              </div>
+                              <div class="form-group row">
+                                  <div class="col-md-3">
+                                      <div class="label-wrapper"><label class="control-label" for="facebook">
+                                          Visit us on Facebook</label>
+                                        <div class="ico-help">
+                                        <i class="fa fa-question-circle"></i>
+                                        <span class="tooltiptext">The facebook link.</span>
+                                      </div>
+                                    </div>
+                                  </div>   
+                                  <div class="col-md-9">
+                                    <input type="text" id="facebook"  formControlName="facebook" class="form-control"  >
+                                </div>
+                              </div> 
+                              <div class="form-group row">
+                                  <div class="col-md-3">
+                                      <div class="label-wrapper"><label class="control-label" for="website">
+                                          Website</label>
+                                        <div class="ico-help">
+                                        <i class="fa fa-question-circle"></i>
+                                        <span class="tooltiptext">The website address of the tourist guide.</span>
+                                      </div>
+                                    </div>
+                                  </div>   
+                                  <div class="col-md-9">
+                                    <input type="text" id="website"  formControlName="website" class="form-control"  >
+                                </div>
+                              </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+                            </div>
+                          </div>
+                      </div>                     
+                    </fieldset>
+                  </form>                           
+                  </div>
+              </tab>
+              <tab heading="Photos" *ngIf="tourist?.id">
+                  <div class="card">
+                      <div class="card-header">
+                          <i class="fa fa-align-justify"></i> Edit Hotel Photos
+                      </div>
+                      <div class="card-body p-4">
+
+                          <app-edit-photo *ngIf="tourist?.id "[photos]="photos" [photoType]="tourist?.touristType" [photoTypeId]="tourist?.id"></app-edit-photo>
+                      </div>
+                  </div>
+              </tab>
+            </tabset>
+          </div>
+<!-- <br>Dirty: {{ mainForm.dirty }} 
+<br>Touched: {{ mainForm.touched }}
+<br>Valid: {{ mainForm.valid }}
+<br>Value: {{ mainForm.value | json }} -->
+</div>
+</div>

@@ -1,0 +1,200 @@
+<div class="animated fadeIn">
+    <div class="row">
+      <div class="col-md-12 mb-3">
+          <h3 class="pull-left">
+              Guest 
+          </h3>
+          <div class="ml-2 mt-2 pull-left">
+              <i class="fa fa-arrow-circle-left"></i>
+              <a [routerLink]="['/be/guests']">back to Guest List</a>
+          </div> 
+          <div class="pull-right" *ngIf="booking?.id">
+            <button type="button" class="btn btn-primary"   [routerLink]="['/be/guests', booking.id, 'edit']">
+              <i class="fa fa-credit-card" ></i>&nbsp;Check out</button>
+            <button type="button" class="btn btn-success btn-Note" (click)='addNote()'>
+              <i class="fa fa-file-text"></i>&nbsp;Add Notes</button>
+            <button type="button" class="btn btn-danger" (click)="deleteGuest()"  >
+              <i class="fa fa-trash-o"></i>&nbsp;Delete</button>
+        </div>                
+      </div>
+    </div>
+    <div class="row" *ngIf="booking?.id">
+          <div class="col-md-12 mb-4">
+              <!-- Nav tabs -->
+              <tabset>
+                <tab heading="General">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fa fa-align-justify"></i> Guest Details
+                            </div>
+                            <div class="card-body p-4">  
+                                <form class="form-horizontal" novalidate >
+                                    <div class="form-group row">
+                                      <div class="col-md-3">
+                                          <div class="label-wrapper"><label class="control-label" for="">
+                                               Name</label>
+                                            <div class="ico-help">
+                                            <i class="fa fa-question-circle"></i>
+                                            <span class="tooltiptext">The name of the guest.</span>
+                                          </div>
+                                        </div>
+                                      </div>   
+                                      <div class="col-md-9"><label class="mt-1" for="">{{ booking.guestName }}</label></div>
+                                    </div>   
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <div class="label-wrapper"><label class="control-label" for="">
+                                                 Email</label>
+                                              <div class="ico-help">
+                                              <i class="fa fa-question-circle"></i>
+                                              <span class="tooltiptext">The guest email address.</span>
+                                            </div>
+                                          </div>
+                                        </div>   
+                                        <div class="col-md-9"><label class="mt-1" for="">{{ booking.email }}</label></div>
+                                    </div> 
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <div class="label-wrapper"><label class="control-label" for="">
+                                                 Phone</label>
+                                              <div class="ico-help">
+                                              <i class="fa fa-question-circle"></i>
+                                              <span class="tooltiptext">The guest contact number.</span>
+                                            </div>
+                                          </div>
+                                        </div>   
+                                        <div class="col-md-9"><label class="mt-1" for="">{{ booking.phone }}</label></div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <div class="label-wrapper"><label class="control-label" for="">
+                                                 Room Number</label>
+                                              <div class="ico-help">
+                                              <i class="fa fa-question-circle"></i>
+                                              <span class="tooltiptext">The room number of the guest.</span>
+                                            </div>
+                                          </div>
+                                        </div>   
+                                        <div class="col-md-9"><label class="mt-1" for="">{{ booking.roomNumber }}</label></div>
+                                    </div> 
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <div class="label-wrapper"><label class="control-label" for="">
+                                                 Check-In Date</label>
+                                              <div class="ico-help">
+                                              <i class="fa fa-question-circle"></i>
+                                              <span class="tooltiptext">The check-In date and time.</span>
+                                            </div>
+                                          </div>
+                                        </div>   
+                                        <div class="col-md-9"><label class="mt-1" for="">{{ booking.checkIn | date: 'dd-MMM-yyyy hh:mm'}}</label></div>
+                                    </div>    
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <div class="label-wrapper"><label class="control-label" for="">
+                                                 Check-Out Date</label>
+                                              <div class="ico-help">
+                                              <i class="fa fa-question-circle"></i>
+                                              <span class="tooltiptext">The check-out date and time.</span>
+                                            </div>
+                                          </div>
+                                        </div>   
+                                        <div class="col-md-9"><label class="mt-1" for="">{{ booking.checkOut | date: 'dd-MMM-yyyy hh:mm'}}</label></div>
+                                    </div>  
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <div class="label-wrapper"><label class="control-label" for="">
+                                                 Check-Out By</label>
+                                              <div class="ico-help">
+                                              <i class="fa fa-question-circle"></i>
+                                              <span class="tooltiptext">The person who conducted the check out.</span>
+                                            </div>
+                                          </div>
+                                        </div>   
+                                        <div class="col-md-9"><label class="mt-1" for="">{{ booking.checkOutBy }}</label></div>
+                                    </div>  
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <div class="label-wrapper"><label class="control-label" for="">
+                                                 Last Activity</label>
+                                              <div class="ico-help">
+                                              <i class="fa fa-question-circle"></i>
+                                              <span class="tooltiptext">The last activity date and time.</span>
+                                            </div>
+                                          </div>
+                                        </div>   
+                                        <div class="col-md-9"><label class="mt-1" for="">{{ booking.updatedOn | date: 'dd-MMM-yyyy hh:mm'}}</label></div>
+                                    </div>  
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <div class="label-wrapper"><label class="control-label" for="">
+                                                 Updated By</label>
+                                              <div class="ico-help">
+                                              <i class="fa fa-question-circle"></i>
+                                              <span class="tooltiptext">The person who performed the last activity.</span>
+                                            </div>
+                                          </div>
+                                        </div>   
+                                        <div class="col-md-9"><label class="mt-1" for="">{{ booking.updatedBy }}</label></div>
+                                    </div>                                                                                                                                                                                                                                                                                                                                                      
+                                  </form>                       
+                            </div>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="Room Orders">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fa fa-align-justify"></i> Orders
+                        </div>
+                        <div class="card-body p-4">  
+                   
+                        </div>
+                    </div>
+                </tab>                
+                <tab heading="Shopping">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fa fa-align-justify"></i> Shopping List
+                        </div>
+                        <div class="card-body p-4">  
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="House Keeping">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fa fa-align-justify"></i> List of House Keeping
+                        </div>
+                        <div class="card-body p-4">  
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="Notes" >
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fa fa-align-justify"></i> Notes
+                        </div>
+                        <div class="card-body p-4">  
+                                <table class="table  table-striped table-sm" *ngIf="notes?.length">
+                                    <thead>
+                                        <tr>
+                                            <th>Created On</th>
+                                            <th>Notes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr  *ngFor="let item of notes.reverse()">
+                                            <td style = "width:150px">{{ item?.createdOn | date: 'dd-MMM-yyyy  hh:mm' }} <br/> {{ item.createdBy }} </td>
+                                            <td>{{ item?.notes }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>                            
+                        </div>
+                    </div>
+                </tab>                                
+              </tabset>
+            </div>
+    </div>    
+  </div>

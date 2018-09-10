@@ -1,0 +1,257 @@
+<div class="animated fadeIn">
+    <div class="row">
+      <div class="col-md-12 mb-3">
+          <h3 class="pull-left">
+              Hotel Settings
+          </h3>
+          <div class="ml-2 mt-2 pull-left">
+              <i class="fa fa-arrow-circle-left"></i>
+              <a [routerLink]="['/be/hotel']">back to Hotel Details</a>
+          </div>  
+          <div class="pull-right">
+              <button  class="btn btn-primary"  [disabled]="!mainForm.valid" form="mainForm" (click)="SaveChanges()">
+                  <i class="fa fa-floppy-o" ></i>&nbsp;Save Changes</button>
+          </div>                 
+      </div>
+    </div>
+    <div class="row">
+          <div class="col-md-12 mb-4">
+              <!-- Nav tabs -->
+              <tabset>
+                <tab heading="General Information">
+                    <div class="col-md-12">
+                    <form class="form-horizontal" novalidate  [formGroup]="mainForm" id="mainForm">
+                      <fieldset>
+                        <div class="col-md-6 clearleft">                     
+                          <div class="card">
+                            <div class="card-header">
+                                <i class="fa fa-align-justify"></i> Edit General Details
+                            </div>          
+                              <div class="card-body p-4">
+                                <div class="form-group row">
+                                    <div class="col-md-3">
+                                        <div class="label-wrapper"><label class="control-label" for="hotelcode">
+                                           Hotel Code</label>
+                                          <div class="ico-help">
+                                          <i class="fa fa-question-circle"></i>
+                                          <span class="tooltiptext">The hotel reference.</span>
+                                        </div>
+                                      </div>
+                                    </div>   
+                                    <div class="col-md-9">
+                                      <input type="text" id="hotelcode"  formControlName="hotelcode" class="form-control"  >
+                                  </div>
+                                </div>                                   
+                                <div class="form-group row">
+                                    <div class="col-md-3">
+                                        <div class="label-wrapper"><label class="control-label" for="hotelname">
+                                          <span class="text-danger"><strong>*</strong></span>&nbsp;Name</label>
+                                          <div class="ico-help">
+                                          <i class="fa fa-question-circle"></i>
+                                          <span class="tooltiptext">The name of the hotel.</span>
+                                        </div>
+                                      </div>
+                                    </div>   
+                                    <div class="col-md-9">
+                                      <input type="text" id="hotelname"  formControlName="hotelname" class="form-control" placeholder="Hotel name (required)" 
+                                        [ngClass]="{'is-invalid': displayMessage['hotelname'] }" >
+                                      <span class="fa fa-eraser invalid-feedback" aria-hidden="true"></span>
+                                      <div class="text-danger" *ngIf="displayMessage['hotelname']">
+                                        <small>{{displayMessage['hotelname']}}</small>
+                                    </div>
+                                    </div>
+                                </div>                   
+                                <div class="form-group row">
+                                    <div class="col-md-3">
+                                        <div class="label-wrapper"><label class="control-label" for="phone">Phone</label>
+                                          <div class="ico-help">
+                                          <i class="fa fa-question-circle"></i>
+                                          <span class="tooltiptext">The phone number of the hotel.</span>
+                                        </div>
+                                      </div>
+                                    </div>   
+                                    <div class="col-md-9">
+                                      <input type="text" id="phone"  formControlName="phone" class="form-control" >
+                                    </div>
+                                </div> 
+                                <div class="form-group row">
+                                    <div class="col-md-3">
+                                        <div class="label-wrapper"><label class="control-label" for="hotelname">Email</label>
+                                          <div class="ico-help">
+                                          <i class="fa fa-question-circle"></i>
+                                          <span class="tooltiptext">Hotel's email address.</span>
+                                        </div>
+                                      </div>
+                                    </div>   
+                                    <div class="col-md-9">
+                                      <input type="text" id="email"  formControlName="email" class="form-control" 
+                                        [ngClass]="{'is-invalid': displayMessage['email']  }">
+                                      <span class="fa fa-eraser invalid-feedback" aria-hidden="true"></span>
+                                      <div class="text-danger" *ngIf="displayMessage['email']">
+                                        <small>{{displayMessage['email']}}</small>
+                                    </div>
+                                    </div>
+                                  </div>
+                                <div class="form-group row">
+                                    <div class="col-md-3">
+                                        <div class="label-wrapper"><label class="control-label" for="website">Hotel URL</label>
+                                          <div class="ico-help">
+                                          <i class="fa fa-question-circle"></i>
+                                          <span class="tooltiptext">The website address of the hotel.</span>
+                                        </div>
+                                      </div>
+                                    </div>   
+                                    <div class="col-md-9">
+                                      <input type="text" id="website"  formControlName="website" class="form-control" >
+                                    </div>
+                                </div>                                             
+                              </div>
+                          </div>
+                        </div> 
+                        <div class="col-md-6 clearright">                     
+                            <div class="card">
+                              <div class="card-header">
+                                  <i class="fa fa-align-justify"></i> Edit Address
+                              </div>          
+                                <div class="card-body p-4">
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <div class="label-wrapper"><label class="control-label" for="address1">Address 1</label>
+                                              <div class="ico-help">
+                                              <i class="fa fa-question-circle"></i>
+                                              <span class="tooltiptext">The address line 1 of the hotel.</span>
+                                            </div>
+                                          </div>
+                                        </div>   
+                                        <div class="col-md-9">
+                                          <input type="text" id="address1"  formControlName="address1" class="form-control" >
+                                        </div>
+                                    </div>                 
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <div class="label-wrapper"><label class="control-label" for="address2">Address 2</label>
+                                              <div class="ico-help">
+                                              <i class="fa fa-question-circle"></i>
+                                              <span class="tooltiptext">The address line 2 of the hotel.</span>
+                                            </div>
+                                          </div>
+                                        </div>   
+                                        <div class="col-md-9">
+                                          <input type="text" id="address2"  formControlName="address2" class="form-control" >
+                                        </div>
+                                    </div>  
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <div class="label-wrapper"><label class="control-label" for="town">Town</label>
+                                              <div class="ico-help">
+                                              <i class="fa fa-question-circle"></i>
+                                              <span class="tooltiptext">The town of the hotel.</span>
+                                            </div>
+                                          </div>
+                                        </div>   
+                                        <div class="col-md-9">
+                                          <input type="text" id="town"  formControlName="town" class="form-control" >
+                                        </div>
+                                    </div>  
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <div class="label-wrapper"><label class="control-label" for="county">County</label>
+                                              <div class="ico-help">
+                                              <i class="fa fa-question-circle"></i>
+                                              <span class="tooltiptext">The county in which the hotel is situated.</span>
+                                            </div>
+                                          </div>
+                                        </div>   
+                                        <div class="col-md-9">
+                                          <input type="text" id="county"  formControlName="county" class="form-control" >
+                                        </div>
+                                    </div>  
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <div class="label-wrapper"><label class="control-label" for="country">Country</label>
+                                              <div class="ico-help">
+                                              <i class="fa fa-question-circle"></i>
+                                              <span class="tooltiptext">The country of the hotel.</span>
+                                            </div>
+                                          </div>
+                                        </div>   
+                                        <div class="col-md-9">
+                                          <input type="text" id="country"  formControlName="country" class="form-control" >
+                                        </div>
+                                    </div>  
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <div class="label-wrapper"><label class="control-label" for="postcode">Postcode</label>
+                                              <div class="ico-help">
+                                              <i class="fa fa-question-circle"></i>
+                                              <span class="tooltiptext">The postcode(where neccessary) of the hotel.</span>
+                                            </div>
+                                          </div>
+                                        </div>   
+                                        <div class="col-md-9">
+                                          <input type="text" id="postCode"  formControlName="postCode" class="form-control" >
+                                        </div>                                       
+                                    </div>                                                                            
+                                </div>
+                            </div>
+                        </div> 
+                        <div class="clear"></div>
+                        <div class="col-md-12"> 
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fa fa-align-justify"></i> Edit History
+                                </div>          
+                                  <div class="card-body p-4">
+                                <div class="form-group row">
+                                    <div class="col-md-2">
+                                        <div class="label-wrapper"><label class="control-label" for="introduction">Short Desc</label>
+                                          <div class="ico-help">
+                                          <i class="fa fa-question-circle"></i>
+                                          <span class="tooltiptext">A summary description of the hotel.</span>
+                                        </div>
+                                      </div>
+                                    </div>   
+                                    <div class="col-md-10">
+                                        <textarea id="introduction" name="introduction" rows="6" formControlName="introduction" class="form-control" ></textarea>
+                                    </div>
+                                </div>  
+                                <div class="form-group row">
+                                    <div class="col-md-2">
+                                        <div class="label-wrapper">
+                                          <label class="control-label" for="history">Long Desc</label>
+                                          <div class="ico-help">
+                                          <i class="fa fa-question-circle"></i>
+                                          <span class="tooltiptext">A detailed description of the hotel.</span>
+                                        </div>
+                                      </div>
+                                    </div>   
+                                    <div class="col-md-10">                                      
+                                      <quill-editor formControlName="history" [style]="{height: '250px'}" ></quill-editor>
+                                    </div>
+                                </div> 
+                                <div class="clear"></div>
+                              </div>
+                            </div>
+                        </div>                  
+                      </fieldset>
+                    </form>                           
+                    </div>
+                </tab>
+                <tab heading="Photos">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fa fa-align-justify"></i> Edit Hotel Photos
+                        </div>
+                        <div class="card-body p-4">
+                            <app-edit-photo [photos]="hotel.photos" photoType="Hotel" photoTypeId="1000"></app-edit-photo>
+                        </div>
+                    </div>
+                </tab>
+              </tabset>
+            </div>
+<!-- <br>Dirty: {{ mainForm.dirty }} 
+<br>Touched: {{ mainForm.touched }}
+<br>Valid: {{ mainForm.valid }}
+<br>Value: {{ mainForm.value | json }} -->
+  </div>
+</div>
