@@ -2,27 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace EPOS.API.Models
 {
-    public class User
+    public class User : IdentityUser<int>
     {
-        public int Id { get; set; }
-        
-        [MaxLength(100)]
-        public string Username { get; set; }
-        [MaxLength(150)]
-        public string Email { get; set; }
-        public byte[] PasswordHash { get; set; }
-        public byte[] PasswordSalt { get; set; }
-        public string Role { get; set; }
-        public bool Active { get; set; }
         public DateTime Created { get; set; }
         public DateTime LastActive { get; set; }
-        
+
+        [Required]
+        [MaxLength(200)]       
+        public string FullName { get; set; }
+        public string Department { get; set; }
+        public string Position { get; set; }   
+
         [ForeignKey("HotelId")]
         public Hotel hotel { get; set; }
         public int HotelId { get; set; }
-        public ICollection<UserClaim> Claims { get; set; } = new List<UserClaim>();
+        public ICollection<UserRole> UserRoles { get; set; }
     }
 }

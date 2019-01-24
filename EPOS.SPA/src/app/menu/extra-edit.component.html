@@ -1,0 +1,96 @@
+<div class="animated fadeIn">
+    <app-loading-spinner [loading]="spinnerprocessing"></app-loading-spinner>
+    <div class="row">
+      <div class="col-lg-12 mb-3">
+          <h3 class="pull-left">
+              Option and Extra
+          </h3>
+          <div class="ml-2 mt-2 pull-left">
+              <i class="fa fa-arrow-circle-left"></i>
+              <a [routerLink]="['/menu/extras']">back to Options List</a>
+          </div>
+          <div class="pull-right">
+              <button type="button" class="btn btn-primary mr-1"  form="extraForm" (click)="saveExtra()" [disabled]="!mainForm.valid">
+                <i class="fa fa-floppy-o" ></i>&nbsp;Save</button>
+              <button type="button" class="btn btn-primary mr-1" (click)="saveExtra('stay')" [disabled]="!mainForm.valid">
+                <i class="fa fa-floppy-o"></i>&nbsp;Save and Continue Edit</button>
+              <button type="button" class="btn btn-danger"  (click)="deleteExtra()" [hidden]="extra.id == 0">
+                <i class="fa fa-trash-o"></i>&nbsp;Delete</button>
+          </div>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-header">
+              <i class="fa fa-align-justify"></i>  {{ pageTitle }}
+            </div>
+            <div class="card-body">
+                <div class="col-lg-8">
+                  <form class="form-horizontal" novalidate (ngSubmit)="saveExtra()" [formGroup]="mainForm" id="mainForm">
+                    <fieldset>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <div class="label-wrapper"><label class="control-label" for="extraType">
+                                  <span class="text-danger"><strong>*</strong></span>&nbsp;Type</label>
+                                  <div class="ico-help">
+                                  <i class="fa fa-question-circle"></i>
+                                  <span class="tooltiptext">The Option/Extra type.</span>
+                                </div>
+                              </div>
+                            </div>                           
+                            <div class="col-md-9">
+                                <select id="extraType" formControlName="extraType" 
+                                  class="form-control" [ngClass]="{'is-invalid': displayMessage['extraType'] }">
+                                    <option *ngFor="let item of extraTypeList" [ngValue]="item.value">{{ item.display }}</option>
+                                </select>  
+                                <span class="fa fa-eraser invalid-feedback" aria-hidden="true"></span>
+                                <div class="text-danger" *ngIf="displayMessage['extraType']">
+                                  <small>{{displayMessage['extraType']}}</small>
+                              </div>
+                            </div>
+                        </div>                      
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <div class="label-wrapper"><label class="control-label" for="extraName">
+                                  <span class="text-danger"><strong>*</strong></span>&nbsp;Name</label>
+                                  <div class="ico-help">
+                                  <i class="fa fa-question-circle"></i>
+                                  <span class="tooltiptext">The Option/Extra name.</span>
+                                </div>
+                              </div>
+                            </div>                           
+                            <div class="col-md-9">
+                              <input type="text" id="extraName"  formControlName="extraName" class="form-control" 
+                                [ngClass]="{'is-invalid': displayMessage['extraName'] }">
+                                <span class="fa fa-eraser invalid-feedback" aria-hidden="true"></span>
+                                <div class="text-danger" *ngIf="displayMessage['extraName']">
+                                  <small>{{displayMessage['extraName']}}</small>
+                              </div>
+                            </div>
+                        </div> 
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <div class="label-wrapper"><label class="control-label" for="unitPrice">
+                                  <span class="text-danger"><strong>*</strong></span>&nbsp;Price</label>
+                                  <div class="ico-help">
+                                  <i class="fa fa-question-circle"></i>
+                                  <span class="tooltiptext">The unit price.</span>
+                                </div>
+                              </div>
+                            </div>   
+                          <div class="col-md-3">
+                              <input type="number" id="unitPrice"  formControlName="unitPrice" class="form-control" 
+                                [ngClass]="{'is-invalid': displayMessage['unitPrice'] }">
+                              <span class="fa fa-eraser invalid-feedback" aria-hidden="true"></span>
+                              <div class="text-danger" *ngIf="displayMessage['unitPrice']">
+                                <small>{{displayMessage['unitPrice']}}</small>
+                              </div>
+                          </div>
+                        </div>                               
+                    </fieldset>
+                  </form>
+                </div>
+          </div>
+        </div>      
+  </div>

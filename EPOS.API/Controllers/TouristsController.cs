@@ -15,7 +15,6 @@ using Microsoft.Extensions.Options;
 
 namespace EPOS.API.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]    
     public class TouristsController : Controller
     {

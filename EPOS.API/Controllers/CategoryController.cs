@@ -12,9 +12,9 @@ using System;
 
 namespace EPOS.API.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
-    public class CategoryController : Controller
+    [ApiController]  
+    public class CategoryController : ControllerBase
     {
         private readonly IMenuRepository _repo;
         private readonly IMapper _mapper;
@@ -29,15 +29,11 @@ namespace EPOS.API.Controllers
             _repo = repo;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetCategories([FromQuery]CategoryParams categoryParams)
+        [HttpGet("hotel/{hotelId}")]
+        public async Task<IActionResult> GetCategories(int hotelId, [FromQuery]CategoryParams categoryParams)
         {
 
-            var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-            var userFromRepo = await _hotelrepo.GetUser(currentUserId);
-
-            var categories = await _repo.GetCategories(categoryParams, userFromRepo.HotelId);
+            var categories = await _repo.GetCategories(categoryParams, hotelId);
 
             var categoriesToReturn = _mapper.Map<IEnumerable<CategoryForListDto>>(categories);
 
@@ -52,11 +48,14 @@ namespace EPOS.API.Controllers
             var category = await _repo.GetCategory(id);
 
             var categoryToReturn = _mapper.Map<CategoryForUpdateDto>(category);
+            
+            if (categoryToReturn == null)
+                return NotFound($"Could not find category with an ID of {id}");
 
             return Ok(categoryToReturn);
         }
-        [HttpPost("{hotelId}")]
-        public async Task<IActionResult> CreateCategory(int hotelId, [FromBody] CategoryForUpdateDto categoryForUpdateDto)
+        [HttpPost("hotel/{hotelId}")]
+        public async Task<IActionResult> CreateCategory(int hotelId, CategoryForUpdateDto categoryForUpdateDto)
         {
             if (categoryForUpdateDto == null)
             {
@@ -79,7 +78,7 @@ namespace EPOS.API.Controllers
             throw new Exception("Creating the category failed on save");
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryForUpdateDto categoryForUpdateDto)
+        public async Task<IActionResult> UpdateCategory(int id, CategoryForUpdateDto categoryForUpdateDto)
         {
             if (categoryForUpdateDto == null)
             {

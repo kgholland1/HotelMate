@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EPOS.API.Controllers
 {
-    [Authorize]
     [Route("api/hotels/{hotelId}/payments")]
     public class PaymentController : Controller
     {

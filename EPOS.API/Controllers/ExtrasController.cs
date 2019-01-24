@@ -9,36 +9,30 @@ using EPOS.API.Dtos;
 using System.Security.Claims;
 using EPOS.API.Models;
 using System;
+using System.Threading;
 
 namespace EPOS.API.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
-    public class ExtrasController : Controller
+    [ApiController]    
+    public class ExtrasController : ControllerBase
     {
         private readonly IMenuRepository _repo;
-        private readonly IHotelRepository _hotelrepo;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public ExtrasController(IMenuRepository repo, IHotelRepository hotelrepo, IMapper mapper, IUnitOfWork unitOfWork)
+        public ExtrasController(IMenuRepository repo, IMapper mapper, IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _repo = repo;
-            _hotelrepo = hotelrepo;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetExtras([FromQuery]ExtraParams extraParams)
+        [HttpGet("hotel/{hotelId}")]
+        public async Task<IActionResult> GetExtras(int hotelId, [FromQuery]ExtraParams extraParams)
         {
-
-            var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-            var userFromRepo = await _hotelrepo.GetUser(currentUserId);
-
-            var extras = await _repo.GetExtras(extraParams, userFromRepo.HotelId);
-
+            var extras = await _repo.GetExtras(extraParams, hotelId);
+            
             var extrasToReturn = _mapper.Map<IEnumerable<ExtraForListDto>>(extras);
 
             Response.AddPagination(extras.CurrentPage, extras.PageSize, extras.TotalCount, extras.TotalPages);
@@ -49,30 +43,33 @@ namespace EPOS.API.Controllers
         [HttpGet("{id}", Name = "GetExtra")]
         public async Task<IActionResult> GetExtra(int id)
         {
+           // Thread.Sleep(3000);
             var extra = await _repo.GetExtra(id);
-
             var extraToReturn = _mapper.Map<ExtraForUpdateDto>(extra);
+
+            if (extraToReturn == null)
+                return NotFound($"Could not find option with an ID of {id}");
 
             return Ok(extraToReturn);
         }
-        [HttpPost]
-        public async Task<IActionResult> CreateExtra([FromBody] ExtraForUpdateDto extraForUpdateDto)
+        [HttpPost("hotel/{hotelId}")]
+        public async Task<IActionResult> CreateExtra(int hotelId, [FromBody] ExtraForUpdateDto extraForUpdateDto)
         {
             if (extraForUpdateDto == null)
             {
                 return BadRequest();
             }
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+/*             if (!ModelState.IsValid)
+                return BadRequest(ModelState); */
 
             // retieve the hotel id from the login user
-            var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+/*             var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            var userFromRepo = await _hotelrepo.GetUser(currentUserId);
+            var userFromRepo = await _hotelrepo.GetUser(currentUserId); */
                 
             var extraEntity = _mapper.Map<Extra>(extraForUpdateDto);
 
-            extraEntity.HotelId = userFromRepo.HotelId;
+            extraEntity.HotelId = hotelId;
 
             _repo.Add(extraEntity);
 
@@ -123,7 +120,7 @@ namespace EPOS.API.Controllers
 
             return BadRequest("Failed to delete the extra");
         }
-        [HttpGet("{hotelId}/KeyValue")]  
+        [HttpGet("hotel/{hotelId}/KeyValue")]  
         public async Task<IEnumerable<KeyValuePairDto>> GetExtraForDropdown(int hotelId)
         {
         var extras = await _repo.GetExtraKeyValuePair(hotelId);

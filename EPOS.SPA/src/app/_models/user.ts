@@ -2,8 +2,16 @@ export interface IUser {
     id: number;
     username: string;
     email: string;
-    role?: string;
-    active?: boolean;
-    created?: Date;
-    lastActive?: Date;
+    hotelId: number;
+}
+
+export interface ISystemUser {
+    id: number;
+    fullName: string;
+    email: string;
+    phoneNumber?: string;
+    department?: string;
+    position?: string;
+    lastActive: Date;
+    roles: string[];
 }

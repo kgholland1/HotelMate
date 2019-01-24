@@ -10,7 +10,7 @@ export interface ISignHotel {
     phone?: string,
     email?: string,
     hotelURL?: string,
-    username: string;
+    fullname: string;
     useremail: string;
     userpassword: string;
 }

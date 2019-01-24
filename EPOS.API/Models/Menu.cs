@@ -22,6 +22,8 @@ namespace EPOS.API.Models
         public string MenuSubName { get; set; }
         public string ShortDesc { get; set; }
         public string MenuDesc { get; set; }
+        
+        [Column(TypeName = "decimal(10, 2)")]
         public decimal UnitPrice { get; set; }
 
         public int MenuImageType { get; set; }

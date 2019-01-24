@@ -9,11 +9,13 @@ using EPOS.API.Data;
 using EPOS.API.Dtos;
 using EPOS.API.Helpers;
 using EPOS.API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
 namespace EPOS.API.Controllers
 {
+    [AllowAnonymous]
     [Route("api/[controller]")]
     public class GuestAuthController : Controller
     {

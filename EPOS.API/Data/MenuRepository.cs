@@ -64,9 +64,9 @@ namespace EPOS.API.Data
             return extra;        
         }
 
-        public async Task<PagedList<Extra>> GetExtras(ExtraParams extraParams, int HotelID)
+        public async Task<PagedList<Extra>> GetExtras(ExtraParams extraParams, int hotelID)
         {
-            var extras =  _context.Extras.Where(u => u.HotelId == HotelID).OrderBy(u => u.ExtraName).AsQueryable();
+            var extras =  _context.Extras.Where(u => u.HotelId == hotelID).OrderBy(u => u.ExtraName).AsQueryable();
 
             if (!string.IsNullOrEmpty(extraParams.OrderBy))
             {

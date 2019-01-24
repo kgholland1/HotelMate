@@ -6,25 +6,35 @@ using EPOS.API.Data;
 using EPOS.API.Dtos;
 using EPOS.API.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EPOS.API.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
-    public class HotelsController : Controller
+    [ApiController]   
+    public class HotelsController : ControllerBase
     {
         private readonly IHotelRepository _hotelrepo;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IAuthRepository _repo;
-        public HotelsController(IHotelRepository hotelrepo, IAuthRepository repo, IMapper mapper, IUnitOfWork unitOfWork)
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<Role> _roleManager;     
+
+        public HotelsController(IHotelRepository hotelrepo, 
+            IMapper mapper, 
+            IUnitOfWork unitOfWork,
+            UserManager<User> userManager, 
+            RoleManager<Role> roleManager            
+            )
         {
-            _repo = repo;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _hotelrepo = hotelrepo;
+            _userManager = userManager;
+            _roleManager = roleManager;            
         }
+        
         [HttpGet("{id}", Name = "GetHotel")]
         public async Task<IActionResult> GetHotel(int id)
         {
@@ -57,41 +67,38 @@ namespace EPOS.API.Controllers
             Random rnd = new Random();
             int code = rnd.Next(500, 100000);
             hotelEntity.HotelCode = hotelForCreateDto.HotelName.Substring(0, 3) + "HM" + code.ToString().Replace(" ", "");
+            hotelEntity.CreatedBy = hotelForCreateDto.fullname;
             
-            var hotelFromRepo = await _repo.HotelSignup(hotelEntity);
+            var hotelFromRepo =  await _hotelrepo.HotelSignup(hotelEntity);
 
             //regieter the Admin user
-            var userToCreate = new User
+            var adminUser = new User
             {
-                Username = hotelForCreateDto.username,
+                UserName = hotelForCreateDto.useremail,
                 Email = hotelForCreateDto.useremail,
+                FullName = hotelForCreateDto.fullname,
                 HotelId = hotelFromRepo.Id,
                 Created = DateTime.UtcNow,
-                LastActive = DateTime.UtcNow,
-                Role = "Admin",
-                Active = true
+                LastActive = DateTime.UtcNow,                    
             };
 
-            var createUser = await _repo.Register(userToCreate, hotelForCreateDto.userpassword);
-
-            var UserWithClaims = await _repo.AddClaims(createUser);
-
-            // //create the main Category
-            // var newCategory = new Category();
-            // newCategory.HotelId = hotelFromRepo.Id;
-            // _hotelrepo.Add(newCategory);
-
-            if (await _unitOfWork.CompleteAsync())
+            IdentityResult result =  _userManager.CreateAsync(adminUser, "password").Result;
+            if (result.Succeeded)
             {
-                var hotelToReturn = _mapper.Map<HotelForUpdatesDto>(hotelFromRepo);
-                return CreatedAtRoute("GetHotel", new { id = hotelToReturn.Id }, hotelToReturn);
+                var admin = _userManager.FindByEmailAsync(hotelForCreateDto.useremail).Result;
+                await _userManager.AddToRolesAsync(admin, new[] {"Admin"});             
+            } else {
+                BadRequest("Failed to create Admin user.");
             }
+
+            var hotelToReturn = _mapper.Map<HotelForUpdatesDto>(hotelFromRepo);
+            return CreatedAtRoute("GetHotel", new { id = hotelToReturn.Id }, hotelToReturn);
 
             throw new Exception("Creating the hotel failed on submit");
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateHotel(int id, [FromBody] HotelForUpdatesDto hotelForUpdatesDto)
+        public async Task<IActionResult> UpdateHotel(int id, HotelForUpdatesDto hotelForUpdatesDto)
         {
             if (hotelForUpdatesDto == null)
             {

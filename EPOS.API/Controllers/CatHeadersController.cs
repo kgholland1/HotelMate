@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EPOS.API.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     public class CatHeadersController : Controller
     {

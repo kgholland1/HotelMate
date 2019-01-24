@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { AuthService } from './_Services/auth.service';
+import { AuthService } from './core/auth.service';
 
 @Component({
   // tslint:disable-next-line
@@ -9,7 +9,9 @@ import { AuthService } from './_Services/auth.service';
   template: '<router-outlet></router-outlet>'
 })
 export class AppComponent implements OnInit {
-  constructor(private router: Router, private authService: AuthService, private jwtHelperService: JwtHelperService) { }
+  constructor(private router: Router,
+     private authService: AuthService,
+    private jwtHelperService: JwtHelperService) { }
 
   ngOnInit() {
     this.router.events.subscribe((evt) => {
@@ -22,9 +24,9 @@ export class AppComponent implements OnInit {
     if (token) {
       this.authService.decodedToken = this.jwtHelperService.decodeToken(token);
     }
-    const userclaims = localStorage.getItem('userclaims');
-    if (userclaims) {
-      this.authService.userClaims = JSON.parse(userclaims)
+    const user = localStorage.getItem('user');
+    if (user) {
+      this.authService.currentUser = JSON.parse(user)
     }
   }
 }

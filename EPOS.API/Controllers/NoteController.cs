@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EPOS.API.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     public class NoteController  : Controller
     {
@@ -56,7 +55,7 @@ namespace EPOS.API.Controllers
 
             var userFromRepo = await _hotelrepo.GetUser(currentUserId);
             noteForUpdateDto.CreatedOn = DateTime.Now;
-            noteForUpdateDto.CreatedBy = userFromRepo.Username;            
+            noteForUpdateDto.CreatedBy = userFromRepo.UserName;            
 
             var noteEntity = _mapper.Map<Note>(noteForUpdateDto);
 

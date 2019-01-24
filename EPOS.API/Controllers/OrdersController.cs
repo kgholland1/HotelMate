@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace EPOS.API.Controllers
 {
-        [Route("api/[controller]")]
-        public class OrdersController : Controller
+    [Route("api/[controller]")]
+    public class OrdersController : Controller
     {
         private readonly IMenuRepository _repo;
         private readonly IHotelRepository _hotelrepo;

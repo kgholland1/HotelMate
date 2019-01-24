@@ -15,8 +15,7 @@ using Microsoft.Extensions.Options;
 
 namespace EPOS.API.Controllers
 {
-    [Authorize]
-    [Route("api/hotels/{hotelId}/photos")]
+    [Route("api/hotels/{hotelId}/photos")]    
     public class PhotosController: Controller
     {
         private readonly IHotelRepository _hotelRepo;
@@ -24,6 +23,7 @@ namespace EPOS.API.Controllers
         private readonly IOptions<CloudinarySettings> _cloudinaryConfig;
         private readonly IUnitOfWork _unitOfWork;
         private Cloudinary _cloudinary;
+
         public PhotosController(IHotelRepository hotelRepo,
             IMapper mapper,
             IOptions<CloudinarySettings> cloudinaryConfig,
@@ -166,18 +166,18 @@ namespace EPOS.API.Controllers
      
         private string GetDescription(string photoType) {
 
-        var result = "Hotel";
+            var result = "Hotel";
 
-        switch (photoType)
-        {
-            case "Hotel":
-                result = "Hotel";
-                break;
-            default:
-                break;
-        }
+            switch (photoType)
+            {
+                case "Hotel":
+                    result = "Hotel";
+                    break;
+                default:
+                    break;
+            }
 
-        return result;
+            return result;
         }
         
         [HttpGet("{TypeId}/{Type}")]

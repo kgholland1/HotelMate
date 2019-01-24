@@ -39,7 +39,6 @@ namespace EPOS.API.Models
         [MaxLength(150)]
         public string Website { get; set; }     
         public ICollection<User> Users { get; set; }   
-        public ICollection<Extra> Extras { get; set; } = new List<Extra>();  
         public ICollection<Photo> Photos { get; set; } = new List<Photo>();  
     }
 }

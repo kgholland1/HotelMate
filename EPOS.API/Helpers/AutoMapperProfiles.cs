@@ -73,14 +73,11 @@ namespace EPOS.API.Helpers
             CreateMap<OpenTime, OpenHourForUpdateDto>()
                 .ReverseMap();   
 
-            //Auth Section     
-            CreateMap<User, UserForListDto>();
-            CreateMap<UserClaim, UserClaimsDto>();
-            CreateMap<User, ProfileForDetailDto>()
-                .ForMember(dest => dest.OldEmail, opt => 
-                {
-                    opt.MapFrom(src => src.Email);
-                })        
+            //Auth Section 
+            CreateMap<User, UserForSuccessfulDto>();    
+            CreateMap<User, UserForListDto>();                    
+            CreateMap<UserForRegisterDto, User>();            
+            CreateMap<User, ProfileForDetailDto>()    
                 .ForMember(dest => dest.HotelName, opt => 
                 {
                     opt.MapFrom(src => src.hotel.HotelName);
@@ -90,11 +87,7 @@ namespace EPOS.API.Helpers
                     opt.MapFrom(src => src.hotel.HotelCode);
                 }); 
             CreateMap<ProfileForUpdateDto, User>();                           
-            CreateMap<UserForUpdateDto, User>()
-                .ForMember(dest => dest.Role, opt => 
-                {
-                    opt.MapFrom(src => src.NewRole);
-                });    
+            CreateMap<UserForUpdateDto, User>();
 
             //Menu Section
             CreateMap<Extra, ExtraForListDto>();

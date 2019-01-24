@@ -21,5 +21,7 @@ namespace EPOS.API.Data
         Task<Photo> GetMainPhotoForType(int hotelId, string photoType, int photoTypeId);
         Task<PagedList<Tourist>> GetTourists(GeneralParams touristParams, int HotelID);
         Task<Tourist> GetTourist(int id);
+
+        Task<Hotel> HotelSignup(Hotel hotel);
     }
 }

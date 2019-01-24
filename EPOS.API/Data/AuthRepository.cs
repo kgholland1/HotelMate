@@ -20,13 +20,13 @@ namespace EPOS.API.Data
         } 
        public async Task<User> Login(string email, string password)
         {
-            var user = await _context.Users.Include(c => c.Claims).FirstOrDefaultAsync(x => x.Email == email);
+            var user = await _context.Users.Include(c => c.UserRoles).FirstOrDefaultAsync(x => x.Email == email);
 
             if (user == null)
                 return null;
-
+/* 
             if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-                return null;
+                return null; */
             
             // auth successful
             return user;
@@ -59,15 +59,15 @@ namespace EPOS.API.Data
        public async Task<bool> ChangePassword(User user, string currentPassword, string newPassword)
         {
 
-            if (!VerifyPasswordHash(currentPassword, user.PasswordHash, user.PasswordSalt))
+/*             if (!VerifyPasswordHash(currentPassword, user.PasswordHash, user.PasswordSalt))
                 return false;
 
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash(newPassword, out passwordHash, out passwordSalt);
             
             user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
-            await _context.SaveChangesAsync();
+            user.PasswordSalt = passwordSalt;*/
+            await _context.SaveChangesAsync(); 
             // auth successful
             return true;
         }
@@ -75,9 +75,9 @@ namespace EPOS.API.Data
         {
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash(password, out passwordHash, out passwordSalt);
-
+/* 
             user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
+            user.PasswordSalt = passwordSalt; */
 
 
             await _context.Users.AddAsync(user);
@@ -103,7 +103,7 @@ namespace EPOS.API.Data
         public async Task<User> AddClaims(User user)
         {
             // retrieve claim based on user's role
-            var userClaims =  await _context.RoleClaims.Where(s => s.RoleType == user.Role).ToListAsync();
+/*             var userClaims =  await _context.RoleClaims.Where(s => s.RoleType == user.Role).ToListAsync();
 
             if (userClaims != null) {
                 
@@ -117,16 +117,16 @@ namespace EPOS.API.Data
                 }
 
                  await _context.SaveChangesAsync();
-            }
-
+            } */
+            await _context.SaveChangesAsync();
 
             return user;
         }
         public async Task<User> AddClaimsForNewRole(int Id, string role)
         {
-            var user = await _context.Users.Include(u => u.Claims).FirstOrDefaultAsync(e => e.Id == Id);
+             var user = await _context.Users.Include(u => u.UserRoles).FirstOrDefaultAsync(e => e.Id == Id);
             // retrieve claim based on user's role
-            var userClaims =  await _context.RoleClaims.Where(s => s.RoleType == role).ToListAsync();
+/*             var userClaims =  await _context.RoleClaims.Where(s => s.RoleType == role).ToListAsync();
 
             if (userClaims != null) {
                 
@@ -140,15 +140,15 @@ namespace EPOS.API.Data
                 }
 
                  await _context.SaveChangesAsync();
-            }
+            } */
 
             return user;
         } 
         public async Task<User> RemoveClaims(int Id)
         {
-            var user = await _context.Users.Include(u => u.Claims).FirstOrDefaultAsync(e => e.Id == Id);
-
-            user.Claims.Clear();
+            var user = await _context.Users.Include(u => u.UserRoles).FirstOrDefaultAsync(e => e.Id == Id);
+/* 
+            user.Claims.Clear(); */
 
             await _context.SaveChangesAsync();
 
@@ -177,15 +177,7 @@ namespace EPOS.API.Data
             
             return false;
         }
-        //special case, will move this later
-        public async Task<Hotel> HotelSignup(Hotel hotel) {
 
-            var newHotel = hotel;
-            _context.Add(newHotel);
-            await _context.SaveChangesAsync();
-
-            return newHotel;
-        }
         public async Task<User> GetUser(int userID)
         {
            var user = await _context.Users.Include(h => h.hotel).FirstOrDefaultAsync(e => e.Id == userID);
@@ -195,7 +187,7 @@ namespace EPOS.API.Data
         }
         public async Task<PagedList<User>> GetUsers(GeneralParams userParams, int hotelId)
         {      
-            var users =  _context.Users.Where(u => u.HotelId == hotelId).OrderBy(u => u.Username).AsQueryable();
+            var users =  _context.Users.Where(u => u.HotelId == hotelId).OrderBy(u => u.UserName).AsQueryable();
 
             return await PagedList<User>.CreateAsync(users, userParams.PageNumber, userParams.PageSize);
         }        

@@ -114,5 +114,14 @@ namespace EPOS.API.Data
         {
             return await _context.Tourists.FirstOrDefaultAsync(e => e.Id == id);       
         }
+
+        public async Task<Hotel> HotelSignup(Hotel hotel) {
+
+            var newHotel = hotel;
+            _context.Add(newHotel);
+            await _context.SaveChangesAsync();
+
+            return newHotel;
+        }
     }
 }

@@ -1,27 +1,27 @@
 export const navigation = [
   {
     name: 'Dashboard',
-    url: '/be/dashboard',
+    url: '/dashboard',
     icon: 'fa fa-dashboard',
-    allow: 'canAccessBackend'
+    allow: 'Admin,Manager,Supervisor,Staff'
   },
   {
     name: 'Guest',
     url: '/be/guests',
     icon: 'fa fa-user-plus',
-    allow: 'canAccessBackend',
+    allow: 'Admin,Manager,Supervisor,Staff',
     children: [
       {
         name: 'Current Guests',
         url: '/be/guests',
         icon: 'fa fa-dot-circle-o',
-        allow: 'canAccessBackend'
+        allow: 'Admin,Manager,Supervisor,Staff'
       },
       {
         name: 'Previous Guests',
         url: '/be/guest',
         icon: 'fa fa-dot-circle-o',
-        allow: 'canAccessBackend'
+        allow: 'Staff'
       }
     ]
   },
@@ -29,25 +29,25 @@ export const navigation = [
     name: 'Restaurant',
     url: '/be/guests',
     icon: 'fa fa-table',
-    allow: 'canAccessBackend',
+    allow: 'Admin,Manager,Supervisor,Staff',
     children: [
       {
         name: 'Table Reservations',
         url: '/be/reservations',
         icon: 'fa fa-dot-circle-o',
-        allow: 'canAccessBackend'
+        allow: 'Admin'
       },
       {
         name: 'Room Orders',
         url: '/be/extra',
         icon: 'fa fa-dot-circle-o',
-        allow: 'canAccessBackend'
+        allow: 'Admin'
       },
       {
         name: 'Pause Orders',
         url: '/base/carousels',
         icon: 'fa fa-dot-circle-o',
-        allow: 'canAccessBackend'
+        allow: 'Admin'
       }
     ]
   },
@@ -55,37 +55,37 @@ export const navigation = [
     name: 'House Keeping',
     url: '/be/guest',
     icon: 'fa fa-key',
-    allow: 'canAccessBackend',
+    allow: 'Admin',
     children: [
       {
         name: 'House Keeping Services',
         url: '/base/cards',
         icon: 'fa fa-dot-circle-o',
-        allow: 'canAccessBackend'
+        allow: 'Admin'
       },
       {
         name: 'Taxi and Private Chauffer',
         url: '/be/taxis',
         icon: 'fa fa-dot-circle-o',
-        allow: 'canAccessBackend'
+        allow: 'Admin'
       },
       {
         name: 'SPA Services',
         url: '/base/carousels',
         icon: 'fa fa-dot-circle-o',
-        allow: 'canAccessBackend'
+        allow: 'Admin'
       },
       {
         name: 'Luggage Pickup',
         url: '/be/luggages',
         icon: 'fa fa-dot-circle-o',
-        allow: 'canAccessBackend'
+        allow: 'Admin'
       },
       {
         name: 'Wake up call',
         url: '/be/wakes',
         icon: 'fa fa-dot-circle-o',
-        allow: 'canAccessBackend'
+        allow: 'Admin'
       }
     ]
   },
@@ -93,19 +93,19 @@ export const navigation = [
     name: 'Content Management',
     url: '/be/guest',
     icon: 'fa fa-gift',
-    allow: 'canAccessBackend',
+    allow: 'Admin',
     children: [
       {
         name: 'Manage Templates',
         url: '/base/cards',
         icon: 'fa fa-dot-circle-o',
-        allow: 'canAccessBackend'
+        allow: 'Admin'
       },
       {
         name: 'Manage SMS',
         url: '/base/carousels',
         icon: 'fa fa-dot-circle-o',
-        allow: 'canAccessBackend'
+        allow: 'Admin'
       }
     ]
   },
@@ -113,13 +113,13 @@ export const navigation = [
     name: 'Notifications',
     url: '/be/guest',
     icon: 'fa fa-bell',
-    allow: 'canAccessBackend',
+    allow: 'Admin',
     children: [
       {
         name: 'Live Chat',
         url: '/base/cards',
         icon: 'fa fa-dot-circle-o',
-        allow: 'canAccessBackend'
+        allow: 'Admin'
       }
     ]
   },
@@ -127,107 +127,107 @@ export const navigation = [
     name: 'Shopping',
     url: '/be/guest',
     icon: 'fa fa-shopping-cart',
-    allow: 'canAccessBackend'
+    allow: 'Admin'
   },
   {
     name: 'Configuration',
-    url: '/be/guests',
+    url: '/menu',
     icon: 'fa fa-wrench',
-    allow: 'canAccessBackend',
+    allow: 'Admin',
     children: [
       {
         name: 'Settings',
         url: '/be/settings',
         icon: 'fa fa-dot-circle-o',
-        allow: 'canAccessBackend',
+        allow: 'Admin',
         children: [
           {
             name: 'Restaurant settings',
             url: '/be/restaurants',
             icon: 'fa fa-circle-thin',
-            allow: 'canAccessBackend'
+            allow: 'Admin'
           },
           {
             name: 'Opening Hours settings',
             url: '/be/openHours',
             icon: 'fa fa-circle-thin',
-            allow: 'canAccessBackend'
+            allow: 'Admin'
           },
           {
             name: 'House Keeping settings',
             url: '/be/guest',
             icon: 'fa fa-circle-thin',
-            allow: 'canAccessBackend'
+            allow: 'Admin'
           },
           {
             name: 'SPA Items settings',
             url: '/be/guest',
             icon: 'fa fa-circle-thin',
-            allow: 'canAccessBackend'
+            allow: 'Admin'
           }
         ]
       },
       {
         name: 'Categories',
-        url: '/be/categories',
+        url: '/menu/categories',
         icon: 'fa fa-dot-circle-o',
-        allow: 'canAccessBackend'
+        allow: 'Admin'
       },
       {
         name: 'Options and Extras',
-        url: '/be/extras',
+        url: '/menu/extras',
         icon: 'fa fa-dot-circle-o',
-        allow: 'canAccessBackend'
+        allow: 'Admin'
       },
       {
         name: 'Menu',
         url: '/be/menus',
         icon: 'fa fa-dot-circle-o',
-        allow: 'canAccessBackend'
+        allow: 'Admin'
       },
       {
         name: 'Payment Methods',
         url: '/be/payments',
         icon: 'fa fa-dot-circle-o',
-        allow: 'canAccessBackend'
+        allow: 'Admin'
       },
       {
         name: 'Imports',
         url: '/base/carousels',
         icon: 'fa fa-dot-circle-o',
-        allow: 'canAccessSMS'
+        allow: 'Admin'
       }
     ]
   },
   {
     name: 'System',
-    url: '/be/hotel',
+    url: '/user',
     icon: 'fa fa-desktop',
-    allow: 'canAccessBackend',
+    allow: 'Admin',
     children: [
       {
         name: 'Hotel Details',
-        url: '/be/hotel',
+        url: '/menu/extras',
         icon: 'fa fa-dot-circle-o',
-        allow: 'canAccessBackend'
+        allow: 'Admin'
       },
       {
         name: 'Rooms',
-        url: '/be/rooms',
+        url: '/menu/categories',
         icon: 'fa fa-dot-circle-o',
-        allow: 'canAccessBackend'
+        allow: 'Admin'
       },
       {
         name: 'Tourist Guides',
-        url: '/be/tourists',
+        url: '/menu/extras',
         icon: 'fa fa-dot-circle-o',
-        allow: 'canAccessBackend'
+        allow: 'Admin'
       },
       {
         name: 'System Users',
-        url: '/be/users',
+        url: '/user/list',
         icon: 'fa fa-dot-circle-o',
-        allow: 'canAccessSecurity'
+        allow: 'Admin'
       },
     ]
   },
@@ -235,13 +235,13 @@ export const navigation = [
     name: 'Reports',
     url: '/Menu',
     icon: 'fa fa-book',
-    allow: 'canAccessBackend',
+    allow: 'Admin',
     children: [
       {
         name: 'General Reports',
         url: '/base/cards',
         icon: 'fa fa-dot-circle-o',
-        allow: 'canAccessBackend'
+        allow: 'Admin'
       }
     ]
   }

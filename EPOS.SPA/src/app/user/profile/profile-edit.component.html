@@ -1,0 +1,91 @@
+<div class="animated fadeIn">
+  <app-loading-spinner [loading]="spinnerprocessing"></app-loading-spinner>
+  <div class="row">
+    <div class="col-lg-12 mb-3">
+        <h3 class="pull-left">
+           Profile
+        </h3>
+        <div class="ml-2 mt-2 pull-left">
+            <i class="fa fa-arrow-circle-left"></i>
+            <a [routerLink]="['/user/profile/view']">back to Profile Details</a>
+        </div>
+        <div class="pull-right">
+            <button  class="btn btn-primary"  form="mainForm"  [disabled]="!mainForm.valid">
+              <i class="fa fa-floppy-o" ></i>&nbsp;Save</button>
+        </div>
+    </div>
+  </div>
+  <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <i class="fa fa-align-justify"></i>  Edit Profile
+          </div>
+          <div class="card-body">
+              <div class="col-lg-8">
+                <form class="form-horizontal" novalidate (ngSubmit)="SaveChanges()" [formGroup]="mainForm" id="mainForm">
+                  <fieldset>
+                    <div class="form-group row">
+                      <div class="col-md-3">
+                          <div class="label-wrapper"><label class="control-label" for="fullName">
+                            <span class="text-danger"><strong>*</strong></span>&nbsp;Name</label>
+                            <div class="ico-help">
+                            <i class="fa fa-question-circle"></i>
+                            <span class="tooltiptext">The name of the user</span>
+                          </div>
+                        </div>
+                      </div>                           
+                      <div class="col-md-9">
+                        <input type="text" id="fullName"  formControlName="fullName" class="form-control" 
+                          [ngClass]="{'is-invalid': displayMessage['fullName'] }">
+                          <span class="fa fa-eraser invalid-feedback" aria-hidden="true"></span>
+                          <div class="text-danger" *ngIf="displayMessage['fullName']">
+                            <small>{{displayMessage['fullName']}}</small>
+                        </div>
+                      </div>
+                    </div>  
+                    <div class="form-group row">
+                      <div class="col-md-3">
+                          <div class="label-wrapper"><label class="control-label" for="phoneNumber">Phone</label>
+                            <div class="ico-help">
+                            <i class="fa fa-question-circle"></i>
+                            <span class="tooltiptext">The phone number of the user</span>
+                          </div>
+                        </div>
+                      </div>  
+                      <div class="col-md-9">
+                        <input type="text" id="phoneNumber"  formControlName="phoneNumber" class="form-control"  >
+                    </div>                                                     
+                  </div>                                              
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <div class="label-wrapper"><label class="control-label" for="department">Deparment</label>
+                              <div class="ico-help">
+                              <i class="fa fa-question-circle"></i>
+                              <span class="tooltiptext">The Department of the user</span>
+                            </div>
+                          </div>
+                        </div>  
+                        <div class="col-md-9">
+                          <input type="text" id="department"  formControlName="department" class="form-control"  >
+                      </div>                                                     
+                    </div>   
+                    <div class="form-group row">
+                      <div class="col-md-3">
+                          <div class="label-wrapper"><label class="control-label" for="position">Position</label>
+                            <div class="ico-help">
+                            <i class="fa fa-question-circle"></i>
+                            <span class="tooltiptext">The Position of the user</span>
+                          </div>
+                        </div>
+                      </div>  
+                      <div class="col-md-9">
+                        <input type="text" id="position"  formControlName="position" class="form-control"  >
+                    </div>                                                     
+                  </div>                                               
+                  </fieldset>
+                </form>
+              </div>
+        </div>
+      </div>      
+</div>

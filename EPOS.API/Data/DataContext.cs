@@ -3,11 +3,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EPOS.API.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace EPOS.API.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<User, Role, int, 
+        IdentityUserClaim<int>, UserRole, IdentityUserLogin<int>, 
+        IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         private readonly IUserInfoService _userInfoService;
 
@@ -17,9 +21,6 @@ namespace EPOS.API.Data
         public DbSet<Menu> Menus { get; set; }
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Room> Rooms { get; set; }
-        public DbSet<RoleClaim> RoleClaims { get; set; }
-        public DbSet<UserClaim> UserClaims { get; set; }       
-        public DbSet<User> Users { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Tourist> Tourists { get; set; }
         public DbSet<Payment> Payments { get; set; }
@@ -41,6 +42,22 @@ namespace EPOS.API.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<UserRole>(userRole => 
+            {
+                userRole.HasKey(ur => new {ur.UserId, ur.RoleId});
+
+                userRole.HasOne(ur => ur.Role)
+                    .WithMany(ur => ur.UserRoles)
+                    .HasForeignKey(ur => ur.RoleId)
+                    .IsRequired();
+
+                userRole.HasOne(ur => ur.User)
+                    .WithMany(ur => ur.UserRoles)
+                    .HasForeignKey(ur => ur.UserId)
+                    .IsRequired();
+            });            
             modelBuilder.Entity<Category>()
                 .HasMany(p => p.Menus)
                 .WithOne(u => u.Category)
@@ -61,7 +78,6 @@ namespace EPOS.API.Data
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);                
 
-            base.OnModelCreating(modelBuilder);
         }
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {

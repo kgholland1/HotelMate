@@ -16,7 +16,6 @@ namespace EPOS.API.Data
         Task<Guest> GuestLogin(string email, string password);
         Task<bool> UserExists(string username);   
         Task<bool> GuestExists(string email);
-        Task<Hotel> HotelSignup(Hotel hotel);
         Task<User> GetUser(int userID);
         Task<PagedList<User>> GetUsers(GeneralParams userParams, int hotelId);
         Task<User> RemoveClaims(int Id);

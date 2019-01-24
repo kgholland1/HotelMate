@@ -1,6 +1,6 @@
-import { UserClaim } from './userClaim';
+import { IUser } from './user';
 
 export class AuthUser {
-    tokenString: string;
-    userClaims: UserClaim[];
+    token: string;
+    user: IUser;
 }
