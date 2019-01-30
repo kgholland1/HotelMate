@@ -12,8 +12,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EPOS.API.Controllers
 {
-    [Route("api/[controller]")]
-    public class RoomController : Controller
+    [Route("api/hotels/{hotelId}/rooms")]
+    [ApiController] 
+    public class RoomController : ControllerBase
     {
         private readonly IHotelRepository _hotelrepo;
         private readonly IMapper _mapper;
@@ -26,14 +27,9 @@ namespace EPOS.API.Controllers
         } 
 
         [HttpGet]
-        public async Task<IActionResult> GetRooms([FromQuery]GeneralParams roomParams)
+        public async Task<IActionResult> GetRooms(int hotelId, [FromQuery]GeneralParams roomParams)
         {
-
-            var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-            var userFromRepo = await _hotelrepo.GetUser(currentUserId);
-
-            var rooms = await _hotelrepo.GetRooms(roomParams, userFromRepo.HotelId);
+            var rooms = await _hotelrepo.GetRooms(roomParams, hotelId);
 
             var roomsToReturn = _mapper.Map<IEnumerable<RoomForListDto>>(rooms);
 
@@ -47,29 +43,25 @@ namespace EPOS.API.Controllers
         {
             var room = await _hotelrepo.GetRoom(id);
 
+            if (room == null)
+                return NotFound($"Could not find room with an ID of {id}");
+
             var roomToReturn = _mapper.Map<RoomForUpdateDto>(room);
 
             return Ok(roomToReturn);
         }   
 
         [HttpPost]
-        public async Task<IActionResult> CreateRoom([FromBody] RoomForUpdateDto roomForUpdateDto)
+        public async Task<IActionResult> CreateRoom(int hotelId, RoomForUpdateDto roomForUpdateDto)
         {
             if (roomForUpdateDto == null)
             {
                 return BadRequest();
             }
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            // retieve the hotel id from the login user
-            var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-            var userFromRepo = await _hotelrepo.GetUser(currentUserId);
                 
             var roomEntity = _mapper.Map<Room>(roomForUpdateDto);
 
-            roomEntity.HotelId = userFromRepo.HotelId;
+            roomEntity.HotelId = hotelId;
 
             _hotelrepo.Add(roomEntity);
 
@@ -82,22 +74,19 @@ namespace EPOS.API.Controllers
         }  
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateRoom(int id, [FromBody] RoomForUpdateDto roomForUpdateDto)
+        public async Task<IActionResult> UpdateRoom(int id, RoomForUpdateDto roomForUpdateDto)
         {
             if (roomForUpdateDto == null)
             {
                 return BadRequest();
-            }
-            
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            }            
 
             var roomFromRepo = await _hotelrepo.GetRoom(id);
 
             if (roomFromRepo == null)
                 return NotFound($"Could not find room with an ID of {id}");
 
-            _mapper.Map(roomForUpdateDto, roomFromRepo);
+            _mapper.Map<RoomForUpdateDto, Room>(roomForUpdateDto, roomFromRepo);
 
             if (await  _unitOfWork.CompleteAsync())
                 return NoContent();

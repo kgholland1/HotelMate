@@ -94,7 +94,7 @@ namespace EPOS.API.Data
         public async Task<PagedList<Menu>> GetMenus(CategoryParams categoryParams, int HotelID)
         {
             var menus =  _context.Menus.Include(c => c.Category).Where(u => u.HotelId == HotelID)
-                .OrderBy(h => h.CategoryId).AsQueryable();
+                .OrderBy(h => h.CategoryId).AsQueryable();          
 
              if (categoryParams.CategoryId > 0)
             {
@@ -135,7 +135,7 @@ namespace EPOS.API.Data
         }        
         public async Task<Menu> GetMenu(int id, bool includeRelated = true)
         {
-            var menu = await _context.Menus.FirstOrDefaultAsync(e => e.Id == id);
+            // var menu = await _context.Menus.FirstOrDefaultAsync(e => e.Id == id);
 
             if (!includeRelated)
             return await _context.Menus.FindAsync(id);

@@ -13,7 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace EPOS.API.Controllers
 {
     [Route("api/[controller]")]
-    public class MenuController : Controller
+    [ApiController] 
+    public class MenuController : ControllerBase
     {
         private readonly IMenuRepository _repo;
         private readonly IMapper _mapper;
@@ -27,15 +28,10 @@ namespace EPOS.API.Controllers
             _mapper = mapper;
             _repo = repo;
         } 
-        [HttpGet]
-        public async Task<IActionResult> GetMenus([FromQuery]CategoryParams categoryParams)
+        [HttpGet("hotel/{hotelId}")]
+        public async Task<IActionResult> GetMenus(int hotelId, [FromQuery]CategoryParams categoryParams)
         {
-
-            var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-            var userFromRepo = await _hotelrepo.GetUser(currentUserId);
-
-            var menus = await _repo.GetMenus(categoryParams, userFromRepo.HotelId);
+            var menus = await _repo.GetMenus(categoryParams, hotelId);
 
             var menusToReturn = _mapper.Map<IEnumerable<MenuForListDto>>(menus);
 
@@ -52,6 +48,9 @@ namespace EPOS.API.Controllers
 
             var menuToReturn = _mapper.Map<MenuForUpdateDto>(menu);
 
+            if (menuToReturn == null)
+                return NotFound($"Could not find menu with an ID of {id}");
+
             return Ok(menuToReturn);
         }     
         [HttpPost("{hotelId}")]
@@ -61,8 +60,8 @@ namespace EPOS.API.Controllers
             {
                 return BadRequest();
             }
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            // if (!ModelState.IsValid)
+            //     return BadRequest(ModelState);
                 
             var menuEntity = _mapper.Map<Menu>(menuForSaveDto);
 
@@ -94,7 +93,7 @@ namespace EPOS.API.Controllers
             if (menuFromRepo == null)
                 return NotFound($"Could not find menu with an ID of {id}");
 
-                _mapper.Map<MenuForSaveDto, Menu>(menuForSaveDto, menuFromRepo);
+            _mapper.Map<MenuForSaveDto, Menu>(menuForSaveDto, menuFromRepo);
 
             if (await  _unitOfWork.CompleteAsync())
                 return NoContent(); 

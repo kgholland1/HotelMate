@@ -15,8 +15,9 @@ using Microsoft.Extensions.Options;
 
 namespace EPOS.API.Controllers
 {
-    [Route("api/[controller]")]    
-    public class TouristsController : Controller
+    [Route("api/hotels/{hotelId}/tourists")]
+    [ApiController]   
+    public class TouristsController : ControllerBase
     {
         private readonly IHotelRepository _hotelrepo;
         private readonly IMapper _mapper;
@@ -42,14 +43,9 @@ namespace EPOS.API.Controllers
            
         }
         [HttpGet]
-        public async Task<IActionResult> GetTourists([FromQuery]GeneralParams touristParams)
+        public async Task<IActionResult> GetTourists(int hotelId, [FromQuery]GeneralParams touristParams)
         {
-
-            var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-            var userFromRepo = await _hotelrepo.GetUser(currentUserId);
-
-            var tourists = await _hotelrepo.GetTourists(touristParams, userFromRepo.HotelId);
+            var tourists = await _hotelrepo.GetTourists(touristParams, hotelId);
 
             var touristsToReturn = _mapper.Map<IEnumerable<TouristForListDto>>(tourists);
 
@@ -59,33 +55,30 @@ namespace EPOS.API.Controllers
         } 
 
         [HttpGet("{id}", Name = "GetTourist")]
-        public async Task<IActionResult> GetTourist(int id)
+        public async Task<IActionResult> GetTourist(int hotelId, int id)
         {
             var tourist = await _hotelrepo.GetTourist(id);
+
+            if (tourist == null)
+                return NotFound($"Could not find giude with an ID of {id}");
 
             var touristToReturn = _mapper.Map<TouristForUpdateDto>(tourist);
 
             // get the photos for this tourist
-            var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-            var userFromRepo = await _hotelrepo.GetUser(currentUserId);
-
-            var photos = await _hotelrepo.GetPhotosForType(id, userFromRepo.HotelId, tourist.TouristType );
+            var photos = await _hotelrepo.GetPhotosForType(id, hotelId, tourist.TouristType );
 
              var photoToReturn = _mapper.Map<IEnumerable<PhotoForReturnDto>>(photos);
 
             return Ok(new { touristToReturn, photoToReturn });
         } 
 
-        [HttpPost("{hotelId}")]
-        public async Task<IActionResult> CreateTourist(int hotelId, [FromBody] TouristForUpdateDto touristForUpdateDto)
+        [HttpPost]
+        public async Task<IActionResult> CreateTourist(int hotelId, TouristForUpdateDto touristForUpdateDto)
         {
             if (touristForUpdateDto == null)
             {
                 return BadRequest();
             }
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
                 
             var touristEntity = _mapper.Map<Tourist>(touristForUpdateDto);
 
@@ -109,16 +102,13 @@ namespace EPOS.API.Controllers
             {
                 return BadRequest();
             }
-            
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
 
             var touristFromRepo = await _hotelrepo.GetTourist(id);
 
             if (touristFromRepo == null)
                 return NotFound($"Could not find tourist guide with an ID of {id}");
 
-            _mapper.Map(touristForUpdateDto, touristFromRepo);
+            _mapper.Map<TouristForUpdateDto, Tourist>(touristForUpdateDto, touristFromRepo);
 
             if (await  _unitOfWork.CompleteAsync())
                 return NoContent();

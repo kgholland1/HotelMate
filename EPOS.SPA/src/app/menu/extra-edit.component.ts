@@ -111,7 +111,7 @@ export class ExtraEditComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
                 (error: any) => {
                     this.alertify.error(error, 5)
-                    this.router.navigate(['/menu/extras']);
+                    this.router.navigate(['/config/menu/extras']);
                 }
             );
         } else {
@@ -171,7 +171,7 @@ saveExtra(action?: string): void {
             this.initDataModel(data);
               this.alertify.success('Saved successfully', 5);
               if (action !== 'stay') {
-                  this.router.navigate(['/menu/extras']);
+                  this.router.navigate(['/config/menu/extras']);
               }
               this.saveAndContinue();
             },
@@ -186,7 +186,7 @@ saveExtra(action?: string): void {
             () => {
               this.alertify.success('Saved successfully', 5);
               if (action !== 'stay') {
-                  this.router.navigate(['/menu/extras']);
+                  this.router.navigate(['/config/menu/extras']);
               }
               this.saveAndContinue();
             },
@@ -195,7 +195,7 @@ saveExtra(action?: string): void {
     }
    } else {
     if (action !== 'stay') {
-        this.router.navigate(['/menu/extras']);
+        this.router.navigate(['/config/menu/extras']);
     }
    }
 }
@@ -224,7 +224,7 @@ deleteExtra() {
                 if (this.mainForm) {
                     this.mainForm.reset();
                 }
-                this.router.navigate(['/menu/extras']);
+                this.router.navigate(['config/menu/extras']);
             }, error => {
                 this.alertify.error('Failed to delete option', 5)
             });

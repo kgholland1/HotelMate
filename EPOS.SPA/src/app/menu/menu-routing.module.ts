@@ -10,6 +10,10 @@ import { ExtraEditComponent } from './extra-edit.component';
 import { CategoryListComponent } from './category-list.component';
 import { CategoryListResolver } from './category-list.resolver';
 import { CategoryEditComponent } from './category-edit.component';
+import { MenuListResolver } from './menu-list.resolver';
+import { MenuListComponent } from './menu-list.component';
+import { MenuEditComponent } from './menu-edit.component';
+
 
 const routes: Routes = [
   {
@@ -30,6 +34,16 @@ const routes: Routes = [
     children: [
       { path: '', component: CategoryListComponent, resolve: {category: CategoryListResolver} },
       { path: ':id/edit', component: CategoryEditComponent, canDeactivate: [CanDeactivateGuard] }
+    ]
+  },
+  {
+    path: 'menus',
+    component: FullLayoutComponent,
+    canActivate: [AuthGuard],
+    data: {roles: ['Admin']},
+    children: [
+      { path: '', component: MenuListComponent, resolve: {menu: MenuListResolver} },
+      { path: ':id/edit', component: MenuEditComponent, canDeactivate: [CanDeactivateGuard] }
     ]
   }
 ];

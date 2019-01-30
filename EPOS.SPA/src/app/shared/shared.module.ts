@@ -71,6 +71,7 @@ import {
   SIDEBAR_TOGGLE_DIRECTIVES
 } from '../shared/directives';
 import { MessageModalComponent } from './message-modal.component';
+import { EditPhotoComponent } from './edit-photo/edit-photo.component';
 
 
 const APP_DIRECTIVES = [
@@ -128,7 +129,8 @@ const APP_DIRECTIVES = [
     EscapeHtmlPipe,
     TruncatePipe,
     LoadingSpinnerComponent,
-    MessageModalComponent
+    MessageModalComponent,
+    EditPhotoComponent
   ],
   entryComponents: [MessageModalComponent],
   declarations: [
@@ -139,7 +141,8 @@ const APP_DIRECTIVES = [
     EscapeHtmlPipe,
     TruncatePipe,
     LoadingSpinnerComponent,
-    MessageModalComponent
+    MessageModalComponent,
+    EditPhotoComponent
   ]
 })
 export class SharedModule { }

@@ -15,8 +15,9 @@ using Microsoft.Extensions.Options;
 
 namespace EPOS.API.Controllers
 {
-    [Route("api/hotels/{hotelId}/photos")]    
-    public class PhotosController: Controller
+    [Route("api/hotels/{hotelId}/photos")]   
+    [ApiController]       
+    public class PhotosController: ControllerBase
     {
         private readonly IHotelRepository _hotelRepo;
         private readonly IMapper _mapper;
@@ -48,12 +49,15 @@ namespace EPOS.API.Controllers
         {
             var photoFromRepo = await _hotelRepo.GetPhoto(id);
 
+            if (photoFromRepo == null)
+                return NotFound($"Could not find photo with an ID of {id}");
+
             var photo = _mapper.Map<PhotoForReturnDto>(photoFromRepo);
 
             return Ok(photo);
         }
        [HttpPost("{photoType}/{photoTypeID}")]
-        public async Task<IActionResult> AddPhoto(int hotelId, string photoType, int photoTypeID, PhotoForCreationDto photoDto)
+        public async Task<IActionResult> AddPhoto(int hotelId, string photoType, int photoTypeID, [FromForm]PhotoForCreationDto photoDto)
         {
             if (photoDto == null)
             {
@@ -61,6 +65,8 @@ namespace EPOS.API.Controllers
             }
 
             photoDto.Description = GetDescription(photoType);
+            photoDto.PhotoType = photoType;
+            photoDto.PhotoTypeId = photoTypeID;
 
             var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
@@ -95,6 +101,7 @@ namespace EPOS.API.Controllers
 
             photoDto.Url = uploadResult.Uri.ToString();
             photoDto.PublicId = uploadResult.PublicId;
+
 
             var photo = _mapper.Map<Photo>(photoDto);
 

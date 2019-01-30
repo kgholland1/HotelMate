@@ -92,7 +92,7 @@ export class CategoryEditComponent implements OnInit, AfterViewInit, OnDestroy {
     },
     (error: any) => {
       this.alertify.error(error, 5)
-      this.router.navigate(['/menu/categories']);
+      this.router.navigate(['/config/menu/categories']);
     });
   }
 
@@ -156,7 +156,7 @@ export class CategoryEditComponent implements OnInit, AfterViewInit, OnDestroy {
               this.initDataModel(data);
                 this.alertify.success('Saved successfully', 5);
                 if (action !== 'stay') {
-                    this.router.navigate(['/menu/categories']);
+                    this.router.navigate(['/config/menu/categories']);
                 }
                 this.saveAndContinue();
               },
@@ -171,7 +171,7 @@ export class CategoryEditComponent implements OnInit, AfterViewInit, OnDestroy {
               () => {
                 this.alertify.success('Saved successfully', 5);
                 if (action !== 'stay') {
-                    this.router.navigate(['/menu/categories']);
+                    this.router.navigate(['/config/menu/categories']);
                 }
                 this.saveAndContinue();
               },
@@ -180,7 +180,7 @@ export class CategoryEditComponent implements OnInit, AfterViewInit, OnDestroy {
       }
      } else {
       if (action !== 'stay') {
-          this.router.navigate(['/menu/categories']);
+          this.router.navigate(['/config/menu/categories']);
       }
      }
   }
@@ -197,7 +197,7 @@ export class CategoryEditComponent implements OnInit, AfterViewInit, OnDestroy {
               if (this.mainForm) {
                   this.mainForm.reset();
               }
-              this.router.navigate(['/menu/categories']);
+              this.router.navigate(['/config/menu/categories']);
           }, error => {
               this.alertify.error('Failed to delete category', 5)
           });

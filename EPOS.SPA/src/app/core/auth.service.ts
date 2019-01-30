@@ -3,10 +3,12 @@ import { environment } from 'environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import { UserClaim } from './../_models/userClaim';
 import { IUser } from './../_models/user';
 import { IRegister } from '../_models/register';
+import { ISignHotel } from './../_models/signHotel';
 
 
 @Injectable({
@@ -68,6 +70,10 @@ login(model: any) {
       }
     });
     return isMatch;
+  }
+
+  createHotel(hotel: ISignHotel): Observable<ISignHotel> {
+    return this.http.post<ISignHotel>(this.baseUrl + 'hotels', hotel);
   }
 }
 

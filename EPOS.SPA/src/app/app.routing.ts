@@ -7,6 +7,7 @@ import { PreloadSelectedModulesList } from './core/preload-strategy';
 const lazyPaths = {
   user: 'app/user/user.module#UserModule',
   menu: 'app/menu/menu.module#MenuModule',
+  hotel: 'app/hotel/hotel.module#HotelModule',
 };
 export const appRoutes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -16,8 +17,12 @@ export const appRoutes: Routes = [
     data: { preload: true },
    },
    {
-    path: 'menu',
+    path: 'config/menu',
     loadChildren: lazyPaths.menu,
+   },
+   {
+    path: 'hotel',
+    loadChildren: lazyPaths.hotel,
    },
   { path: '**', pathMatch: 'full', component: PageNotFoundComponent }
 ];

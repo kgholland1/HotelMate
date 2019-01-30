@@ -17,13 +17,13 @@ import { IKeyValuePair } from '../_models/KeyValuePair';
 @Injectable()
 export class MenuService {
     baseUrl = environment.apiUrl;
-    hotelId = this.authService.currentUser.hotelId;
 
     constructor(private http: HttpClient, private authService: AuthService) { }
 
     getExtras(page?, itemsPerPage?, extraParams?: any): Observable<PaginatedResult<IExtra[]>> {
         const paginatedResult: PaginatedResult<IExtra[]> = new PaginatedResult<IExtra[]>();
         let params = new HttpParams();
+        const hotelId = this.authService.currentUser.hotelId;
 
         if (page != null && itemsPerPage != null) {
         params = params.append('pageNumber', page);
@@ -35,7 +35,7 @@ export class MenuService {
         }
 
         return this.http
-        .get<IExtra[]>(this.baseUrl + 'extras/hotel/' + this.hotelId, { observe: 'response', params })
+        .get<IExtra[]>(this.baseUrl + 'extras/hotel/' + hotelId, { observe: 'response', params })
         .pipe(
             map(response => {
               paginatedResult.result = response.body;
@@ -51,7 +51,8 @@ export class MenuService {
           .get<IExtra>(this.baseUrl + 'extras/' + id);
       }
     createExtra(extra: IExtra): Observable<IExtra> {
-        return this.http.post<IExtra>(this.baseUrl + 'extras/hotel/' + this.hotelId, extra);
+        const hotelId = this.authService.currentUser.hotelId;
+        return this.http.post<IExtra>(this.baseUrl + 'extras/hotel/' + hotelId, extra);
     }
     updateExtra(extra: IExtra): Observable<void>  {
         return this.http.put<void>(this.baseUrl + 'extras/' + extra.id, extra);
@@ -62,6 +63,7 @@ export class MenuService {
     getCategories(page?, itemsPerPage?, categoryParams?: any): Observable<PaginatedResult<ICategory[]>>  {
         const paginatedResult: PaginatedResult<ICategory[]> = new PaginatedResult<ICategory[]>();
         let params = new HttpParams();
+        const hotelId = this.authService.currentUser.hotelId;
 
         if (page != null && itemsPerPage != null) {
         params = params.append('pageNumber', page);
@@ -73,7 +75,7 @@ export class MenuService {
         }
 
         return this.http
-        .get<ICategory[]>(this.baseUrl + 'category/hotel/' + this.hotelId, { observe: 'response', params })
+        .get<ICategory[]>(this.baseUrl + 'category/hotel/' + hotelId, { observe: 'response', params })
         .pipe(
             map(response => {
               paginatedResult.result = response.body;
@@ -93,7 +95,8 @@ export class MenuService {
           .get<ICategory>(this.baseUrl + 'category/' + id);
       }
     createCategory(category: ICategory): Observable<ICategory> {
-    return this.http.post<ICategory>(this.baseUrl + 'category/hotel/' + this.hotelId, category);
+        const hotelId = this.authService.currentUser.hotelId;
+        return this.http.post<ICategory>(this.baseUrl + 'category/hotel/' + hotelId, category);
     }
     updateCategory(category: ICategory): Observable<void>  {
         return this.http.put<void>(this.baseUrl + 'category/'  + category.id, category)
@@ -102,23 +105,24 @@ export class MenuService {
         return this.http.delete<void>(this.baseUrl + 'category/' + id, {});
     }
     getCatKeyValuePair(): Observable<any> {
-        const hotelClaim = this.authService.userClaims.find(c => c.claimType.toLowerCase() === 'hotelid');
+        const hotelId = this.authService.currentUser.hotelId;
         return this.http
-          .get<any>(this.baseUrl + 'category/' + (+hotelClaim.claimValue) + '/KeyValue');
+          .get<any>(this.baseUrl + 'category/' + hotelId + '/KeyValue');
     }
     getExtraKeyValuePair(): Observable<any> {
-        const hotelClaim = this.authService.userClaims.find(c => c.claimType.toLowerCase() === 'hotelid');
+        const hotelId = this.authService.currentUser.hotelId;
         return this.http
-          .get<any>(this.baseUrl + 'extras/' + (+hotelClaim.claimValue) + '/KeyValue');
+          .get<any>(this.baseUrl + 'extras/hotel/' + hotelId + '/KeyValue');
     }
 
-    getMenus(page?, itemsPerPage?, menuParams?: any): Observable<any>  {
+    getMenus(page?, itemsPerPage?, menuParams?: any): Observable<PaginatedResult<IListMenu[]>>  {
         const paginatedResult: PaginatedResult<IListMenu[]> = new PaginatedResult<IListMenu[]>();
         let params = new HttpParams();
+        const hotelId = this.authService.currentUser.hotelId;
 
         if (page != null && itemsPerPage != null) {
-        params = params.append('pageNumber', page);
-        params = params.append('pageSize', itemsPerPage);
+            params = params.append('pageNumber', page);
+            params = params.append('pageSize', itemsPerPage);
         }
 
         if (menuParams != null) {
@@ -127,33 +131,32 @@ export class MenuService {
         }
 
         return this.http
-        .get<IListMenu[]>(this.baseUrl + 'menu', { observe: 'response', params })
-        .map(response => {
-            paginatedResult.result = response.body;
-            if (response.headers.get('Pagination') != null) {
-            paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
-            }
-
-            return paginatedResult;
-        });
+        .get<IListMenu[]>(this.baseUrl + 'menu/hotel/' + hotelId, { observe: 'response', params })
+        .pipe(
+            map(response => {
+              paginatedResult.result = response.body;
+              if (response.headers.get('Pagination') != null) {
+                paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+              }
+              return paginatedResult;
+            })
+        );
     }
     getMenu(id): Observable<IMenu> {
         return this.http
           .get<IMenu>(this.baseUrl + 'menu/' + id);
       }
     getMenuPhotos(id): Observable<IPhoto[]> {
-        const hotelClaim = this.authService.userClaims.find(c => c.claimType.toLowerCase() === 'hotelid');
+        const hotelId = this.authService.currentUser.hotelId;
         return this.http
-          .get<IPhoto[]>(this.baseUrl + 'hotels/' + (+hotelClaim.claimValue) + '/photos/' + id + '/Dish');
+          .get<IPhoto[]>(this.baseUrl + 'hotels/' + hotelId + '/photos/' + id + '/Dish');
       }
     createMenu(menu: IMenuSave): Observable<IMenu> {
-        const hotelClaim = this.authService.userClaims.find(c => c.claimType.toLowerCase() === 'hotelid');
-        return this.http.post<IMenu>(this.baseUrl + 'menu/' + (+hotelClaim.claimValue),
-            menu, {headers: new HttpHeaders().set('Content-Type', 'application/json')});
+        const hotelId = this.authService.currentUser.hotelId;
+        return this.http.post<IMenu>(this.baseUrl + 'menu/' + + hotelId, menu);
     }
     updateMenu(menu: IMenuSave): Observable<void>  {
-        return this.http.put<void>(this.baseUrl + 'menu/'  + menu.id,
-        menu, {headers: new HttpHeaders().set('Content-Type', 'application/json')})
+        return this.http.put<void>(this.baseUrl + 'menu/'  + menu.id, menu)
       }
     deleteMenu(id: number): Observable<void> {
         return this.http.delete<void>(this.baseUrl + 'menu/' + id, {});

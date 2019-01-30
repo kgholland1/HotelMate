@@ -40,6 +40,9 @@ namespace EPOS.API.Controllers
         {
             var hotel = await _hotelrepo.GetHotelWithJustHotelPhotos(id);
 
+            if (hotel == null)
+                return NotFound($"Could not find hotel with an ID of {id}");
+
             var hotelToReturn = _mapper.Map<HotelForUpdatesDto>(hotel);
 
             return Ok(hotelToReturn);
@@ -71,7 +74,7 @@ namespace EPOS.API.Controllers
             
             var hotelFromRepo =  await _hotelrepo.HotelSignup(hotelEntity);
 
-            //regieter the Admin user
+            //register the Admin user
             var adminUser = new User
             {
                 UserName = hotelForCreateDto.useremail,

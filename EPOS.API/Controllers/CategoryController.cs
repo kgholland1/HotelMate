@@ -46,11 +46,11 @@ namespace EPOS.API.Controllers
         public async Task<IActionResult> GetCategory(int id)
         {
             var category = await _repo.GetCategory(id);
+            
+            if (category == null)
+                return NotFound($"Could not find category with an ID of {id}");
 
             var categoryToReturn = _mapper.Map<CategoryForUpdateDto>(category);
-            
-            if (categoryToReturn == null)
-                return NotFound($"Could not find category with an ID of {id}");
 
             return Ok(categoryToReturn);
         }

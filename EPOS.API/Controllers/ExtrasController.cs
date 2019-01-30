@@ -45,10 +45,11 @@ namespace EPOS.API.Controllers
         {
            // Thread.Sleep(3000);
             var extra = await _repo.GetExtra(id);
-            var extraToReturn = _mapper.Map<ExtraForUpdateDto>(extra);
 
-            if (extraToReturn == null)
+            if (extra == null)
                 return NotFound($"Could not find option with an ID of {id}");
+
+            var extraToReturn = _mapper.Map<ExtraForUpdateDto>(extra);
 
             return Ok(extraToReturn);
         }

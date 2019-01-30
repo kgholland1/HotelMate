@@ -6,7 +6,7 @@
               Categories
           </h3>
           <div class="pull-right">
-            <button type="button" class="btn btn-primary" [routerLink]="['/menu/categories', 0, 'edit']"><i class="fa fa-plus-square-o"></i>&nbsp;Add New</button>
+            <button type="button" class="btn btn-primary" [routerLink]="['/config/menu/categories', 0, 'edit']"><i class="fa fa-plus-square-o"></i>&nbsp;Add New</button>
           </div>
      </div>
     </div>
@@ -41,7 +41,7 @@
                     <td>{{ category.catName }}</td>
                     <td>{{ category.description | truncate : 50  }}</td>
                     <td style = "text-align:center; width:100px">
-                          <a class="btn btn-info btn-sm" [routerLink]="['/menu/categories', category.id, 'edit']">
+                          <a class="btn btn-info btn-sm" [routerLink]="['/config/menu/categories', category.id, 'edit']">
                             <i class="fa fa-edit "></i>Edit
                           </a>
                     </td>

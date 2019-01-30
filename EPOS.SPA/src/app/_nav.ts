@@ -90,6 +90,12 @@ export const navigation = [
     ]
   },
   {
+    name: 'Car Park',
+    url: '/be/guest',
+    icon: 'fa fa-car',
+    allow: 'Admin'
+  },
+  {
     name: 'Content Management',
     url: '/be/guest',
     icon: 'fa fa-gift',
@@ -131,69 +137,69 @@ export const navigation = [
   },
   {
     name: 'Configuration',
-    url: '/menu',
+    url: '/config',
     icon: 'fa fa-wrench',
     allow: 'Admin',
     children: [
       {
         name: 'Settings',
-        url: '/be/settings',
+        url: '/config/settings',
         icon: 'fa fa-dot-circle-o',
         allow: 'Admin',
         children: [
           {
             name: 'Restaurant settings',
-            url: '/be/restaurants',
+            url: '/config/restaurants',
             icon: 'fa fa-circle-thin',
             allow: 'Admin'
           },
           {
             name: 'Opening Hours settings',
-            url: '/be/openHours',
+            url: '/config/openHours',
             icon: 'fa fa-circle-thin',
             allow: 'Admin'
           },
           {
             name: 'House Keeping settings',
-            url: '/be/guest',
+            url: '/config/guest',
             icon: 'fa fa-circle-thin',
             allow: 'Admin'
           },
           {
             name: 'SPA Items settings',
-            url: '/be/guest',
+            url: '/config/guest',
             icon: 'fa fa-circle-thin',
+            allow: 'Admin'
+          },
+          {
+            name: 'Payment Methods',
+            url: '/config/payments',
+            icon: 'fa fa-dot-circle-o',
             allow: 'Admin'
           }
         ]
       },
       {
         name: 'Categories',
-        url: '/menu/categories',
+        url: '/config/menu/categories',
         icon: 'fa fa-dot-circle-o',
         allow: 'Admin'
       },
       {
         name: 'Options and Extras',
-        url: '/menu/extras',
+        url: '/config/menu/extras',
         icon: 'fa fa-dot-circle-o',
         allow: 'Admin'
       },
       {
         name: 'Menu',
-        url: '/be/menus',
-        icon: 'fa fa-dot-circle-o',
-        allow: 'Admin'
-      },
-      {
-        name: 'Payment Methods',
-        url: '/be/payments',
+        url: '/config/menu/menus',
         icon: 'fa fa-dot-circle-o',
         allow: 'Admin'
       },
       {
         name: 'Imports',
-        url: '/base/carousels',
+        url: '/config/menu/carousels',
         icon: 'fa fa-dot-circle-o',
         allow: 'Admin'
       }
@@ -201,25 +207,25 @@ export const navigation = [
   },
   {
     name: 'System',
-    url: '/user',
+    url: '/hotel',
     icon: 'fa fa-desktop',
     allow: 'Admin',
     children: [
       {
         name: 'Hotel Details',
-        url: '/menu/extras',
+        url: '/hotel/detail',
         icon: 'fa fa-dot-circle-o',
         allow: 'Admin'
       },
       {
         name: 'Rooms',
-        url: '/menu/categories',
+        url: '/hotel/rooms',
         icon: 'fa fa-dot-circle-o',
         allow: 'Admin'
       },
       {
         name: 'Tourist Guides',
-        url: '/menu/extras',
+        url: '/hotel/tourists',
         icon: 'fa fa-dot-circle-o',
         allow: 'Admin'
       },

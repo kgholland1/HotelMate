@@ -40,7 +40,8 @@ namespace EPOS.API.Data
         }
         public async Task<User> GetUser(int userID)
         {
-           var user = await _context.Users.FirstOrDefaultAsync(e => e.Id == userID);
+           //var user = await _context.Users.FirstOrDefaultAsync(e => e.Id == userID);
+           var user = await _context.Users.Include(h => h.hotel).FirstOrDefaultAsync(e => e.Id == userID);
 
             return user;        
 

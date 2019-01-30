@@ -9,13 +9,28 @@ import { ExtraEditComponent } from './extra-edit.component';
 import { CategoryListComponent } from './category-list.component';
 import { CategoryListResolver } from './category-list.resolver';
 import { CategoryEditComponent } from './category-edit.component';
+import { MenuListComponent } from './menu-list.component';
+import { MenuListResolver } from './menu-list.resolver';
+import { MenuEditComponent } from './menu-edit.component';
 
 @NgModule({
   imports: [
     SharedModule,
     MenuRoutingModule
   ],
-  declarations: [ExtraListComponent, ExtraEditComponent, CategoryListComponent, CategoryEditComponent],
-  providers: [MenuService, ExtraListResolver, CategoryListResolver ],
+  declarations: [
+    ExtraListComponent,
+    ExtraEditComponent,
+    CategoryListComponent,
+    CategoryEditComponent,
+    MenuListComponent,
+    MenuEditComponent
+  ],
+  providers: [
+    MenuService,
+    ExtraListResolver,
+    CategoryListResolver,
+    MenuListResolver
+  ],
 })
 export class MenuModule { }
