@@ -12,7 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace EPOS.API.Controllers
 {
     [Route("api/hotels/{hotelId}/openHours")]
-    public class OpenHoursController : Controller
+    [ApiController] 
+    public class OpenHoursController : ControllerBase
     {
         private readonly ISystemRepository _repo;
         private readonly IMapper _mapper;
@@ -41,19 +42,20 @@ namespace EPOS.API.Controllers
         {
             var openHour = await _repo.GetOpenHour(id);
 
+            if (openHour == null)
+                return NotFound($"Could not find Opentimes with an ID of {id}");
+
             var openHourToReturn = _mapper.Map<OpenHourForUpdateDto>(openHour);
 
             return Ok(openHourToReturn);
         } 
         [HttpPost]
-        public async Task<IActionResult> CreateOpenHours(int hotelId, [FromBody] OpenHourForUpdateDto openHourForUpdateDto)
+        public async Task<IActionResult> CreateOpenHours(int hotelId, OpenHourForUpdateDto openHourForUpdateDto)
         {
             if (openHourForUpdateDto == null)
             {
                 return BadRequest();
             }
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
                 
             var openHourEntity = _mapper.Map<OpenTime>(openHourForUpdateDto);
 
@@ -69,15 +71,12 @@ namespace EPOS.API.Controllers
             throw new Exception("Creating the open hours failed on save");
         }    
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] OpenHourForUpdateDto openHourForUpdateDto)
+        public async Task<IActionResult> Update(int id, OpenHourForUpdateDto openHourForUpdateDto)
         {
             if (openHourForUpdateDto == null)
             {
                 return BadRequest();
             }
-            
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
 
             var openHourFromRepo = await _repo.GetOpenHour(id);
 

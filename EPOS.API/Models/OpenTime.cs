@@ -10,6 +10,7 @@ namespace EPOS.API.Models
         public string Type { get; set; }
         [Required]
         public string TypeName { get; set; }  
+        public string Restaurant { get; set; }  
         public string Start { get; set; } 
         public string End { get; set; }   
         public string Interval { get; set; }            

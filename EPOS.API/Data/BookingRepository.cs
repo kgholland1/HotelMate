@@ -90,12 +90,13 @@ namespace EPOS.API.Data
         } 
         public async Task<PagedList<Reservation>> GetReservations(ReservationParam reservationParam, int HotelID)
         {
-            var reservations =  _context.Reservations.Where(h => h.HotelId == HotelID  && h.IsDeleted == false)
+            var reservations =  _context.Reservations.Where(h => h.HotelId == HotelID  
+                && h.IsDeleted == false )
                 .OrderBy(b => b.Id).AsQueryable();
 
             if (!reservationParam.All) {
                 if (reservationParam.IsNew) {
-                    reservations = reservations.Where(b => b.IsNew == true);                
+                    reservations = reservations.Where(b => b.IsNew == true &&  b.IsCompleted == false);                
                 }
                 if (!string.IsNullOrEmpty(reservationParam.RoomNumber)) {
                     reservations = reservations.Where(b => b.RoomNumber == reservationParam.RoomNumber);                
@@ -136,7 +137,7 @@ namespace EPOS.API.Data
                         reservations = reservations.OrderBy(b => b.RestaurantName);
                         break;                                               
                     default:
-                        reservations = reservations.OrderBy(b => (DateTime.Parse(b.ResDate).ToShortDateString() + " " + b.ResTime));
+                         reservations = reservations.OrderBy(b => (DateTime.Parse(b.ResDate + " " + b.ResTime)));
                         break;
                 }
             }

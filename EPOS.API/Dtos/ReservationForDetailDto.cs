@@ -16,6 +16,7 @@ namespace EPOS.API.Dtos
         public string ResTime { get; set; }
         public string TypeName { get; set; }  
         public string ResApproved { get; set; }
+        public bool IsCompleted { get; set; }
         public string Request { get; set; }        
         public string Feedback { get; set; }
         public DateTime CreatedOn { get; set; }

@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EPOS.API.Controllers
 {
     [Route("api/[controller]")]
+    [ApiController]     
     public class ReservationController : Controller
     {
         private readonly IBookingRepository _repo;
@@ -26,7 +27,7 @@ namespace EPOS.API.Controllers
             _mapper = mapper;
             _repo = repo;
         }  
-        [HttpGet("{hotelId}")]
+        [HttpGet("hotels/{hotelId}")]
         public async Task<IActionResult> GetReservations(int hotelId, [FromQuery]ReservationParam reservationParam)
         {
 
@@ -39,7 +40,7 @@ namespace EPOS.API.Controllers
             return Ok(reservationsToReturn);
         }   
 
-        [HttpGet("{hotelId}/{id}/{openType}")]
+        [HttpGet("hotels/{hotelId}/{id}/{openType}")]
         public async Task<IActionResult> GetReservationWithTimes(int hotelId, int id, string openType)
         {
             var reservation = await _repo.GetReservation(id);
@@ -72,22 +73,17 @@ namespace EPOS.API.Controllers
         }   
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateReservation(int id, [FromBody] ReservationForDetailDto reservationForSaveDto)
+        public async Task<IActionResult> UpdateReservation(int id, ReservationForDetailDto reservationForSaveDto)
         {
             if (reservationForSaveDto == null)
             {
                 return BadRequest();
             }
-            
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
 
             var reservationFromRepo = await _repo.GetReservation(id);
  
             if (reservationFromRepo == null)
                 return NotFound($"Could not find reservation with an ID of {id}");
-
-            reservationFromRepo.IsNew = false;
 
             _mapper.Map<ReservationForDetailDto, Reservation>(reservationForSaveDto, reservationFromRepo);
 

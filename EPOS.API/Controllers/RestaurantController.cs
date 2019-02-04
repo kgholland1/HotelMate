@@ -12,7 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace EPOS.API.Controllers
 {
     [Route("api/hotels/{hotelId}/restaurants")]
-    public class RestaurantController  : Controller
+    [ApiController]      
+    public class RestaurantController  : ControllerBase
     {
         private readonly ISystemRepository _repo;
         private readonly IMapper _mapper;
@@ -40,20 +41,21 @@ namespace EPOS.API.Controllers
         public async Task<IActionResult> GetRestaurant(int id)
         {
             var restaurant = await _repo.GetRestaurant(id);
+            
+            if (restaurant == null)
+                return NotFound($"Could not find restaurant with an ID of {id}");
 
             var restaurantToReturn = _mapper.Map<RestaurantForUpdateDto>(restaurant);
 
             return Ok(restaurantToReturn);
         }   
         [HttpPost]
-        public async Task<IActionResult> CreateRestaurant(int hotelId, [FromBody] RestaurantForUpdateDto restaurantForUpdateDto)
+        public async Task<IActionResult> CreateRestaurant(int hotelId, RestaurantForUpdateDto restaurantForUpdateDto)
         {
             if (restaurantForUpdateDto == null)
             {
                 return BadRequest();
             }
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
                 
             var restaurantEntity = _mapper.Map<Restaurant>(restaurantForUpdateDto);
 
@@ -69,15 +71,12 @@ namespace EPOS.API.Controllers
             throw new Exception("Creating the restaurant failed on save");
         }     
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] RestaurantForUpdateDto restaurantForUpdateDto)
+        public async Task<IActionResult> Update(int id, RestaurantForUpdateDto restaurantForUpdateDto)
         {
             if (restaurantForUpdateDto == null)
             {
                 return BadRequest();
             }
-            
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
 
             var restaurantFromRepo = await _repo.GetRestaurant(id);
 

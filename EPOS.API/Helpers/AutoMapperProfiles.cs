@@ -20,7 +20,11 @@ namespace EPOS.API.Helpers
                 .ReverseMap();       
 
             // Reservation section
-            CreateMap<Reservation, ReservationForListDto>();  
+            CreateMap<Reservation, ReservationForListDto>()
+                .ForMember(dest => dest.IsCompleted, opt => 
+                {
+                    opt.MapFrom(src => src.IsCompleted? "Yes": "No");
+                }); 
             CreateMap<Reservation, ReservationForDetailDto>()  
                  .ReverseMap(); 
 

@@ -358,6 +358,8 @@ namespace EPOS.API.Migrations
 
                     b.Property<string>("Interval");
 
+                    b.Property<string>("Restaurant");
+
                     b.Property<string>("Start");
 
                     b.Property<string>("Type")
@@ -450,6 +452,8 @@ namespace EPOS.API.Migrations
                         .HasMaxLength(100);
 
                     b.Property<int>("HotelId");
+
+                    b.Property<bool>("IsCompleted");
 
                     b.Property<bool>("IsDeleted");
 
@@ -902,7 +906,7 @@ namespace EPOS.API.Migrations
             modelBuilder.Entity("EPOS.API.Models.Extra", b =>
                 {
                     b.HasOne("EPOS.API.Models.Hotel", "hotel")
-                        .WithMany("Extras")
+                        .WithMany()
                         .HasForeignKey("HotelId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

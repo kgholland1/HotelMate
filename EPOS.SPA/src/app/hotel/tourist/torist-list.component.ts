@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 
-import { ActivatedRoute } from '@angular/router';
 import { AlertifyService } from './../../core/alertify.service';
 import { HotelService } from './../hotel.service';
 import { Pagination, PaginatedResult } from './../../_models/pagination';

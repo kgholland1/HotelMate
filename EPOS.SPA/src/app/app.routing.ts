@@ -8,6 +8,9 @@ const lazyPaths = {
   user: 'app/user/user.module#UserModule',
   menu: 'app/menu/menu.module#MenuModule',
   hotel: 'app/hotel/hotel.module#HotelModule',
+  system: 'app/system/system.module#SystemModule',
+  guest: 'app/guest/guest.module#GuestModule',
+  restaurant: 'app/restaurant/restaurant.module#RestaurantModule'
 };
 export const appRoutes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -15,15 +18,29 @@ export const appRoutes: Routes = [
     path: 'user',
     loadChildren: lazyPaths.user,
     data: { preload: true },
-   },
-   {
-    path: 'config/menu',
-    loadChildren: lazyPaths.menu,
-   },
-   {
-    path: 'hotel',
-    loadChildren: lazyPaths.hotel,
-   },
+  },
+  {
+  path: 'guests',
+  loadChildren: lazyPaths.guest,
+  data: { preload: true },
+  },
+  {
+  path: 'restaurant',
+  loadChildren: lazyPaths.restaurant,
+  data: { preload: true },
+  },
+  {
+  path: 'config/menu',
+  loadChildren: lazyPaths.menu,
+  },
+  {
+  path: 'hotel',
+  loadChildren: lazyPaths.hotel,
+  },
+  {
+  path: 'config/system',
+  loadChildren: lazyPaths.system,
+  },
   { path: '**', pathMatch: 'full', component: PageNotFoundComponent }
 ];
 

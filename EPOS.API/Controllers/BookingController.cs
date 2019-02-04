@@ -11,29 +11,24 @@ using Microsoft.AspNetCore.Mvc;
 namespace EPOS.API.Controllers
 {
     [Route("api/[controller]")]
-    public class BookingController  : Controller
+    [ApiController]  
+    public class BookingController  : ControllerBase
     {
         private readonly IBookingRepository _repo;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IHotelRepository _hotelrepo;
 
-        public BookingController(IBookingRepository repo, IHotelRepository hotelrepo, IMapper mapper, IUnitOfWork unitOfWork)
+
+        public BookingController(IBookingRepository repo,  IMapper mapper, IUnitOfWork unitOfWork)
         {
-            _hotelrepo = hotelrepo;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _repo = repo;
         }  
-        [HttpGet]
-        public async Task<IActionResult> GetBookings([FromQuery]BookingParam bookingParam)
+        [HttpGet("hotels/{hotelId}")]
+        public async Task<IActionResult> GetBookings(int hotelId, [FromQuery]BookingParam bookingParam)
         {
-
-            var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-            var userFromRepo = await _hotelrepo.GetUser(currentUserId);
-
-            var bookings = await _repo.GetBookings(bookingParam, userFromRepo.HotelId);
+            var bookings = await _repo.GetBookings(bookingParam, hotelId);
 
             var bookingsToReturn = _mapper.Map<IEnumerable<BookingForListDto>>(bookings);
 

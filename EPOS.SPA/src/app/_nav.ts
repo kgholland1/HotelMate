@@ -7,13 +7,13 @@ export const navigation = [
   },
   {
     name: 'Guest',
-    url: '/be/guests',
+    url: '/guests',
     icon: 'fa fa-user-plus',
     allow: 'Admin,Manager,Supervisor,Staff',
     children: [
       {
         name: 'Current Guests',
-        url: '/be/guests',
+        url: '/guests/current',
         icon: 'fa fa-dot-circle-o',
         allow: 'Admin,Manager,Supervisor,Staff'
       },
@@ -27,13 +27,13 @@ export const navigation = [
   },
   {
     name: 'Restaurant',
-    url: '/be/guests',
+    url: '/restaurant',
     icon: 'fa fa-table',
     allow: 'Admin,Manager,Supervisor,Staff',
     children: [
       {
         name: 'Table Reservations',
-        url: '/be/reservations',
+        url: '/restaurant/reservations',
         icon: 'fa fa-dot-circle-o',
         allow: 'Admin'
       },
@@ -50,6 +50,12 @@ export const navigation = [
         allow: 'Admin'
       }
     ]
+  },
+  {
+    name: 'Shopping',
+    url: '/be/guest',
+    icon: 'fa fa-shopping-cart',
+    allow: 'Admin'
   },
   {
     name: 'House Keeping',
@@ -90,30 +96,10 @@ export const navigation = [
     ]
   },
   {
-    name: 'Car Park',
+    name: 'Parking',
     url: '/be/guest',
     icon: 'fa fa-car',
     allow: 'Admin'
-  },
-  {
-    name: 'Content Management',
-    url: '/be/guest',
-    icon: 'fa fa-gift',
-    allow: 'Admin',
-    children: [
-      {
-        name: 'Manage Templates',
-        url: '/base/cards',
-        icon: 'fa fa-dot-circle-o',
-        allow: 'Admin'
-      },
-      {
-        name: 'Manage SMS',
-        url: '/base/carousels',
-        icon: 'fa fa-dot-circle-o',
-        allow: 'Admin'
-      }
-    ]
   },
   {
     name: 'Notifications',
@@ -130,12 +116,6 @@ export const navigation = [
     ]
   },
   {
-    name: 'Shopping',
-    url: '/be/guest',
-    icon: 'fa fa-shopping-cart',
-    allow: 'Admin'
-  },
-  {
     name: 'Configuration',
     url: '/config',
     icon: 'fa fa-wrench',
@@ -143,19 +123,19 @@ export const navigation = [
     children: [
       {
         name: 'Settings',
-        url: '/config/settings',
+        url: '/config/system',
         icon: 'fa fa-dot-circle-o',
         allow: 'Admin',
         children: [
           {
             name: 'Restaurant settings',
-            url: '/config/restaurants',
+            url: '/config/system/restaurants',
             icon: 'fa fa-circle-thin',
             allow: 'Admin'
           },
           {
             name: 'Opening Hours settings',
-            url: '/config/openHours',
+            url: '/config/system/opentimes',
             icon: 'fa fa-circle-thin',
             allow: 'Admin'
           },
@@ -173,10 +153,16 @@ export const navigation = [
           },
           {
             name: 'Payment Methods',
-            url: '/config/payments',
+            url: '/config/system/payments',
+            icon: 'fa fa-circle-thin',
+            allow: 'Admin'
+          },
+          {
+            name: 'Manage Templates',
+            url: '/config/sysem/cards',
             icon: 'fa fa-dot-circle-o',
             allow: 'Admin'
-          }
+          },
         ]
       },
       {
@@ -235,6 +221,12 @@ export const navigation = [
         icon: 'fa fa-dot-circle-o',
         allow: 'Admin'
       },
+      {
+        name: 'Manage SMS',
+        url: '/base/carousels',
+        icon: 'fa fa-dot-circle-o',
+        allow: 'Admin'
+      }
     ]
   },
   {

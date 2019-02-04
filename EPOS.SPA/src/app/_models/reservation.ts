@@ -9,6 +9,7 @@ export interface IReservationList {
     roomNumber: string;
     resTime: string;
     resApproved?: string;
+    isCompleted: string;
     createdOn: Date;
 }
 
@@ -24,6 +25,7 @@ export interface IReservation {
     resTime: string;
     typeName: string;
     resApproved?: string;
+    isCompleted: boolean;
     request?: string;
     feedback?: string;
     createdOn: Date;

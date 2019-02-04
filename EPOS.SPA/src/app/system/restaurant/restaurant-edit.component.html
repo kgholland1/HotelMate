@@ -1,0 +1,54 @@
+<div class="animated fadeIn">
+    <app-loading-spinner [loading]="spinnerprocessing"></app-loading-spinner>
+    <div class="row">
+      <div class="col-lg-12 mb-3">
+          <h3 class="pull-left">
+              Restaurant
+          </h3>
+          <div class="ml-2 mt-2 pull-left">
+              <i class="fa fa-arrow-circle-left"></i>
+              <a [routerLink]="['/config/system/restaurants']">back to Restaurant List</a>
+          </div>
+          <div class="pull-right">
+              <button  class="btn btn-primary mr-1"   (click)="saveRestaurant()" [disabled]="!mainForm.valid">
+                <i class="fa fa-floppy-o" ></i>&nbsp;Save</button>
+              <button type="button" class="btn btn-danger"  (click)="deleteRestaurant()" [hidden]="restaurant.id == 0">
+                <i class="fa fa-trash-o"></i>&nbsp;Delete</button>
+          </div>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-header">
+              <i class="fa fa-align-justify"></i>  {{ pageTitle }}
+            </div>
+            <div class="card-body">
+                <div class="col-lg-8">
+                  <form class="form-horizontal" novalidate (ngSubmit)="saveRestaurant()" [formGroup]="mainForm" id="mainForm">
+                    <fieldset>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <div class="label-wrapper"><label class="control-label" for="restaurantName">
+                                  <span class="text-danger"><strong>*</strong></span>&nbsp;Restaurant Name</label>
+                                  <div class="ico-help">
+                                  <i class="fa fa-question-circle"></i>
+                                  <span class="tooltiptext">The name of the restaurant.</span>
+                                </div>
+                              </div>
+                            </div>                                                     
+                            <div class="col-md-9">
+                              <input type="text" id="restaurantName"  formControlName="restaurantName" class="form-control" 
+                                [ngClass]="{'is-invalid': displayMessage['restaurantName'] }">
+                                <span class="fa fa-eraser invalid-feedback" aria-hidden="true"></span>
+                                <div class="text-danger" *ngIf="displayMessage['restaurantName']">
+                                  <small>{{displayMessage['restaurantName']}}</small>
+                              </div>
+                            </div>
+                        </div>                            
+                    </fieldset>
+                  </form>
+                </div>
+          </div>
+        </div>      
+  </div>

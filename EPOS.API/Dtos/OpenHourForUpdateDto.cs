@@ -9,6 +9,7 @@ namespace EPOS.API.Dtos
         public string Type { get; set; }
         [Required]
         public string TypeName { get; set; }  
+        public string Restaurant { get; set; }  
         [Required]
         public string Start { get; set; } 
         [Required]       

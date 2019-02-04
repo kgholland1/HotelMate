@@ -19,7 +19,7 @@ export class TouristEditResolver implements Resolve<TouristPhoto> {
         return this.hotelService.getTourist(route.params['id']).pipe(
             catchError(error => {
                 this.alertify.error('Problem retrieving data', 5);
-                this.router.navigate(['/dashboard']);
+                this.router.navigate(['/hotel/tourists']);
                 return of(null);
             })
         );

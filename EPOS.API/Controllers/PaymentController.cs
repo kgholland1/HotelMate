@@ -12,7 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace EPOS.API.Controllers
 {
     [Route("api/hotels/{hotelId}/payments")]
-    public class PaymentController : Controller
+    [ApiController]  
+    public class PaymentController : ControllerBase
     {
         private readonly ISystemRepository _repo;
         private readonly IMapper _mapper;
@@ -41,6 +42,9 @@ namespace EPOS.API.Controllers
         public async Task<IActionResult> GetPayment(int id)
         {
             var payment = await _repo.GetPayment(id);
+            
+            if (payment == null)
+                return NotFound($"Could not find payment with an ID of {id}");
 
             var paymentToReturn = _mapper.Map<PaymentForUpdateDto>(payment);
 
@@ -48,14 +52,12 @@ namespace EPOS.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreatePayment(int hotelId, [FromBody] PaymentForUpdateDto paymentForUpdateDto)
+        public async Task<IActionResult> CreatePayment(int hotelId, PaymentForUpdateDto paymentForUpdateDto)
         {
             if (paymentForUpdateDto == null)
             {
                 return BadRequest();
             }
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
                 
             var paymentEntity = _mapper.Map<Payment>(paymentForUpdateDto);
 
@@ -71,15 +73,12 @@ namespace EPOS.API.Controllers
             throw new Exception("Creating the payment failed on save");
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePayment(int id, [FromBody] PaymentForUpdateDto paymentForUpdateDto)
+        public async Task<IActionResult> UpdatePayment(int id, PaymentForUpdateDto paymentForUpdateDto)
         {
             if (paymentForUpdateDto == null)
             {
                 return BadRequest();
             }
-            
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
 
             var paymentFromRepo = await _repo.GetPayment(id);
 

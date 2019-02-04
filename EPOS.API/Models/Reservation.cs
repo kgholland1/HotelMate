@@ -24,6 +24,7 @@ namespace EPOS.API.Models
         public string TypeName { get; set; }  
         public bool IsNew { get; set; }
         public bool IsDeleted { get; set; }
+        public bool IsCompleted { get; set; }
         [StringLength(10)]
         public string ResApproved { get; set; }
         public string Request { get; set; }        
