@@ -56,6 +56,7 @@ export class UserListComponent implements OnInit {
       {name: 'Manager', value: 'Manager'},
       {name: 'Supervisor', value: 'Supervisor'},
       {name: 'Staff', value: 'Staff'},
+      {name: 'Guest', value: 'Guest'},
     ];
 
     for (let i = 0; i < availableRoles.length; i++) {

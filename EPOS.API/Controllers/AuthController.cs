@@ -101,6 +101,33 @@ namespace EPOS.API.Controllers
 
             return Unauthorized();
         }
+
+        [HttpPost("guestregister")]
+        public async Task<IActionResult> GuestRegister(GuestForRegisterDto guestForRegisterDto)
+        {
+
+            var userToCreate = _mapper.Map<User>(guestForRegisterDto);
+
+            userToCreate.UserName = guestForRegisterDto.Email;
+            userToCreate.HotelId = 1;
+            userToCreate.Created = DateTime.UtcNow;
+            userToCreate.LastActive = DateTime.UtcNow;            
+
+            var result = await _userManager.CreateAsync(userToCreate, guestForRegisterDto.Password);
+
+            if (result.Succeeded)
+            {
+                var roleResult = await _userManager.AddToRoleAsync(userToCreate, "Guest");
+
+                var userToReturn = _mapper.Map<UserForListDto>(userToCreate);
+
+                return CreatedAtRoute("GetUser", 
+                    new { controller = "User", id = userToCreate.Id }, userToReturn);
+            }
+
+            return BadRequest(result.Errors);
+
+        }
        private async Task<string> GenerateJwtToken(User user)
         {
             var claims = new List<Claim>

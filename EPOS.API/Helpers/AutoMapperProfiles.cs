@@ -10,7 +10,7 @@ namespace EPOS.API.Helpers
         public AutoMapperProfiles()
         {
             // Guest section     
-            CreateMap<GuestForRegisterDto, Guest>();        
+            CreateMap<GuestForRegisterDto, User>();        
             CreateMap<Booking, BookingForListDto>();   
             CreateMap<Booking, BookingForViewDto>();  
 
@@ -27,9 +27,11 @@ namespace EPOS.API.Helpers
                 }); 
             CreateMap<Reservation, ReservationForDetailDto>()  
                  .ReverseMap(); 
+            CreateMap<ReservationForCreateDto, Reservation>();  
 
             // Taxi section
             CreateMap<Taxi, TaxiForListDto>();  
+            CreateMap<TaxiForCreateDto, Taxi>();  
             CreateMap<Taxi, TaxiForUpdateDto>()  
                  .ReverseMap(); 
 
@@ -50,7 +52,9 @@ namespace EPOS.API.Helpers
 
             CreateMap<HotelForCreateDto, Hotel>();     
             CreateMap<Hotel, HotelForUpdatesDto>()
-                .ReverseMap();    
+                .ReverseMap(); 
+
+            CreateMap<Notification, NotificationDto>();                     
 
             //Photo section
             CreateMap<PhotoForCreationDto, Photo>();
@@ -110,23 +114,20 @@ namespace EPOS.API.Helpers
                 {
                     opt.MapFrom(src => src.Category.CatName);
                 }); 
-            CreateMap<Menu, MenuForUpdateDto>()
-              .ForMember(mu => mu.MenuExtras, opt => opt.MapFrom(m => m.MenuExtras.Select(vf => new KeyValuePairDto { Id = vf.Extra.Id, Name = vf.Extra.ExtraName })));
             
-            CreateMap<MenuForSaveDto, Menu>()
-              .ForMember(v => v.Id, opt => opt.Ignore())
-              .ForMember(v => v.MenuExtras, opt => opt.Ignore())
-              .AfterMap((vr, v) => {
-                // Remove unselected extras
-                var removedExtras = v.MenuExtras.Where(f => !vr.MenuExtras.Contains(f.ExtraId)).ToList();
-                foreach (var f in removedExtras)
-                  v.MenuExtras.Remove(f);
+            CreateMap<Menu, MenuForUpdateDto>();
+            CreateMap<MenuExtra, MenuExtraDto>()
+                .ReverseMap(); 
 
-                // Add new extras
-                var addedExtras = vr.MenuExtras.Where(id => !v.MenuExtras.Any(f => f.ExtraId == id)).Select(id => new MenuExtra { ExtraId = id }).ToList();   
-                foreach (var f in addedExtras)
-                    v.MenuExtras.Add(f);
-            });                                                                
+            CreateMap<MenuForSaveDto, Menu>();
+
+            // MenuOrder section
+            CreateMap<MenuOrder, MenuOrderListDto>();  
+            CreateMap<MenuOrderCreateDto, MenuOrder>();  
+            CreateMap<MenuOrderDetail, MenuOrderDetailsDto>()
+                .ReverseMap(); 
+            CreateMap<MenuOrder, MenuOrderUpdateDto>()  
+               .ReverseMap();                                                               
         }
     }
 }

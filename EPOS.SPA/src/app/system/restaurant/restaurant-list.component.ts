@@ -35,6 +35,10 @@ export class RestaurantListComponent implements OnInit {
     this.pagination.currentPage = event.page;
     this.loadrestaurants();
   }
+  loadSorting() {
+    this.pagination.currentPage = 1;
+    this.loadrestaurants();
+  }
   loadrestaurants() {
     this.spinnerState(true);
     this.restaurantService.getRestaurants(this.pagination.currentPage, this.pagination.itemsPerPage)

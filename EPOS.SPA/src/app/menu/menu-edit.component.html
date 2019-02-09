@@ -199,16 +199,49 @@
                 <tab heading="Options">
                     <div class="card">
                         <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Edit options and extras
+                            <i class="fa fa-align-justify"></i> Edit Options
                         </div>
                         <div class="card-body p-4">  
-                            <div *ngFor="let e of extras" class="checkbox d-inline">
+                            <div *ngFor="let e of options" class="checkbox d-inline">
                                 <label for="extra{{ e.id }}" class="col-md-3">
-                                  <input type="checkbox" id="extra{{ e.id }}" (change)="onExtraToggle(e.id, $event)" [checked]="menu.menuExtras.includes(e.id)"> {{ e.name }}
-                                </label>
+                                  <input type="checkbox" id="extra{{ e.id }}" (change)="onExtraToggle(e.id, $event)" 
+                                    [checked]="menu.menuExtrasKey.includes(e.id)"> {{ e.extraName }}  -  {{ e.unitPrice | currency: currencyUsed:'symbol':'1.2-2'}} 
+                                </label>                        
                             </div>                        
                           </div>
                     </div>
+                    <div class="card">
+                      <div class="card-header">
+                          <i class="fa fa-align-justify"></i> Edit Extras
+                      </div>
+                      <div class="card-body p-4">  
+                          <div *ngFor="let e of filtedExtras" class="checkbox d-inline">
+                              <label for="extra{{ e.id }}" class="col-md-3">
+                                <input type="checkbox" id="extra{{ e.id }}" (change)="onExtraToggle(e.id, $event)" 
+                                  [checked]="menu.menuExtrasKey.includes(e.id)"> {{ e.extraName }}  -  {{ e.unitPrice | currency: currencyUsed:'symbol':'1.2-2'}} 
+                              </label>                          
+                          </div>                        
+                        </div>
+                  </div>
+                  <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-align-justify"></i> Edit Sizes
+                    </div>
+                      <div class="card-body p-4">  
+                          <form>
+                              <div  *ngFor="let e of sizes" class="form-group row">
+                                <label for="extra{{ e.id }}" class="col-sm-2">
+                                  <input type="checkbox" id="extra{{ e.id }}" (change)="onExtraToggle(e.id, $event)" 
+                                    [checked]="menu.menuExtrasKey.includes(e.id)"> {{ e.extraName }} 
+                                </label> 
+                                <div class="col-sm-2">
+                                    <input type="text" id="price{{ e.id }}"  [value] = "onPriceChange(e.id)" class="form-control" 
+                                      (change)="onExtraChange(e.id, $event)" [disabled]="isDisabled">       
+                                </div>
+                              </div>
+                            </form>
+                      </div>
+                  </div>
                 </tab>                
                 <tab heading="Photos" *ngIf="menu?.id">
                     <div class="card">
@@ -222,9 +255,5 @@
                 </tab>
               </tabset>
             </div>
-<!--   <br>Dirty: {{ mainForm.dirty }} 
-  <br>Touched: {{ mainForm.touched }}
-  <br>Valid: {{ mainForm.valid }}
-  <br>Value: {{ mainForm.value | json }} -->
   </div>
 </div>

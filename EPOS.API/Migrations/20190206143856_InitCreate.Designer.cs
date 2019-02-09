@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EPOS.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20190201145321_FixOpentimes")]
-    partial class FixOpentimes
+    [Migration("20190206143856_InitCreate")]
+    partial class InitCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -129,33 +129,6 @@ namespace EPOS.API.Migrations
                     b.HasIndex("HotelId");
 
                     b.ToTable("Extras");
-                });
-
-            modelBuilder.Entity("EPOS.API.Models.Guest", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Created");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(150);
-
-                    b.Property<string>("Fullname")
-                        .HasMaxLength(150);
-
-                    b.Property<DateTime>("LastActive");
-
-                    b.Property<byte[]>("PasswordHash");
-
-                    b.Property<byte[]>("PasswordSalt");
-
-                    b.Property<string>("Phone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Guests");
                 });
 
             modelBuilder.Entity("EPOS.API.Models.Hotel", b =>
@@ -348,6 +321,33 @@ namespace EPOS.API.Migrations
                     b.ToTable("Notes");
                 });
 
+            modelBuilder.Entity("EPOS.API.Models.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("HotelId");
+
+                    b.Property<int>("HouseKeepingCount");
+
+                    b.Property<int>("LuggageCount");
+
+                    b.Property<int>("OrderCount");
+
+                    b.Property<int>("ReservationCount");
+
+                    b.Property<int>("SPACount");
+
+                    b.Property<int>("TaxiCount");
+
+                    b.Property<int>("WakeupCount");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("EPOS.API.Models.OpenTime", b =>
                 {
                     b.Property<int>("Id")
@@ -454,6 +454,8 @@ namespace EPOS.API.Migrations
                         .HasMaxLength(100);
 
                     b.Property<int>("HotelId");
+
+                    b.Property<bool>("IsCompleted");
 
                     b.Property<bool>("IsDeleted");
 

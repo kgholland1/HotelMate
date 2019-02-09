@@ -45,23 +45,21 @@ namespace EPOS.API.Controllers
         public async Task<IActionResult> GetMenu(int id)
         {
             var menu = await _repo.GetMenu(id);
+            
+            if (menu == null)
+                return NotFound($"Could not find menu with an ID of {id}");
 
             var menuToReturn = _mapper.Map<MenuForUpdateDto>(menu);
-
-            if (menuToReturn == null)
-                return NotFound($"Could not find menu with an ID of {id}");
 
             return Ok(menuToReturn);
         }     
         [HttpPost("{hotelId}")]
-        public async Task<IActionResult> CreateMenu(int hotelId, [FromBody] MenuForSaveDto menuForSaveDto)
+        public async Task<IActionResult> CreateMenu(int hotelId, MenuForSaveDto menuForSaveDto)
         {
             if (menuForSaveDto == null)
             {
                 return BadRequest();
             }
-            // if (!ModelState.IsValid)
-            //     return BadRequest(ModelState);
                 
             var menuEntity = _mapper.Map<Menu>(menuForSaveDto);
 
@@ -78,21 +76,20 @@ namespace EPOS.API.Controllers
             throw new Exception("Creating the menu failed on save");
         } 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateMenu(int id, [FromBody] MenuForSaveDto menuForSaveDto)
+        public async Task<IActionResult> UpdateMenu(int id, MenuForSaveDto menuForSaveDto)
         {
             if (menuForSaveDto == null)
             {
                 return BadRequest();
             }
-            
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
 
             var menuFromRepo = await _repo.GetMenu(id);
  
             if (menuFromRepo == null)
                 return NotFound($"Could not find menu with an ID of {id}");
 
+            menuFromRepo.MenuExtras = null;
+        
             _mapper.Map<MenuForSaveDto, Menu>(menuForSaveDto, menuFromRepo);
 
             if (await  _unitOfWork.CompleteAsync())

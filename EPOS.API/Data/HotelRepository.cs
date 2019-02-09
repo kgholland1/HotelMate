@@ -5,6 +5,7 @@ using EPOS.API.Helpers;
 using EPOS.API.Models;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace EPOS.API.Data
 {
     public class HotelRepository : IHotelRepository
@@ -38,12 +39,14 @@ namespace EPOS.API.Data
             
             return false;
         }
-        public async Task<User> GetUser(int userID)
+        public async Task<User> GetUser(int userID, bool includeHotel = true)
         {
-           //var user = await _context.Users.FirstOrDefaultAsync(e => e.Id == userID);
-           var user = await _context.Users.Include(h => h.hotel).FirstOrDefaultAsync(e => e.Id == userID);
 
-            return user;        
+            if (includeHotel) {
+                return await _context.Users.Include(h => h.hotel).FirstOrDefaultAsync(e => e.Id == userID);                
+            } else {
+                return await _context.Users.FirstOrDefaultAsync(e => e.Id == userID);
+            }     
 
         }
 
@@ -123,6 +126,21 @@ namespace EPOS.API.Data
             await _context.SaveChangesAsync();
 
             return newHotel;
+        }
+
+        public async Task<bool> CreateNotificationCounters(int hotelId)
+        {
+            var item = new Notification(hotelId);
+            _context.Add(item);
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<Notification> GetNotificationCounters(int hotelId)
+        {
+            return await _context.Notifications.FirstOrDefaultAsync(e => e.HotelId == hotelId);       
         }
     }
 }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EPOS.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20181214232527_IdentityInitail")]
-    partial class IdentityInitail
+    [Migration("20190208203825_Orders")]
+    partial class Orders
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -129,33 +129,6 @@ namespace EPOS.API.Migrations
                     b.HasIndex("HotelId");
 
                     b.ToTable("Extras");
-                });
-
-            modelBuilder.Entity("EPOS.API.Models.Guest", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Created");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(150);
-
-                    b.Property<string>("Fullname")
-                        .HasMaxLength(150);
-
-                    b.Property<DateTime>("LastActive");
-
-                    b.Property<byte[]>("PasswordHash");
-
-                    b.Property<byte[]>("PasswordSalt");
-
-                    b.Property<string>("Phone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Guests");
                 });
 
             modelBuilder.Entity("EPOS.API.Models.Hotel", b =>
@@ -319,11 +292,121 @@ namespace EPOS.API.Migrations
 
                     b.Property<int>("ExtraId");
 
+                    b.Property<string>("ExtraName");
+
+                    b.Property<string>("ExtraType");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(10, 2)");
+
                     b.HasKey("MenuId", "ExtraId");
 
                     b.HasIndex("ExtraId");
 
                     b.ToTable("MenuExtra");
+                });
+
+            modelBuilder.Entity("EPOS.API.Models.MenuOrder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BookingId");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired();
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("decimal(10, 2)");
+
+                    b.Property<string>("Email");
+
+                    b.Property<string>("GuestName");
+
+                    b.Property<int>("HotelId");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("OrderDate")
+                        .IsRequired()
+                        .HasMaxLength(20);
+
+                    b.Property<string>("OrderStatus")
+                        .IsRequired()
+                        .HasMaxLength(30);
+
+                    b.Property<string>("OrderTime")
+                        .IsRequired()
+                        .HasMaxLength(30);
+
+                    b.Property<bool>("Paid");
+
+                    b.Property<string>("PaymentGatewayID");
+
+                    b.Property<string>("PaymentMethod");
+
+                    b.Property<decimal>("PaymentSurcharge")
+                        .HasColumnType("decimal(10, 2)");
+
+                    b.Property<string>("Phone");
+
+                    b.Property<string>("PromotionCode");
+
+                    b.Property<string>("Request");
+
+                    b.Property<string>("Response");
+
+                    b.Property<string>("RoomNumber");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(10, 2)");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.Property<DateTime>("UpdatedOn");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookingId");
+
+                    b.ToTable("MenuOrders");
+                });
+
+            modelBuilder.Entity("EPOS.API.Models.MenuOrderDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("DishRequest");
+
+                    b.Property<string>("ExtraKeys");
+
+                    b.Property<string>("Extras");
+
+                    b.Property<int>("MenuCount");
+
+                    b.Property<int>("MenuID");
+
+                    b.Property<string>("MenuName");
+
+                    b.Property<int>("MenuOrderId");
+
+                    b.Property<string>("OptionKeys");
+
+                    b.Property<string>("Options");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(10, 2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MenuOrderId");
+
+                    b.ToTable("MenuOrderDetails");
                 });
 
             modelBuilder.Entity("EPOS.API.Models.Note", b =>
@@ -348,6 +431,33 @@ namespace EPOS.API.Migrations
                     b.ToTable("Notes");
                 });
 
+            modelBuilder.Entity("EPOS.API.Models.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("HotelId");
+
+                    b.Property<int>("HouseKeepingCount");
+
+                    b.Property<int>("LuggageCount");
+
+                    b.Property<int>("OrderCount");
+
+                    b.Property<int>("ReservationCount");
+
+                    b.Property<int>("SPACount");
+
+                    b.Property<int>("TaxiCount");
+
+                    b.Property<int>("WakeupCount");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("EPOS.API.Models.OpenTime", b =>
                 {
                     b.Property<int>("Id")
@@ -359,6 +469,8 @@ namespace EPOS.API.Migrations
                     b.Property<int>("HotelId");
 
                     b.Property<string>("Interval");
+
+                    b.Property<string>("Restaurant");
 
                     b.Property<string>("Start");
 
@@ -452,6 +564,8 @@ namespace EPOS.API.Migrations
                         .HasMaxLength(100);
 
                     b.Property<int>("HotelId");
+
+                    b.Property<bool>("IsCompleted");
 
                     b.Property<bool>("IsDeleted");
 
@@ -904,7 +1018,7 @@ namespace EPOS.API.Migrations
             modelBuilder.Entity("EPOS.API.Models.Extra", b =>
                 {
                     b.HasOne("EPOS.API.Models.Hotel", "hotel")
-                        .WithMany("Extras")
+                        .WithMany()
                         .HasForeignKey("HotelId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -940,6 +1054,22 @@ namespace EPOS.API.Migrations
                     b.HasOne("EPOS.API.Models.Menu", "Menu")
                         .WithMany("MenuExtras")
                         .HasForeignKey("MenuId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("EPOS.API.Models.MenuOrder", b =>
+                {
+                    b.HasOne("EPOS.API.Models.Booking", "booking")
+                        .WithMany()
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("EPOS.API.Models.MenuOrderDetail", b =>
+                {
+                    b.HasOne("EPOS.API.Models.MenuOrder", "MenuOrder")
+                        .WithMany("MenuOrderDetails")
+                        .HasForeignKey("MenuOrderId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

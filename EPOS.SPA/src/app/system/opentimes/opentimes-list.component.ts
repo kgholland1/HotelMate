@@ -31,6 +31,10 @@ export class OpentimesListComponent implements OnInit {
 
       this.displayPageAction();
   }
+  loadSorting() {
+    this.pagination.currentPage = 1;
+    this.loadopenHours();
+  }
   pageChanged(event: any): void {
     this.pagination.currentPage = event.page;
     this.loadopenHours();

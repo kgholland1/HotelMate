@@ -114,7 +114,11 @@ export class MenuService {
         return this.http
           .get<any>(this.baseUrl + 'extras/hotel/' + hotelId + '/KeyValue');
     }
-
+    getExtraForMenuSelection(): Observable<any> {
+        const hotelId = this.authService.currentUser.hotelId;
+        return this.http
+          .get<any>(this.baseUrl + 'extras/hotel/' + hotelId + '/Typelist');
+    }
     getMenus(page?, itemsPerPage?, menuParams?: any): Observable<PaginatedResult<IListMenu[]>>  {
         const paginatedResult: PaginatedResult<IListMenu[]> = new PaginatedResult<IListMenu[]>();
         let params = new HttpParams();

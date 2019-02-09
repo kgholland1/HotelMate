@@ -3,7 +3,6 @@ import { Resolve, Router, ActivatedRouteSnapshot } from '@angular/router';
 
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import * as m from 'moment';
 
 import { AlertifyService } from './../../core/alertify.service';
 import { RestaurantService } from './../../core/service/restaurant.service';

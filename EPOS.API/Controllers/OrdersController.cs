@@ -3,11 +3,13 @@ using AutoMapper;
 using EPOS.API.Data;
 using EPOS.API.Dtos;
 using EPOS.API.Hubs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
 namespace EPOS.API.Controllers
 {
+    [AllowAnonymous]
     [Route("api/[controller]")]
     public class OrdersController : Controller
     {
@@ -34,9 +36,25 @@ namespace EPOS.API.Controllers
 
             var extraToReturn = _mapper.Map<ExtraForUpdateDto>(extra);
 
-            await _notifyHub.Clients.All.SendAsync("NewOrder", extraToReturn);
+            /// signalR section to copy out
+            NotificationMessage notificationToReturn = null;
 
-            return Ok(extraToReturn);
+            var notificationFromRepo = await _hotelrepo.GetNotificationCounters(1);
+
+            if (notificationFromRepo != null)
+            {
+                notificationFromRepo.OrderCount +=1;
+                await  _unitOfWork.CompleteAsync();  
+
+                var notificationDto= _mapper.Map<NotificationDto>(notificationFromRepo);               
+
+                notificationToReturn = NotificationMessage.CreateNotification(1, "Order",
+                    "411", notificationDto);
+
+                await _notifyHub.Clients.All.SendAsync("NewRequest", notificationToReturn);
+            }            
+
+            return Ok(notificationToReturn);
         }    
     }
 }

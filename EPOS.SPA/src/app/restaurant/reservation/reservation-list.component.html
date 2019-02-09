@@ -116,11 +116,11 @@
                     <label style="margin-right: 10px">Order By: </label>
                       <div class="btn-group mt-1" btnRadioGroup [(ngModel)]="reservationParams.orderBy" >
                         <label class="btn btn-success btn-sm" btnRadio="Created"
-                              uncheckable tabindex="0" role="button" (click)="loadReservations()">Created</label>
+                              uncheckable tabindex="0" role="button" (click)="loadSorting()">Created</label>
                         <label class="btn btn-success btn-sm" btnRadio="ReservedFor"
-                              uncheckable tabindex="0" role="button" (click)="loadReservations()">Reserved For</label>
+                              uncheckable tabindex="0" role="button" (click)="loadSorting()">Reserved For</label>
                         <label class="btn btn-success btn-sm" btnRadio="Restaurant"
-                              uncheckable tabindex="0" role="button" (click)="loadReservations()">Restaurant</label>                              
+                              uncheckable tabindex="0" role="button" (click)="loadSorting()">Restaurant</label>                              
                       </div>                    
               </div>            
             </div>
@@ -171,8 +171,8 @@
                           <span class="input-group-text">Limit</span>
                         </div>                
                       <div class="text-center">
-                          <select  class="form-control"   name="showPageSize" [(ngModel)]="pagination.itemsPerPage" (click)='loadReservations()'>
-                            <option *ngFor="let entry of entryList" [value]="entry.value">
+                          <select  class="form-control"   name="showPageSize" [(ngModel)]="pagination.itemsPerPage" (change)='loadSorting()'>
+                            <option *ngFor="let entry of entryList" [value]="entry.value" >
                               {{entry.display}}
                             </option>
                           </select>                  

@@ -47,7 +47,7 @@
                           <span class="input-group-text">Limit</span>
                         </div>                
                       <div class="text-center">
-                          <select  class="form-control"   name="showPageSize" [(ngModel)]="pagination.itemsPerPage" (click)='loadrestaurants()'>
+                          <select  class="form-control"   name="showPageSize" [(ngModel)]="pagination.itemsPerPage" (change)='loadSorting()'>
                             <option *ngFor="let entry of entryList" [value]="entry.value">
                               {{entry.display}}
                             </option>

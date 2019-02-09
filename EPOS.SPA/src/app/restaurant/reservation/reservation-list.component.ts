@@ -1,6 +1,3 @@
-import { RestaurantService } from './../../core/service/restaurant.service';
-import { Pagination, PaginatedResult } from './../../_models/pagination';
-import { IReservationList } from './../../_models/reservation';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -9,6 +6,10 @@ import { finalize } from 'rxjs/operators';
 
 import * as m from 'moment';
 import { AlertifyService } from './../../core/alertify.service';
+
+import { RestaurantService } from './../../core/service/restaurant.service';
+import { Pagination, PaginatedResult } from './../../_models/pagination';
+import { IReservationList } from './../../_models/reservation';
 
 @Component({
   templateUrl: './reservation-list.component.html',
@@ -101,6 +102,10 @@ export class ReservationListComponent implements OnInit {
       this.loadReservations();
     }
 
+  }
+  loadSorting() {
+    this.pagination.currentPage = 1;
+    this.loadReservations();
   }
   pageChanged(event: any): void {
     this.pagination.currentPage = event.page;

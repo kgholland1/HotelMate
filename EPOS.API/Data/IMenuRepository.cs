@@ -21,6 +21,7 @@ namespace EPOS.API.Data
         Task<PagedList<Menu>> GetMenus(CategoryParams categoryParams, int HotelID);
         Task<Menu> GetMenu(int id, bool includeRelated = true);
         Task<int> GetMenusByCategory(int categoryid);
-
+        Task<List<Extra>> GetExtrasForMenu(int hotelID);
+        Task<MenuOrder> GetMenuOrder(int id);
     }
 }

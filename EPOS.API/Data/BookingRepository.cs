@@ -72,7 +72,14 @@ namespace EPOS.API.Data
 
             return booking;        
         } 
-        
+        public async Task<Booking> GuestCurrentBooking(int GuestId)
+        {
+            var booking = await _context.Bookings
+                .FirstOrDefaultAsync(e => e.GuestId == GuestId && e.IsMain == true 
+                && e.IsDeleted == false && e.CheckOut == null);
+
+            return booking;        
+        }         
         public async Task<List<Note>> GetNotes(int bookingId)
         {
             var notes = await _context.Notes

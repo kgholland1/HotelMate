@@ -59,7 +59,10 @@ export class MenuListComponent implements OnInit {
           this.alertify.error(error, 5);
         });
     }
-
+    loadSorting() {
+      this.pagination.currentPage = 1;
+      this.loadMenus();
+    }
     SearchMenu() {
     //  this.menuParams.categoryId = this.searchBy;
       this.pagination.currentPage = 1;

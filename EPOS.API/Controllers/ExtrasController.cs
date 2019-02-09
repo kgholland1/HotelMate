@@ -127,6 +127,15 @@ namespace EPOS.API.Controllers
         var extras = await _repo.GetExtraKeyValuePair(hotelId);
 
         return extras;
-        }     
+        }
+        [HttpGet("hotel/{hotelId}/typelist")]  
+        public async Task<IEnumerable<ExtraForListDto>> GetExtraForMenuList(int hotelId)
+        {
+        var extras = await _repo.GetExtrasForMenu(hotelId);
+
+        var extrasToReturn = _mapper.Map<IEnumerable<ExtraForListDto>>(extras);
+
+        return extrasToReturn;
+        }       
     }
 }

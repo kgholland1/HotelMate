@@ -74,6 +74,9 @@ namespace EPOS.API.Controllers
             
             var hotelFromRepo =  await _hotelrepo.HotelSignup(hotelEntity);
 
+            //add hotel counter
+            var counterState = await _hotelrepo.CreateNotificationCounters(hotelFromRepo.Id);
+
             //register the Admin user
             var adminUser = new User
             {
@@ -126,6 +129,23 @@ namespace EPOS.API.Controllers
                 return NoContent();
 
             throw new Exception($"Updating hotel {id} failed on save");
+        }
+
+        [HttpGet("notification/{hotelId}")]
+        public async Task<IActionResult> GetNotificationCount(int hotelId)
+        {
+                        
+            var notificationFromRepo = await _hotelrepo.GetNotificationCounters(hotelId);
+
+            if (notificationFromRepo == null)
+            {
+                return NotFound();
+            }
+            
+            var notificationToReturn = _mapper.Map<NotificationDto>(notificationFromRepo);   
+            
+            return Ok(notificationToReturn);
+
         }
     }
 }

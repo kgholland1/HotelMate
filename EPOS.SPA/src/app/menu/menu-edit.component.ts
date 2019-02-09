@@ -13,9 +13,10 @@ import { MenuService } from './menu.service';
 import { AlertifyService } from './../core/alertify.service';
 import { NumberValidators } from './../shared/number.validator';
 
-import { IMenuSave, IMenu } from './../_models/menu';
+import { IMenuSave, IMenu, IMenuExtra } from './../_models/menu';
 import { IPhoto } from './../_models/photo';
 import { IKeyValuePair } from './../_models/KeyValuePair';
+import { IExtra } from './../_models/extra';
 
 @Component({
   templateUrl: './menu-edit.component.html',
@@ -29,14 +30,19 @@ export class MenuEditComponent implements OnInit, AfterViewInit, OnDestroy {
   errorMessage: string;
   mainForm: FormGroup;
   categories: IKeyValuePair[] = [];
-  extras: IKeyValuePair[] = [];
+  extras: IExtra[] = [];
+  options: IExtra[] = [];
+  sizes: IExtra[] = [];
+  filtedExtras: IExtra[] = [];
+  isDisabled = false;
+
   photos: IPhoto[] = [];
   allergyList = [{value: 0, display: 'None'}, {value: 1, display: 'Pepper'}, {value: 2, display: 'Vegetarian'},
     {value: 3, display: 'Nuts'}, {value: 4, display: 'PepperVegetarian'}, {value: 5, display: 'PepperNuts'},
     {value: 6, display: 'VegetarianNuts'}, {value: 7, display: 'PepperVegetarianNuts'}];
 
   spinnerprocessing = false;
-
+  currencyUsed = 'GBP';
   menu: IMenuSave = {
     id: 0,
     categoryId: 0,
@@ -49,6 +55,7 @@ export class MenuEditComponent implements OnInit, AfterViewInit, OnDestroy {
     unitPrice: 0,
     menuImageType: 0,
     showExtras: false,
+    menuExtrasKey: [],
     menuExtras: []
   };
   displayMessage: { [key: string]: string } = {};
@@ -101,7 +108,7 @@ export class MenuEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const sources = [
           this.menuService.getCatKeyValuePair(),
-          this.menuService.getExtraKeyValuePair(),
+          this.menuService.getExtraForMenuSelection(),
         ];
 
         if (this.menu.id) {
@@ -118,11 +125,16 @@ export class MenuEditComponent implements OnInit, AfterViewInit, OnDestroy {
         this.categories = data[0];
         this.extras = data[1];
 
+        // filter the extras into types
+        this.options = this.extras.filter(e => e.extraType === 'Option');
+        this.sizes = this.extras.filter(e => e.extraType === 'Size');
+        this.filtedExtras = this.extras.filter(e => e.extraType === 'Extra');
+
       if (this.menu.id) {
         this.onMenuRetrieved(data[2]);
         this.photos = data[3];
       }
-      console.log(JSON.stringify(this.menu))
+
       },
       (error: any) => this.alertify.error(error, 5));
     }
@@ -163,19 +175,63 @@ export class MenuEditComponent implements OnInit, AfterViewInit, OnDestroy {
       this.menu.menuImageType = m.menuImageType;
       this.menu.showExtras =  m.showExtras;
       if (init) {
-        this.menu.menuExtras = _.pluck(m.menuExtras, 'id');
+        this.menu.menuExtrasKey = _.pluck(m.menuExtras, 'extraId');
       }
+      this.menu.menuExtras = m.menuExtras;
 
     }
     onExtraToggle(extraId, $event) {
-      if ($event.target.checked) {
-        this.menu.menuExtras.push(extraId);
-      } else {
-        const index = this.menu.menuExtras.indexOf(extraId);
-        this.menu.menuExtras.splice(index, 1);
+
+      const menuExtraToAdd: IMenuExtra = {
+        extraId: 0,
+        extraName: '',
+        unitPrice: 0,
+        extraType: ''
+      };
+
+      const item = this.extras.filter(e => e.id === extraId)[0];
+
+      if (item !== undefined) {
+        menuExtraToAdd.extraId = item.id;
+        menuExtraToAdd.extraName = item.extraName;
+        menuExtraToAdd.unitPrice = item.unitPrice;
+        menuExtraToAdd.extraType = item.extraType;
+
+        if ($event.target.checked) {
+          this.menu.menuExtrasKey.push(extraId);
+          this.menu.menuExtras.push(menuExtraToAdd);
+        } else {
+          const index = this.menu.menuExtrasKey.indexOf(extraId);
+          this.menu.menuExtrasKey.splice(index, 1);
+          this.menu.menuExtras = this.menu.menuExtras.filter(e => e.extraId !== extraId);
+        }
       }
+
       this.mainForm.markAsDirty();
     }
+    onExtraChange(extraId, $event) {
+
+      const item = this.extras.filter(e => e.id === extraId)[0];
+
+      if (item !== undefined) {
+        item.unitPrice = $event.target.value;
+      }
+
+
+      console.log(JSON.stringify(item));
+  }
+  onPriceChange(extraId) {
+    this.isDisabled = false;
+    const item = this.menu.menuExtras.filter(e => e.extraId === extraId)[0];
+    if (item === undefined) {
+      return 0.00
+    } else {
+      this.isDisabled = true;
+      return item.unitPrice;
+    }
+    console.log(extraId);
+  }
+
   ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
@@ -217,6 +273,8 @@ export class MenuEditComponent implements OnInit, AfterViewInit, OnDestroy {
      if (this.mainForm.dirty && this.mainForm.valid) {
         // Copy the form values over the product object values
       const e = Object.assign({}, this.menu, this.mainForm.value);
+
+      console.log(JSON.stringify(e));
 
       if (this.menu.id === 0) {
         this.spinnerState(true);

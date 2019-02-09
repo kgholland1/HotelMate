@@ -28,7 +28,8 @@ namespace EPOS.API.Data
                     new Role{Name = "Admin"},
                     new Role{Name = "Manager"},                    
                     new Role{Name = "Supervisor"},
-                    new Role{Name = "Staff"}
+                    new Role{Name = "Staff"},
+                    new Role{Name = "Guest"}
                 };
 
                 foreach (var role in roles)
@@ -54,7 +55,7 @@ namespace EPOS.API.Data
                 if (result.Succeeded)
                 {
                     var admin = _userManager.FindByEmailAsync("superadmin@gmail.com").Result;
-                    _userManager.AddToRolesAsync(admin, new[] {"Admin", "Manager"}).Wait();
+                    _userManager.AddToRolesAsync(admin, new[] {"Admin", "Manager", "Guest"}).Wait();
                 }
             }
         }

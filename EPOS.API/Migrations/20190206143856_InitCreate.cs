@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EPOS.API.Migrations
 {
-    public partial class IdentityInitail : Migration
+    public partial class InitCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -53,25 +53,6 @@ namespace EPOS.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Guests",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Fullname = table.Column<string>(maxLength: 150, nullable: true),
-                    Email = table.Column<string>(maxLength: 150, nullable: true),
-                    Phone = table.Column<string>(nullable: true),
-                    PasswordHash = table.Column<byte[]>(nullable: true),
-                    PasswordSalt = table.Column<byte[]>(nullable: true),
-                    Created = table.Column<DateTime>(nullable: false),
-                    LastActive = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Guests", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Hotels",
                 columns: table => new
                 {
@@ -98,6 +79,26 @@ namespace EPOS.API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Hotels", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notifications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    HotelId = table.Column<int>(nullable: false),
+                    OrderCount = table.Column<int>(nullable: false),
+                    ReservationCount = table.Column<int>(nullable: false),
+                    HouseKeepingCount = table.Column<int>(nullable: false),
+                    TaxiCount = table.Column<int>(nullable: false),
+                    LuggageCount = table.Column<int>(nullable: false),
+                    WakeupCount = table.Column<int>(nullable: false),
+                    SPACount = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -257,6 +258,7 @@ namespace EPOS.API.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Type = table.Column<string>(maxLength: 30, nullable: false),
                     TypeName = table.Column<string>(nullable: false),
+                    Restaurant = table.Column<string>(nullable: true),
                     Start = table.Column<string>(nullable: true),
                     End = table.Column<string>(nullable: true),
                     Interval = table.Column<string>(nullable: true),
@@ -562,6 +564,7 @@ namespace EPOS.API.Migrations
                     TypeName = table.Column<string>(maxLength: 50, nullable: true),
                     IsNew = table.Column<bool>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
+                    IsCompleted = table.Column<bool>(nullable: false),
                     ResApproved = table.Column<string>(maxLength: 10, nullable: true),
                     Request = table.Column<string>(nullable: true),
                     Feedback = table.Column<string>(nullable: true),
@@ -818,9 +821,6 @@ namespace EPOS.API.Migrations
                 name: "CatHeaders");
 
             migrationBuilder.DropTable(
-                name: "Guests");
-
-            migrationBuilder.DropTable(
                 name: "Luggages");
 
             migrationBuilder.DropTable(
@@ -828,6 +828,9 @@ namespace EPOS.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Notes");
+
+            migrationBuilder.DropTable(
+                name: "Notifications");
 
             migrationBuilder.DropTable(
                 name: "OpenTimes");

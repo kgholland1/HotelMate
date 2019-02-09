@@ -1,7 +1,10 @@
+
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { AuthService } from './core/auth.service';
+import { HubService } from './core/hub.service';
 
 @Component({
   // tslint:disable-next-line
@@ -9,8 +12,10 @@ import { AuthService } from './core/auth.service';
   template: '<router-outlet></router-outlet>'
 })
 export class AppComponent implements OnInit {
+
   constructor(private router: Router,
      private authService: AuthService,
+     private hubService: HubService,
     private jwtHelperService: JwtHelperService) { }
 
   ngOnInit() {
@@ -28,5 +33,8 @@ export class AppComponent implements OnInit {
     if (user) {
       this.authService.currentUser = JSON.parse(user)
     }
+
+    this.hubService.startConnection();
+    this.hubService.addListener();
   }
 }

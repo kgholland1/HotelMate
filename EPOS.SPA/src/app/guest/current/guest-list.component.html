@@ -103,9 +103,9 @@
                     <label style="margin-right: 10px">Order By: </label>
                       <div class="btn-group mt-1" btnRadioGroup [(ngModel)]="bookingParams.orderBy" >
                         <label class="btn btn-success btn-sm" btnRadio="CheckIn"
-                              uncheckable tabindex="0" role="button" (click)="loadBookings()">CheckIn</label>
+                              uncheckable tabindex="0" role="button" (click)="loadSorting()">CheckIn</label>
                         <label class="btn btn-success btn-sm" btnRadio="Name"
-                              uncheckable tabindex="0" role="button" (click)="loadBookings()">Name</label>
+                              uncheckable tabindex="0" role="button" (click)="loadSorting()">Name</label>
                       </div>                    
               </div>            
             </div>
@@ -147,7 +147,7 @@
                           <span class="input-group-text">Limit</span>
                         </div>                
                       <div class="text-center">
-                          <select  class="form-control"   name="showPageSize" [(ngModel)]="pagination.itemsPerPage" (click)='loadBookings()'>
+                          <select  class="form-control"   name="showPageSize" [(ngModel)]="pagination.itemsPerPage" (change)='loadSorting()'>
                             <option *ngFor="let entry of entryList" [value]="entry.value">
                               {{entry.display}}
                             </option>

@@ -11,7 +11,7 @@ namespace EPOS.API.Data
         void Delete<T>(T entity) where T: class;
         Task<Hotel> GetHotelWithCode(string hotelcode);            
         Task<bool> HotelExists(string hotelname);
-        Task<User> GetUser(int userID);   
+        Task<User> GetUser(int userID, bool includeHotel = true);
         Task<Hotel> GetHotel(int id, bool includePhotos = false);
         Task<Hotel> GetHotelWithJustHotelPhotos(int id);
         Task<IEnumerable<Photo>> GetPhotosForType(int id, int hotelId, string photoType);
@@ -21,7 +21,8 @@ namespace EPOS.API.Data
         Task<Photo> GetMainPhotoForType(int hotelId, string photoType, int photoTypeId);
         Task<PagedList<Tourist>> GetTourists(GeneralParams touristParams, int HotelID);
         Task<Tourist> GetTourist(int id);
-
         Task<Hotel> HotelSignup(Hotel hotel);
+        Task<bool> CreateNotificationCounters(int hotelId);
+        Task<Notification> GetNotificationCounters(int hotelId);
     }
 }

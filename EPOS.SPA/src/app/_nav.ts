@@ -35,13 +35,13 @@ export const navigation = [
         name: 'Table Reservations',
         url: '/restaurant/reservations',
         icon: 'fa fa-dot-circle-o',
-        allow: 'Admin'
+        allow: 'Admin,Manager,Supervisor,Staff'
       },
       {
         name: 'Room Orders',
         url: '/be/extra',
         icon: 'fa fa-dot-circle-o',
-        allow: 'Admin'
+        allow: 'Admin,Manager,Supervisor,Staff'
       },
       {
         name: 'Pause Orders',
@@ -59,7 +59,7 @@ export const navigation = [
   },
   {
     name: 'House Keeping',
-    url: '/be/guest',
+    url: '/housekeep',
     icon: 'fa fa-key',
     allow: 'Admin',
     children: [
@@ -71,7 +71,7 @@ export const navigation = [
       },
       {
         name: 'Taxi and Private Chauffer',
-        url: '/be/taxis',
+        url: '/housekeep/taxis',
         icon: 'fa fa-dot-circle-o',
         allow: 'Admin'
       },

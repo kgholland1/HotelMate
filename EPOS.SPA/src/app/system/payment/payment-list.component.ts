@@ -37,7 +37,10 @@ export class PaymentListComponent implements OnInit {
     this.pagination.currentPage = event.page;
     this.loadpayments();
   }
-
+  loadSorting() {
+    this.pagination.currentPage = 1;
+    this.loadpayments();
+  }
   loadpayments() {
     this.spinnerState(true);
     this.paymentService.getPayments(this.pagination.currentPage, this.pagination.itemsPerPage)

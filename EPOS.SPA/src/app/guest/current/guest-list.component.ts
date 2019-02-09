@@ -97,6 +97,10 @@ export class GuestListComponent implements OnInit {
     }
 
   }
+  loadSorting() {
+    this.pagination.currentPage = 1;
+    this.loadBookings();
+  }
   pageChanged(event: any): void {
     this.pagination.currentPage = event.page;
     this.loadBookings();

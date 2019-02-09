@@ -10,7 +10,8 @@ const lazyPaths = {
   hotel: 'app/hotel/hotel.module#HotelModule',
   system: 'app/system/system.module#SystemModule',
   guest: 'app/guest/guest.module#GuestModule',
-  restaurant: 'app/restaurant/restaurant.module#RestaurantModule'
+  restaurant: 'app/restaurant/restaurant.module#RestaurantModule',
+  housekeep: 'app/keeping/keeping.module#KeepingModule'
 };
 export const appRoutes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -29,6 +30,11 @@ export const appRoutes: Routes = [
   loadChildren: lazyPaths.restaurant,
   data: { preload: true },
   },
+  {
+    path: 'housekeep',
+    loadChildren: lazyPaths.housekeep,
+    data: { preload: true },
+    },
   {
   path: 'config/menu',
   loadChildren: lazyPaths.menu,

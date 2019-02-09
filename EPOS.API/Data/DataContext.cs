@@ -24,7 +24,6 @@ namespace EPOS.API.Data
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Tourist> Tourists { get; set; }
         public DbSet<Payment> Payments { get; set; }
-        public DbSet<Guest> Guests { get; set; }      
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Note> Notes { get; set; }  
         public DbSet<Reservation> Reservations { get; set; }   
@@ -32,7 +31,10 @@ namespace EPOS.API.Data
         public DbSet<Taxi> Taxis { get; set; }    
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<Luggage> Luggages { get; set; }
-        public DbSet<WakeUp> WakeUps { get; set; }        
+        public DbSet<WakeUp> WakeUps { get; set; }   
+        public DbSet<Notification> Notifications { get; set; }    
+        public DbSet<MenuOrder> MenuOrders { get; set; }   
+        public DbSet<MenuOrderDetail> MenuOrderDetails { get; set; }    
             
         public DataContext(DbContextOptions<DataContext> options, IUserInfoService userInfoService) 
         : base(options) {
@@ -78,6 +80,10 @@ namespace EPOS.API.Data
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);                
 
+            modelBuilder.Entity<MenuOrder>()
+                .HasMany(o => o.MenuOrderDetails)
+                .WithOne(d => d.MenuOrder)
+                .OnDelete(DeleteBehavior.Cascade);
         }
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {

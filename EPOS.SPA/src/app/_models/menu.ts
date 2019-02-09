@@ -22,7 +22,7 @@ export interface IMenu {
     unitPrice: number;
     menuImageType: number;
     showExtras: boolean;
-    menuExtras: IKeyValuePair[];
+    menuExtras: IMenuExtra[];
 }
 
 export interface IMenuSave {
@@ -37,5 +37,13 @@ export interface IMenuSave {
     unitPrice: number;
     menuImageType: number;
     showExtras: boolean;
-    menuExtras: number[];
+    menuExtrasKey: number[];
+    menuExtras: IMenuExtra[];
+}
+
+export interface IMenuExtra {
+    extraId: number;
+    extraName: string;
+    unitPrice: number;
+    extraType: string;
 }

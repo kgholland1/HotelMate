@@ -74,7 +74,7 @@ namespace EPOS.API.Data
                         taxis = taxis.OrderBy(b => b.CreatedOn);
                         break;
                     default:
-                        taxis = taxis.OrderBy(b => (DateTime.Parse(b.ResDate).ToShortDateString() + " " + b.ResTime));
+                        taxis = taxis.OrderBy(b => (DateTime.Parse(b.ResDate + " " + b.ResTime)));
                         break;
                 }
             }

@@ -21,7 +21,7 @@ export class RestaurantService {
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
-  getReservations(page?, itemsPerPage?): Observable<any>  {
+  getReservations(page?, itemsPerPage?): Observable<PaginatedResult<IReservationList[]>>  {
     const paginatedResult: PaginatedResult<IReservationList[]> = new PaginatedResult<IReservationList[]>();
     const hotelId = this.authService.currentUser.hotelId;
     let params = new HttpParams();

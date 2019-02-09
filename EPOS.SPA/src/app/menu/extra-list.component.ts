@@ -47,7 +47,10 @@ export class ExtraListComponent implements OnInit {
         this.alertify.error(error, 5);
       });
   }
-
+  loadSorting() {
+    this.pagination.currentPage = 1;
+    this.loadExtras();
+  }
   private spinnerState(state: boolean) {
     this.spinnerprocessing = state;
   }

@@ -20,6 +20,8 @@ namespace EPOS.API.Dtos
         public decimal UnitPrice { get; set; }
         public int MenuImageType { get; set; }      
         public bool ShowExtras { get; set; }   
-        public ICollection<int> MenuExtras { get; set; } =new Collection<int>();                       
+        public ICollection<int> MenuExtrasKeys { get; set; } =new Collection<int>();   
+        public ICollection<MenuExtraDto> MenuExtras { get; set; } =new List<MenuExtraDto>();               
+                    
     }
 }

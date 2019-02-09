@@ -84,6 +84,13 @@ namespace EPOS.API.Data
 
             return await PagedList<Extra>.CreateAsync(extras, extraParams.PageNumber, extraParams.PageSize);
         }
+        public async Task<List<Extra>> GetExtrasForMenu(int hotelID)
+        {
+            var extras =  await _context.Extras.Where(u => u.HotelId == hotelID)
+                .OrderBy(u => u.ExtraType).ThenBy(n => n.ExtraName).ToListAsync();
+
+            return extras;        
+        }
 
         public async Task<Hotel> GetHotelWithCode(string hotelcode)
         {
@@ -142,13 +149,19 @@ namespace EPOS.API.Data
 
             return await _context.Menus
             .Include(v => v.MenuExtras)
-                .ThenInclude(ve => ve.Extra)
+//                .ThenInclude(ve => ve.Extra)
             .SingleOrDefaultAsync(v => v.Id == id);      
         }
         
         public async Task<int> GetMenusByCategory(int categoryid)
         {
            return await _context.Menus.Where(m => m.CategoryId == categoryid).CountAsync(); 
+        }
+        public async Task<MenuOrder> GetMenuOrder(int id)
+        {
+            var order = await _context.MenuOrders.Include(d => d.MenuOrderDetails).FirstOrDefaultAsync(e => e.Id == id);
+
+            return order;        
         }
     }
 }

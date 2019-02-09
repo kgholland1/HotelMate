@@ -46,7 +46,10 @@ export class CategoryListComponent implements OnInit {
         this.alertify.error(error, 5);
       });
   }
-
+  loadSorting() {
+    this.pagination.currentPage = 1;
+    this.loadCategories();
+  }
   pageChanged(event: any): void {
     this.pagination.currentPage = event.page;
     this.loadCategories();
