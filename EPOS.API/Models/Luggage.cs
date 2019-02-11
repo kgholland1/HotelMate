@@ -18,6 +18,7 @@ namespace EPOS.API.Models
         public string ResDate { get; set; }
         [StringLength(30)]
         public string ResTime { get; set; }
+        public string SortingTime { get; set; }
         [StringLength(50)]
         public bool IsDeleted { get; set; }
         [StringLength(20)]

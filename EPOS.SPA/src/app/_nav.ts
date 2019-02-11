@@ -52,12 +52,6 @@ export const navigation = [
     ]
   },
   {
-    name: 'Shopping',
-    url: '/be/guest',
-    icon: 'fa fa-shopping-cart',
-    allow: 'Admin'
-  },
-  {
     name: 'House Keeping',
     url: '/housekeep',
     icon: 'fa fa-key',

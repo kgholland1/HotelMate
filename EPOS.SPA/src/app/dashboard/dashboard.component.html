@@ -1,3 +1,142 @@
 <div class="animated fadeIn">
-  Dashboard here
+  <div class="row">
+    <div class="col-sm-6 col-lg-3">
+      <div class="card">
+        <div class="card-body p-3 clearfix">
+          <i class="fa fa-bed bg-primary p-3 font-2xl mr-3 float-left"></i>
+          <div class="text-uppercase text-muted font-weight-bold font-xs mb-0 mt-2">Room Orders</div>
+          <div class="h5">{{ counterSummary.orders }}</div>
+        </div>
+      </div>
+    </div><!--/.col-->
+
+    <div class="col-sm-6 col-lg-3">
+      <div class="card">
+        <div class="card-body p-3 clearfix">
+          <i class="fa fa-laptop bg-info p-3 font-2xl mr-3 float-left"></i>
+          <div class="text-uppercase text-muted font-weight-bold font-xs mb-0 mt-2">Table Reservations</div>
+          <div class="h5">{{ counterSummary.reservations }}</div>
+        </div>
+      </div>
+    </div><!--/.col-->
+
+    <div class="col-sm-6 col-lg-3">
+      <div class="card">
+        <div class="card-body p-3 clearfix">
+          <i class="fa fa-user-plus bg-warning p-3 font-2xl mr-3 float-left"></i>
+          <div class="text-uppercase text-muted font-weight-bold font-xs mb-0 mt-2">Registered Guests</div>
+          <div class="h5">{{ counterSummary.bookings }}</div>
+        </div>
+      </div>
+    </div><!--/.col-->
+
+    <div class="col-sm-6 col-lg-3">
+      <div class="card">
+        <div class="card-body p-3 clearfix">
+          <i class="fa fa-bell bg-danger p-3 font-2xl mr-3 float-left"></i>
+          <div class="text-uppercase text-muted font-weight-bold font-xs mb-0 mt-2">House Keeping</div>
+          <div class="h5">{{ counterSummary.keepings }}</div>
+        </div>
+      </div>
+    </div><!--/.col-->
+  </div><!--/.row-->
+
+  <div class="card">
+    <div class="card-header">
+      <i class="fa fa-user-plus"></i> Registered Guests - ({{ orderGraph.selectedPeriod }})            
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="my-4">
+            <div class="chart-wrapper" style="height:350px">
+              <canvas baseChart class="chart"
+              [datasets]="mainChartData"
+              [labels]="mainChartLabels"
+              [options]="mainChartOptions"
+              [colors]="mainChartColours"
+              [legend]="mainChartLegend"
+              [chartType]="mainChartType"
+              (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+            </div>
+          </div>
+        </div><!--/.col-->
+      </div><!--/.row-->
+    </div>
+  </div> 
+  <div class="col-md-6 clearleft">                     
+    <div class="card">
+      <div class="card-header">
+          <i class="fa fa-table"></i> Latest Room Orders
+          <a class="badge badge-success" [routerLink]="['/config/system/opentimes']">view all room orders</a>
+      </div>          
+        <div class="card-body p-4">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Ref.</th>
+                <th>Status</th>
+                <th>Guest</th>
+                <th>Room</th>
+                <th>For</th>                                
+                <th>View</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr  *ngFor="let order of roomOrders">
+                <td>{{ order.id }}</td>
+                <td><span class="badge" [ngClass]="orderStatus(order.orderStatus)">
+                  {{ order.orderStatus }}</span></td>
+                <td>{{ order.guestName }}</td>
+                <td>{{ order.roomNumber }}</td>
+                <td style = "text-align:center; width:150px">{{ order.orderDate }} {{ order.orderTime }}</td>                                
+                <td style = "text-align:center; width:40px">
+                      <a class="btn badge-secondary btn-sm" [routerLink]="['/hotel/rooms', order.id, 'view']">
+                        <i class="fa fa-edit "></i>View
+                      </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>                                             
+        </div>
+    </div>
+  </div> 
+  <div class="col-md-6 clearright">                     
+      <div class="card">
+        <div class="card-header">
+            <i class="fa fa-table"></i> Latest House Keeping Services
+            <a class="badge badge-success" [routerLink]="['/config/system/opentimes']">view all house keeping</a>
+        </div>          
+          <div class="card-body p-4">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Ref.</th>
+                  <th>Status</th>
+                  <th>Guest</th>
+                  <th>Room</th>
+                  <th>For</th>                                
+                  <th>View</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr  *ngFor="let order of roomOrders">
+                  <td>{{ order.id }}</td>
+                  <td><span class="badge" [ngClass]="orderStatus(order.orderStatus)">
+                    {{ order.orderStatus }}</span></td>
+                  <td>{{ order.guestName }}</td>
+                  <td>{{ order.roomNumber }}</td>
+                  <td style = "text-align:center; width:150px">{{ order.orderDate }} {{ order.orderTime }}</td>                                
+                  <td style = "text-align:center; width:40px">
+                        <a class="btn badge-secondary btn-sm" [routerLink]="['/hotel/rooms', order.id, 'view']">
+                          <i class="fa fa-edit "></i>View
+                        </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>                                             
+          </div>
+      </div>
+    </div>   
 </div>

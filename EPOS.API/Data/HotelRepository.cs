@@ -4,7 +4,8 @@ using System.Threading.Tasks;
 using EPOS.API.Helpers;
 using EPOS.API.Models;
 using Microsoft.EntityFrameworkCore;
-
+using System;
+using System.Collections.ObjectModel;
 
 namespace EPOS.API.Data
 {
@@ -141,6 +142,86 @@ namespace EPOS.API.Data
         public async Task<Notification> GetNotificationCounters(int hotelId)
         {
             return await _context.Notifications.FirstOrDefaultAsync(e => e.HotelId == hotelId);       
+        }
+        
+        public async Task<DashboardSummary> GetSummaryCounters(int hotelId)
+        {
+            DashboardSummary counters = new DashboardSummary()
+               {Orders = 0, Reservations = 0, Bookings = 0, Keepings = 0} 
+            ;
+            DateTime startDate = DateTime.Now.Date; 
+            DateTime endDate = startDate.AddHours(23).AddMinutes(59).AddSeconds(59);            
+
+            counters.Orders = await _context.MenuOrders.CountAsync(o => o.HotelId == hotelId
+                && o.CreatedOn >= startDate && o.CreatedOn <= endDate); 
+
+            counters.Reservations = await _context.Reservations.CountAsync(o => o.HotelId == hotelId
+                && o.CreatedOn >= startDate && o.CreatedOn <= endDate); 
+
+            counters.Bookings = await _context.Bookings.CountAsync(o => o.HotelId == hotelId
+                && o.CreatedOn >= startDate && o.CreatedOn <= endDate); 
+
+            counters.Keepings = await _context.Taxis.CountAsync(o => o.HotelId == hotelId
+                && o.CreatedOn >= startDate && o.CreatedOn <= endDate); 
+
+            return counters;       
+        }
+        
+        public async Task<DashboardOrderGraph> GetOrdersGraph(int hotelId)
+        {
+            DashboardOrderGraph orderGraph = new DashboardOrderGraph();
+            List<GraphResult> dateCount = new List<GraphResult>();
+            string[] labelArray = new string[31];
+
+
+            DateTime startDate = DateTime.Now.AddDays(-30).Date; 
+            DateTime endDate = DateTime.Now.Date.AddHours(23).AddMinutes(59).AddSeconds(59);    
+
+            orderGraph.selectedPeriod = startDate.ToShortDateString() + " - " +  endDate.ToShortDateString();
+
+
+            var Orders = await _context.Bookings.Where(o => o.HotelId == hotelId
+                && o.CreatedOn >= startDate && o.CreatedOn <= endDate).ToListAsync(); 
+
+            foreach(var line in Orders.GroupBy(info => info.CreatedOn.Date)
+                                    .Select(group => new { 
+                                        OrderDate = group.Key, 
+                                        OrderCount = group.Count() 
+                                    })
+                                    .OrderBy(x => x.OrderDate))
+                                    {
+                                        dateCount.Add(new GraphResult() { OrderDate = line.OrderDate.ToShortDateString(), 
+                                        OrderCount = line.OrderCount });
+                                    }
+
+            // create the labels and counts
+            for (int i = 0; i < 31; i++)
+            {
+                var currentDate = startDate.AddDays(i).Date.ToShortDateString();
+                var FoundinList = dateCount.Find(x => x.OrderDate.Contains(currentDate));
+
+                orderGraph.DataLabels[i] = startDate.AddDays(i).Day.ToString();
+
+                if (FoundinList != null){
+                    orderGraph.DataCounters[i] = FoundinList.OrderCount;
+                } else {
+                   orderGraph.DataCounters[i] = 0;
+                }
+            }         
+            
+            return orderGraph;       
+        }
+        public async Task<List<MenuOrder>> GetLatestOrders(int hotelId)
+        {
+            return await  _context.MenuOrders.Where(h => h.HotelId == hotelId)
+                    .OrderByDescending(b => b.CreatedOn).Take(5).ToListAsync();
+     
+        }
+        public async Task<List<Taxi>> GetLatestHouseKeeping(int hotelId)
+        {
+            return await  _context.Taxis.Where(h => h.HotelId == hotelId  && h.BookStatus != "Cancelled")
+                    .OrderByDescending(b => b.CreatedOn).Take(5).ToListAsync();
+     
         }
     }
 }

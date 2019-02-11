@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -163,5 +164,66 @@ namespace EPOS.API.Data
 
             return order;        
         }
+        public async Task<PagedList<MenuOrder>> GetRoomOrders(OrderParam orderParam, int HotelID)
+        {
+            var orders =  _context.MenuOrders.Where(h => h.HotelId == HotelID  && h.IsDeleted == false)
+                .OrderBy(b => b.Id).AsQueryable();
+
+            if (!string.IsNullOrEmpty(orderParam.OrderNo)) {
+                orders = orders.Where(b => b.Id == int.Parse(orderParam.OrderNo));                
+            } else {
+                if (!string.IsNullOrEmpty(orderParam.RoomNumber)) {
+                    orders = orders.Where(b => b.RoomNumber == orderParam.RoomNumber);                
+                }
+                if (!string.IsNullOrEmpty(orderParam.Fullname)) {
+                    orders = orders.Where(b => b.GuestName.Contains(orderParam.Fullname));                
+                }  
+                if (!string.IsNullOrEmpty(orderParam.Email)) {
+                    orders = orders.Where(b => b.Email.Contains(orderParam.Email));                
+                }            
+
+                if (!string.IsNullOrEmpty(orderParam.Phone)) {
+                    orders = orders.Where(b => b.Phone.Contains(orderParam.Phone));                
+                } 
+                if (!string.IsNullOrEmpty(orderParam.OrderStatus)) {
+                   
+                    if (orderParam.OrderStatus == "Pending,Processing")               
+                        orders = orders.Where(b => b.OrderStatus == "Pending" || b.OrderStatus == "Processing"); 
+                    else
+                        orders = orders.Where(b => b.OrderStatus == orderParam.OrderStatus); 
+                }      
+                if (!string.IsNullOrEmpty(orderParam.StartDate)) {
+                    DateTime dt;
+                    if (DateTime.TryParse(orderParam.StartDate, out dt)) {
+                        orders = orders.Where(b => b.CreatedOn >= dt);                          
+                    }         
+                } else {
+                    orders = orders.Where(b => b.CreatedOn >= DateTime.Now.AddDays(-180)); 
+                }
+                if (!string.IsNullOrEmpty(orderParam.EndDate)) {
+                    DateTime dt;
+                    if (DateTime.TryParse(orderParam.EndDate, out dt)) {
+                        dt = dt.AddHours(23).AddMinutes(59).AddSeconds(59);
+                        orders = orders.Where(b => b.CreatedOn.Date <= dt);                          
+                    }         
+                }                                                                          
+            }
+
+            if (!string.IsNullOrEmpty(orderParam.OrderBy))
+            {
+                switch (orderParam.OrderBy)
+                {
+                    case "Created":
+                        orders = orders.OrderBy(b => b.CreatedOn);
+                        break;
+                    default:
+                        orders = orders.OrderBy(b => (DateTime.Parse(b.OrderDate + " " + b.OrderTime)));
+                        break;
+                }
+            }
+
+            return await PagedList<MenuOrder>.CreateAsync(orders, orderParam.PageNumber, orderParam.PageSize);
+        }
+
     }
 }

@@ -24,5 +24,8 @@ namespace EPOS.API.Data
         Task<Hotel> HotelSignup(Hotel hotel);
         Task<bool> CreateNotificationCounters(int hotelId);
         Task<Notification> GetNotificationCounters(int hotelId);
+        Task<DashboardSummary> GetSummaryCounters(int hotelId);
+        Task<DashboardOrderGraph> GetOrdersGraph(int hotelId);
+        Task<List<MenuOrder>> GetLatestOrders(int hotelId);
     }
 }

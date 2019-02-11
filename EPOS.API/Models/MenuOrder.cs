@@ -21,6 +21,7 @@ namespace EPOS.API.Models
         [Required]        
         [StringLength(30)]
         public string OrderTime { get; set; }
+        public string SortingTime { get; set; }
         public bool IsDeleted { get; set; }
         public string Request { get; set; }        
         public string Response { get; set; }

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Security.Claims;
 using EPOS.API.Models;
 using System;
+using System.Collections.Generic;
 
 namespace EPOS.API.Controllers
 {
@@ -33,7 +34,18 @@ namespace EPOS.API.Controllers
             _repo = repo;   
             _hotelrepo = hotelrepo;         
         } 
+        [HttpGet()]   
+        public async Task<IActionResult> GetRoomOrders(int hotelId, [FromQuery]OrderParam orderParam)
+        {
 
+            var orders = await _repo.GetRoomOrders(orderParam, hotelId);
+
+            var ordersToReturn = _mapper.Map<IEnumerable<MenuOrderListDto>>(orders);
+
+            Response.AddPagination(orders.CurrentPage, orders.PageSize, orders.TotalCount, orders.TotalPages);
+
+            return Ok(ordersToReturn);
+        }   
         [HttpPost()]
         public async Task<IActionResult> CreateOrder(MenuOrderCreateDto menuOrderCreateDto)
         {
